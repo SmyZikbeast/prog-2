@@ -56,16 +56,19 @@ public class ElementInputManager {
         } while (!v.validateCoordinates(coordinates));
         System.out.println("Введите количество оскаров");
         String SoscarsCount = "";
+        Integer oscarsCount = 0;
         do {
             if (sc.hasNextLine()) {
                 try {
                     SoscarsCount = sc.nextLine();
-                } catch (NullPointerException e) {
-                    SoscarsCount = null;
+                    oscarsCount = Integer.valueOf(SoscarsCount);
+                } catch (NullPointerException | NumberFormatException e) {
+                    if (SoscarsCount.length() == 0) {
+                        SoscarsCount = null;
+                    }
                 }
             }
         } while (!v.validateOscarsCount(SoscarsCount));
-        Integer oscarsCount = Integer.valueOf(SoscarsCount);
         System.out.println("Введите количество премий золотой пальмы");
         String SgoldenPalmCount = "";
         do {

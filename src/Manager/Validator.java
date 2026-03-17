@@ -35,11 +35,15 @@ public class Validator {
     }
     public boolean validateOscarsCount(String oc){
         try {
-            return (oc == null) || (Integer.valueOf(oc) > 0);
+            if ((oc == null) || (Integer.valueOf(oc) > 0)) {
+                System.out.println("fine");
+                return true;
+            }
         }
         catch (NumberFormatException e){
             return false;
         }
+        return false;
     }
     public boolean validateGPCount(String gpc){
         try {
