@@ -2,7 +2,7 @@ package Commands;
 
 import Manager.CollectionManager;
 
-public class ExitCommand extends ArglessCommand{
+public class ExitCommand extends Command{
     ExitCommand(CollectionManager cm) {
         super(cm);
     }

@@ -2,12 +2,14 @@ package Commands;
 
 import Manager.CollectionManager;
 
-public class SaveCommand extends ArglessCommand{
-    SaveCommand(CollectionManager cm) {
+import java.io.IOException;
+
+public class SaveCommand extends Command{
+    public SaveCommand(CollectionManager cm) {
         super(cm);
     }
     @Override
-    public void execute(){
-
+    public void execute(String path) throws IOException {
+        cm.save(path);
     }
 }

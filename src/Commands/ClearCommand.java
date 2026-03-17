@@ -2,7 +2,7 @@ package Commands;
 
 import Manager.CollectionManager;
 
-public class ClearCommand extends ArglessCommand{
+public class ClearCommand extends Command{
 
     public ClearCommand(CollectionManager cm) {
         super(cm);
