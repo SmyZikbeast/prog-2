@@ -2,7 +2,7 @@ package Commands;
 
 import Manager.CollectionManager;
 
-public class AddIfMaxCommand extends Command{
+public class AddIfMaxCommand extends ArglessCommand{
 
     AddIfMaxCommand(CollectionManager cm) {
         super(cm);

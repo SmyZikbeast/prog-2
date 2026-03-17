@@ -28,6 +28,10 @@ public class Movie {
         this.screenwriter = screenwriter;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString(){
          return "id:" + id + "\n" +

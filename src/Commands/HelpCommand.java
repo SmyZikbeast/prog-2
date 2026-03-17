@@ -2,7 +2,7 @@ package Commands;
 
 import Manager.CollectionManager;
 
-public class HelpCommand extends Command{
+public class HelpCommand extends ArglessCommand{
     public HelpCommand(CollectionManager cm) {
         super(cm);
     }

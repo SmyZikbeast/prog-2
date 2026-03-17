@@ -3,7 +3,7 @@ package Commands;
 import BaseFiles.Movie;
 import Manager.CollectionManager;
 
-public class ShowCommand extends Command{
+public class ShowCommand extends ArglessCommand{
     public ShowCommand(CollectionManager cm) {
         super(cm);
     }

@@ -2,7 +2,7 @@ package Commands;
 
 import Manager.CollectionManager;
 
-public class InfoCommand extends Command{
+public class InfoCommand extends ArglessCommand{
     public InfoCommand(CollectionManager cm) {
         super(cm);
     }
@@ -11,5 +11,6 @@ public class InfoCommand extends Command{
         System.out.println("Тип коллекции:" + cm.getType());
         System.out.println("Дата инициализации:" + cm.getInitDate());
         System.out.println("Количество элементов:" + cm.getElementsAmount());
+        System.out.print("Автор: @SmyZikBest");
     }
 }

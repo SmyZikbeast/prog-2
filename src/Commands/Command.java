@@ -8,4 +8,5 @@ public abstract class Command {
         this.cm = cm;
     }
     public void execute(){}
+    public void execute(String arg){}
 }

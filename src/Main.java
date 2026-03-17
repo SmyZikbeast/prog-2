@@ -25,14 +25,21 @@ public class Main {
         commandMap.put("info",new InfoCommand(cm));
         commandMap.put("show",new ShowCommand(cm));
         commandMap.put("add",new AddCommand(cm));
+        commandMap.put("update",new UpdateIdCommand(cm));
+        commandMap.put("remove_by_id",new RemoveByIdCommand(cm));
+        commandMap.put("clear",new ClearCommand(cm));
         Scanner scanner = new Scanner(System.in);
         while(true){
             if (scanner.hasNextLine()) {
                 try {
                     String line = scanner.nextLine();
-                    String[] tokens = line.split(" ");
+                    String[] tokens = (line.split(" "));
                     Command command = commandMap.get(tokens[0].toLowerCase());
-                    command.execute();
+                    if (tokens.length == 1) {
+                        command.execute("");
+                    } else if (tokens.length == 2) {
+                        command.execute(tokens[1]);
+                    }
                 }
                 catch (NullPointerException e){
                     System.out.println("некорректная команда");

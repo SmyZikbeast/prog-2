@@ -1,10 +1,20 @@
 package Commands;
 
+import BaseFiles.Movie;
 import Manager.CollectionManager;
 
 public class UpdateIdCommand extends Command{
-    UpdateIdCommand(CollectionManager cm) {
+    public UpdateIdCommand(CollectionManager cm) {
         super(cm);
     }
-    
+    @Override
+    public void execute(String arg){
+        if (!cm.getIds().contains(Integer.valueOf(arg))){
+            System.out.println("Такого айди нет в списке");
+        }
+        else {
+            Movie m = cm.getMovie();
+            cm.setMovie(Integer.valueOf(arg), m);
+        }
+    }
 }
