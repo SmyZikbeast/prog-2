@@ -12,9 +12,10 @@ import java.util.LinkedList;
 
 public class CollectionManager {
     String Type = "LinkedList";
-    LinkedList<Movie> collection = new LinkedList<>();;
+    LinkedList<Movie> collection = new LinkedList<>();
+    LocalDateTime InitDate;
     public CollectionManager(){
-        LocalDateTime InitDate = LocalDateTime.now();
+        this.InitDate  = LocalDateTime.now();
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
@@ -22,14 +23,20 @@ public class CollectionManager {
                 .create();
         System.out.println("Gson connection success");
     }
-    void fill() {
+    public void fill() {
         collection.add(new Movie("Escape"));
         collection.add(new Movie("Return"));
     }
-    void f(){
-
+    public LocalDateTime getInitDate(){
+        return InitDate;
     }
     public String getType(){
         return this.Type;
+    }
+    public int getElementsAmount(){
+        return collection.size();
+    }
+    public LinkedList<Movie> getCollection(){
+        return this.collection;
     }
 }

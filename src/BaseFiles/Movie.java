@@ -19,10 +19,16 @@ public class Movie {
         this.coordinates = new Coordinates(1.0, 1.0F);
         this.creationDate = LocalDateTime.now();
     }
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
+    @Override
+    public String toString(){
+         return "id:" + id + "\n" +
+        "name:" + name + "\n" +
+        "coordinates:" + coordinates + "\n" +
+        "creation Date:" + creationDate + "\n" +
+        "oscars Count:" + oscarsCount + "\n" +
+        "golden Palm Count:" + goldenPalmCount + "\n" +
+        "usa Box Office:" + usaBoxOffice + "\n" +
+        "mpaa Rating:" + mpaaRating + "\n" +
+        "screen Writer:" + screenwriter + "\n";
     }
 }

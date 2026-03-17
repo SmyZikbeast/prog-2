@@ -21,7 +21,9 @@ public class Main {
         Map<String, Command> commandMap = new HashMap<>();
         commandMap.put("help",new HelpCommand(cm));
         commandMap.put("info",new InfoCommand(cm));
+        commandMap.put("show",new ShowCommand(cm));
         Scanner scanner = new Scanner(System.in);
+        cm.fill();
         while(true){
             if (scanner.hasNextLine()) {
                 try {
