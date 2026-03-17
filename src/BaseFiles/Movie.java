@@ -1,6 +1,7 @@
 package BaseFiles;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Movie {
     private static int Nextid = 1;
@@ -13,13 +14,13 @@ public class Movie {
     private int usaBoxOffice; //Значение поля должно быть больше 0
     private MpaaRating mpaaRating; //Поле не может быть null
     private Person screenwriter;
-
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public Movie(String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter) {
         this.id = Nextid;
         Nextid++;
         this.name = name;
         this.coordinates = coordinates;
-        this.creationDate = LocalDateTime.now();
+        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(formatter));
         this.oscarsCount = oscarsCount;
         this.goldenPalmCount = goldenPalmCount;
         this.usaBoxOffice = usaBoxOffice;

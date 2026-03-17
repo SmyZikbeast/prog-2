@@ -7,4 +7,8 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
+    @Override
+    public String toString(){
+        return "X:"+this.x+" Y:"+this.y;
+    }
 }

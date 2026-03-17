@@ -4,12 +4,10 @@ import BaseFiles.Coordinates;
 import BaseFiles.Country;
 import BaseFiles.MpaaRating;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.format.ResolverStyle;
+
 
 public class Validator {
     public boolean validateName(String name){
@@ -20,19 +18,44 @@ public class Validator {
     }
 
     public boolean validateX(String x) {
-        return (x != null) && (Double.valueOf(x)>-790);
+        try {
+            return (x != null) && (Double.valueOf(x)>-790);
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
     public boolean validateY(String y) {
-        return (y != null) && (Float.valueOf(y)>-716F);
+        try {
+            return (y != null) && (Float.valueOf(y)>-716F);
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
     public boolean validateOscarsCount(String oc){
-        return (oc == null) || (Integer.valueOf(oc) > 0);
+        try {
+            return (oc == null) || (Integer.valueOf(oc) > 0);
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
     public boolean validateGPCount(String gpc){
-        return (gpc == null) || (Long.valueOf(gpc) > 0);
+        try {
+            return (gpc == null) || (Long.valueOf(gpc) > 0);
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
     public boolean validateUsaBoxOffice(String ubo){
-        return (Integer.valueOf(ubo) > 0);
+        try {
+            return (Integer.valueOf(ubo) > 0);
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
     public boolean validateRating(String r){
         try {
@@ -47,16 +70,20 @@ public class Validator {
             return false;
         }
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-                    .withResolverStyle(ResolverStyle.STRICT);
-            LocalDate.parse(bd, formatter);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMMdd");
+            LocalDate.parse(bd.trim(), formatter);
             return true;
         } catch (DateTimeParseException e) {
             return false;
         }
     }
     public boolean validateHeight(String h){
-        return (h!=null)&&(Double.valueOf(h)>0);
+        try {
+            return (h!=null)&&(Double.valueOf(h)>0);
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
     }
     public boolean validatePassportID(String p){
         return (p == null) || (p.length()>10);

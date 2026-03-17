@@ -50,7 +50,7 @@ public class ElementInputManager {
                     sY = null;
                 }
             }
-        } while (!v.validateX(sY));
+        } while (!v.validateY(sY));
         Y = Float.valueOf(sY);
         coordinates = new Coordinates(X, Y);
         } while (!v.validateCoordinates(coordinates));
@@ -125,7 +125,7 @@ public class ElementInputManager {
                 }
             }
         } while (!v.validateBirthday(Sbirthday));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu")
                 .withResolverStyle(ResolverStyle.STRICT);
         LocalDateTime Birthday = LocalDate.parse(Sbirthday, formatter).atStartOfDay();
         System.out.println("Введите рост");
@@ -150,7 +150,7 @@ public class ElementInputManager {
                     PassportID = null;
                 }
             }
-        } while (!v.validateName(PassportID));
+        } while (!v.validatePassportID(PassportID));
         System.out.println("Введите страну рождения");
         String SCountry = "";
         do {
@@ -161,9 +161,10 @@ public class ElementInputManager {
                     SCountry = null;
                 }
             }
-        } while (!v.validateRating(SCountry));
+        } while (!v.validateNationality(SCountry));
         Country Nationality = Country.valueOf(SCountry);
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
+        System.out.println("success");
         return new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
     }
 }

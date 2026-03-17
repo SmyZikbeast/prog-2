@@ -16,4 +16,13 @@ public class Person {
         this.passportID = passportID;
         this.nationality = nationality;
     }
+
+    @Override
+    public String toString() {
+        return  "name:" + name + '\n' +
+                ", birthday:" + birthday + "\n" +
+                ", height:" + height + "\n" +
+                ", passportID:" + passportID +  "\n" +
+                ", nationality:" + nationality;
+    }
 }
