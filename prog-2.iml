@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/src">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jackson-databind-3.1.0" level="project" />
+    <orderEntry type="library" name="jackson-annotations-3.0-rc5" level="project" />
+    <orderEntry type="library" name="jackson-core-3.1.0" level="project" />
+    <orderEntry type="library" name="gson-2.13.2" level="project" />
+  </component>
+</module>
