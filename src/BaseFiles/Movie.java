@@ -13,13 +13,20 @@ public class Movie {
     private int usaBoxOffice; //Значение поля должно быть больше 0
     private MpaaRating mpaaRating; //Поле не может быть null
     private Person screenwriter;
-     public Movie(String name) {
+
+    public Movie(String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter) {
         this.id = Nextid;
-        Movie.Nextid+=1;
+        Nextid++;
         this.name = name;
-        this.coordinates = new Coordinates(1.0, 1.0F);
+        this.coordinates = coordinates;
         this.creationDate = LocalDateTime.now();
+        this.oscarsCount = oscarsCount;
+        this.goldenPalmCount = goldenPalmCount;
+        this.usaBoxOffice = usaBoxOffice;
+        this.mpaaRating = mpaaRating;
+        this.screenwriter = screenwriter;
     }
+
     @Override
     public String toString(){
          return "id:" + id + "\n" +

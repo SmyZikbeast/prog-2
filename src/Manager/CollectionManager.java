@@ -23,10 +23,7 @@ public class CollectionManager {
                 .create();
         System.out.println("Gson connection success");
     }
-    public void fill() {
-        collection.add(new Movie("Escape"));
-        collection.add(new Movie("Return"));
-    }
+
     public LocalDateTime getInitDate(){
         return InitDate;
     }
@@ -38,5 +35,11 @@ public class CollectionManager {
     }
     public LinkedList<Movie> getCollection(){
         return this.collection;
+    }
+    public Movie getMovie(){
+        return ElementInputManager.getMovie();
+    }
+    public void addMovie(Movie m){
+        collection.add(m);
     }
 }

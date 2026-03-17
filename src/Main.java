@@ -22,14 +22,14 @@ public class Main {
         commandMap.put("help",new HelpCommand(cm));
         commandMap.put("info",new InfoCommand(cm));
         commandMap.put("show",new ShowCommand(cm));
+        commandMap.put("add",new AddCommand(cm));
         Scanner scanner = new Scanner(System.in);
-        cm.fill();
         while(true){
             if (scanner.hasNextLine()) {
                 try {
                     String line = scanner.nextLine();
                     String[] tokens = line.split(" ");
-                    Command command = commandMap.get(tokens[0]);
+                    Command command = commandMap.get(tokens[0].toLowerCase());
                     command.execute();
                 }
                 catch (NullPointerException e){
