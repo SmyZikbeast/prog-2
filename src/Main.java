@@ -35,7 +35,7 @@ public class Main {
                     command.execute();
                 }
                 catch (NullPointerException e){
-                    System.out.println("бро ты умрешь и тд");
+                    System.out.println("некорректная команда");
                 }
             } else {
                 throw new IllegalArgumentException();

@@ -20,7 +20,7 @@ public class Movie {
         Nextid++;
         this.name = name;
         this.coordinates = coordinates;
-        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(formatter));
+        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
         this.oscarsCount = oscarsCount;
         this.goldenPalmCount = goldenPalmCount;
         this.usaBoxOffice = usaBoxOffice;
@@ -38,6 +38,6 @@ public class Movie {
         "golden Palm Count:" + goldenPalmCount + "\n" +
         "usa Box Office:" + usaBoxOffice + "\n" +
         "mpaa Rating:" + mpaaRating + "\n" +
-        "screen Writer:" + screenwriter + "\n";
+        "screen Writer: \n" + screenwriter;
     }
 }

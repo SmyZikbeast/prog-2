@@ -11,7 +11,7 @@ import java.time.format.DateTimeParseException;
 
 public class Validator {
     public boolean validateName(String name){
-        return (name != null) && (!name.trim().isEmpty());
+        return (name != null) && (!name.trim().isEmpty()) && name.matches("[a-zA-Zа-яА-ЯёЁ]+");
     }
     public boolean validateCoordinates(Coordinates c){
         return (c != null);
@@ -70,7 +70,7 @@ public class Validator {
             return false;
         }
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMMdd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu");
             LocalDate.parse(bd.trim(), formatter);
             return true;
         } catch (DateTimeParseException e) {

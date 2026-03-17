@@ -21,7 +21,6 @@ public class CollectionManager {
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
                 .create();
-        System.out.println("Gson connection success");
     }
 
     public LocalDateTime getInitDate(){

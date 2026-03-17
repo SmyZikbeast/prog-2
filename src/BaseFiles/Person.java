@@ -1,6 +1,9 @@
 package BaseFiles;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 
 public class Person {
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -19,10 +22,12 @@ public class Person {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-uuuu")
+                .withResolverStyle(ResolverStyle.STRICT);
         return  "name:" + name + '\n' +
-                ", birthday:" + birthday + "\n" +
-                ", height:" + height + "\n" +
-                ", passportID:" + passportID +  "\n" +
-                ", nationality:" + nationality;
+                "birthday:" + birthday.format(formatter) + "\n" +
+                "height:" + height + "\n" +
+                "passportID:" + passportID +  "\n" +
+                "nationality:" + nationality;
     }
 }

@@ -6,4 +6,5 @@ public class UpdateIdCommand extends Command{
     UpdateIdCommand(CollectionManager cm) {
         super(cm);
     }
+    
 }

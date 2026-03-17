@@ -90,7 +90,7 @@ public class ElementInputManager {
             }
         } while (!v.validateUsaBoxOffice(SusaBoxOffice));
         int usaBoxOffice = Integer.valueOf(SusaBoxOffice);
-        System.out.println("Введите рейтинг mpaa");
+        System.out.println("Введите рейтинг mpaa (G, PG, PG_13, R, NC_17)");
         String SmpaaRating = "";
         do {
             if (sc.hasNextLine()) {
@@ -114,12 +114,12 @@ public class ElementInputManager {
                 }
             }
         } while (!v.validateName(Name));
-        System.out.println("Введите день рождения (DD:MM:YYYY)");
+        System.out.println("Введите день рождения (DD-MM-YYYY)");
         String Sbirthday = "";
         do {
             if (sc.hasNextLine()) {
                 try {
-                    Sbirthday = sc.nextLine();
+                    Sbirthday = sc.nextLine().replaceAll("[^0-9]", "");;
                 } catch (NullPointerException e) {
                     Sbirthday = null;
                 }
@@ -151,7 +151,7 @@ public class ElementInputManager {
                 }
             }
         } while (!v.validatePassportID(PassportID));
-        System.out.println("Введите страну рождения");
+        System.out.println("Введите страну рождения (UNITED_KINGDOM, USA, FRANCE, INDIA)");
         String SCountry = "";
         do {
             if (sc.hasNextLine()) {
