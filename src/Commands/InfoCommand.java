@@ -1,6 +1,7 @@
 package Commands;
 
 import Manager.CollectionManager;
+import Manager.CommandManager;
 
 public class InfoCommand extends Command{
     public InfoCommand(CollectionManager cm) {
@@ -12,5 +13,6 @@ public class InfoCommand extends Command{
         System.out.println("Дата инициализации:" + cm.getInitDate());
         System.out.println("Количество элементов:" + cm.getElementsAmount());
         System.out.print("Автор: @SmyZikBest\n");
+        CommandManager.addCommand("Info");
     }
 }

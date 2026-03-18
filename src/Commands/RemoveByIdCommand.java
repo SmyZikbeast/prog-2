@@ -1,6 +1,7 @@
 package Commands;
 
 import Manager.CollectionManager;
+import Manager.CommandManager;
 
 public class RemoveByIdCommand extends Command{
     public RemoveByIdCommand(CollectionManager cm) {
@@ -9,5 +10,6 @@ public class RemoveByIdCommand extends Command{
     @Override
     public void execute(String id) {
     cm.removeId(Integer.valueOf(id));
+        CommandManager.addCommand("removeID");
     }
 }

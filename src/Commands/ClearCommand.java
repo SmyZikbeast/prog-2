@@ -1,6 +1,7 @@
 package Commands;
 
 import Manager.CollectionManager;
+import Manager.CommandManager;
 
 public class ClearCommand extends Command{
 
@@ -10,5 +11,6 @@ public class ClearCommand extends Command{
     @Override
     public void execute(){
         cm.clear();
+        CommandManager.addCommand("Clear");
     }
 }

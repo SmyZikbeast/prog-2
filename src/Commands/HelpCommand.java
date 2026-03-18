@@ -1,6 +1,7 @@
 package Commands;
 
 import Manager.CollectionManager;
+import Manager.CommandManager;
 
 public class HelpCommand extends Command{
     public HelpCommand(CollectionManager cm) {
@@ -25,5 +26,6 @@ public class HelpCommand extends Command{
                 "remove_any_by_usa_box_office usaBoxOffice : удалить из коллекции один элемент, значение поля usaBoxOffice которого эквивалентно заданному\n" +
                 "count_less_than_screenwriter screenwriter : вывести количество элементов, значение поля screenwriter которых меньше заданного\n" +
                 "print_field_ascending_mpaa_rating : вывести значения поля mpaaRating всех элементов в порядке возрастания");
+        CommandManager.addCommand("Help");
     }
 }

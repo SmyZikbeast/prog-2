@@ -2,6 +2,7 @@ package Commands;
 
 import BaseFiles.Movie;
 import Manager.CollectionManager;
+import Manager.CommandManager;
 
 public class UpdateIdCommand extends Command{
     public UpdateIdCommand(CollectionManager cm) {
@@ -15,6 +16,7 @@ public class UpdateIdCommand extends Command{
         else {
             Movie m = cm.getMovie();
             cm.setMovie(Integer.valueOf(arg), m);
+            CommandManager.addCommand("UpdateId");
         }
     }
 }

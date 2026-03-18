@@ -5,6 +5,7 @@ import BaseFiles.Country;
 import BaseFiles.MpaaRating;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -33,26 +34,18 @@ public class Validator {
             return false;
         }
     }
-    public boolean validateOscarsCount(String oc){
-        try {
-            if ((oc == null) || (Integer.valueOf(oc) > 0)) {
-                System.out.println("fine");
-                return true;
-            }
+    public boolean validateRewardCount(String oc){
+        if (oc.length()==0){
+            return true;
         }
-        catch (NumberFormatException e){
-            return false;
-        }
-        return false;
-    }
-    public boolean validateGPCount(String gpc){
         try {
-            return (gpc == null) || (Long.valueOf(gpc) > 0);
+            return (Integer.valueOf(oc) > 0);
         }
         catch (NumberFormatException e){
             return false;
         }
     }
+
     public boolean validateUsaBoxOffice(String ubo){
         try {
             return (Integer.valueOf(ubo) > 0);
@@ -75,8 +68,8 @@ public class Validator {
         }
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu");
-            LocalDate.parse(bd.trim(), formatter);
-            return true;
+            LocalDate date = LocalDate.parse(bd.trim(), formatter);
+            return !date.isAfter(LocalDate.now());
         } catch (DateTimeParseException e) {
             return false;
         }

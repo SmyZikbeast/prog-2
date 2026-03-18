@@ -63,24 +63,27 @@ public class ElementInputManager {
                     SoscarsCount = sc.nextLine();
                     oscarsCount = Integer.valueOf(SoscarsCount);
                 } catch (NullPointerException | NumberFormatException e) {
-                    if (SoscarsCount.length() == 0) {
-                        SoscarsCount = null;
+                    if (SoscarsCount.isEmpty()) {
+                        oscarsCount = null;
                     }
                 }
             }
-        } while (!v.validateOscarsCount(SoscarsCount));
+        } while (!v.validateRewardCount(SoscarsCount));
         System.out.println("Введите количество премий золотой пальмы");
         String SgoldenPalmCount = "";
+        Long goldenPalmCount = 0L;
         do {
             if (sc.hasNextLine()) {
                 try {
                     SgoldenPalmCount = sc.nextLine();
-                } catch (NullPointerException e) {
-                    SgoldenPalmCount = null;
+                    goldenPalmCount = Long.valueOf(SgoldenPalmCount);
+                } catch (NullPointerException | NumberFormatException e) {
+                    if (SgoldenPalmCount.length() == 0) {
+                        goldenPalmCount = null;
+                    }
                 }
             }
-        } while (!v.validateGPCount(SgoldenPalmCount));
-        Long goldenPalmCount = Long.valueOf(SgoldenPalmCount);
+        } while (!v.validateRewardCount(SgoldenPalmCount));
         System.out.println("Введите кассовые сборы в США");
         String SusaBoxOffice = "";
         do {
@@ -152,20 +155,31 @@ public class ElementInputManager {
                 } catch (NullPointerException e) {
                     PassportID = null;
                 }
+                if (PassportID.length() == 0){
+                    PassportID = null;
+                }
             }
         } while (!v.validatePassportID(PassportID));
         System.out.println("Введите страну рождения (UNITED_KINGDOM, USA, FRANCE, INDIA)");
         String SCountry = "";
+        Country Nationality = null;
         do {
             if (sc.hasNextLine()) {
                 try {
                     SCountry = sc.nextLine();
-                } catch (NullPointerException e) {
+                    if (SCountry.length() == 0){
+                        Nationality = null;
+                        SCountry = null;
+                    }
+                    else {
+                        Nationality = Country.valueOf(SCountry);
+                    }
+                } catch (NullPointerException | IllegalArgumentException e) {
                     SCountry = null;
                 }
             }
         } while (!v.validateNationality(SCountry));
-        Country Nationality = Country.valueOf(SCountry);
+
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
         System.out.println("success");
         return new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);

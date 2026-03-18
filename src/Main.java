@@ -32,6 +32,11 @@ public class Main {
         commandMap.put("remove_by_id",new RemoveByIdCommand(cm));
         commandMap.put("clear",new ClearCommand(cm));
         commandMap.put("save",new SaveCommand(cm));
+        commandMap.put("exit",new ExitCommand(cm));
+        commandMap.put("add_if_max",new AddIfMaxCommand(cm));
+        commandMap.put("add_if_min",new AddIfMinCommand(cm));
+
+
         Scanner scanner = new Scanner(System.in);
         while(true){
             if (scanner.hasNextLine()) {

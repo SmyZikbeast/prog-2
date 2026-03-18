@@ -3,8 +3,6 @@ package BaseFiles;
 import com.google.gson.annotations.Expose;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
 
 public class Person {
     @Expose

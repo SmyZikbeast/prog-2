@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Movie {
+public class Movie implements Comparable<Movie> {
     private static int Nextid = 1;
     @Expose
     private int id;//Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -57,5 +57,8 @@ public class Movie {
         "mpaa Rating:" + mpaaRating + "\n" +
         "screen Writer: \n" + screenwriter;
     }
-
+    @Override
+    public int compareTo(Movie other){
+        return Integer.compare(this.usaBoxOffice,other.usaBoxOffice);
+    }
 }
