@@ -13,6 +13,7 @@ public class RemoveAnyByUsaBoxOfficeCommand extends Command{
         for (Movie m: cm.getCollection()){
             if (m.getUsaBoxOffice() == Integer.valueOf(arg)) {
                 cm.removeId(m.getId());
+                break;
             }
         }
         CommandManager.addCommand("RemoveAnyByUsaBoxOffice");
