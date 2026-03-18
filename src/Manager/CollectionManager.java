@@ -39,7 +39,12 @@ public class CollectionManager {
         return this.Type;
     }
     public int getElementsAmount(){
-        return collection.size();
+        try {
+            return collection.size();
+        }
+        catch (NullPointerException e){
+            return 0;
+        }
     }
     public LinkedList<Movie> getCollection(){
         return this.collection;
@@ -84,7 +89,7 @@ public class CollectionManager {
         Type collectionType = new TypeToken<LinkedList<Movie>>(){}.getType();
         collection = gson.fromJson(reader, collectionType);
         reader.close();
-        if (!collection.isEmpty()) {
+        if (collection != null) {
             Movie.setNextId(this.getIds().getLast());
         }
         System.out.println("collection loaded");
