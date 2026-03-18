@@ -4,7 +4,7 @@ import Manager.CollectionManager;
 import Manager.CommandManager;
 
 public class HistoryCommand extends Command{
-    HistoryCommand(CollectionManager cm) {
+    public HistoryCommand(CollectionManager cm) {
         super(cm);
     }
     @Override

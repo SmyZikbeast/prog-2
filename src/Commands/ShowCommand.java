@@ -12,7 +12,8 @@ public class ShowCommand extends Command{
     public void execute(){
         for (Movie movie : cm.getCollection()){
             System.out.println(movie.toString()+"\n");
-            CommandManager.addCommand("Show");
+
         }
+        CommandManager.addCommand("Show");
     }
 }

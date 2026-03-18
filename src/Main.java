@@ -9,6 +9,7 @@ public class Main {
         String CollectionFile = args[0]+".json";
         CollectionManager cm = new CollectionManager();
         cm.load(CollectionFile);
+        Runner.setCollectionFile(CollectionFile);
         Runner.start(System.in, cm);
     }
 }

@@ -5,32 +5,57 @@ import BaseFiles.Country;
 import BaseFiles.MpaaRating;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 
 public class Validator {
     public boolean validateName(String name){
-        return (name != null) && (!name.trim().isEmpty()) && name.matches("[a-zA-Zа-яА-ЯёЁ]+");
+        if ((name != null) && (!name.trim().isEmpty()) && name.matches("[a-zA-Zа-яА-ЯёЁ]+")){
+        return true;}
+        else{
+            System.out.println("неправильно, попробуй еще раз");
+            return false;
+        }
     }
     public boolean validateCoordinates(Coordinates c){
-        return (c != null);
+
+        if (c != null){
+            return true;
+        }
+        else {
+            System.out.println("неправильно, попробуй еще раз");
+            return false;
+        }
     }
 
     public boolean validateX(String x) {
         try {
-            return (x != null) && (Double.valueOf(x)>-790);
+            if( (x != null) && (Double.valueOf(x)>-790)){
+                return true;
+            }
+            else {
+                System.out.println("неправильно, попробуй еще раз");
+                return false;
+            }
         }
         catch (NumberFormatException e){
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }
     public boolean validateY(String y) {
         try {
-            return (y != null) && (Float.valueOf(y)>-716F);
+            if( (y != null) && (Float.valueOf(y)>-716F)) {
+                return true;
+            }
+            else {
+                System.out.println("неправильно, попробуй еще раз");
+                return false;
+            }
         }
         catch (NumberFormatException e){
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }
@@ -42,15 +67,23 @@ public class Validator {
             return (Integer.valueOf(oc) > 0);
         }
         catch (NumberFormatException e){
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }
 
     public boolean validateUsaBoxOffice(String ubo){
         try {
-            return (Integer.valueOf(ubo) > 0);
+            if(Integer.valueOf(ubo) > 0){
+                return true;
+            }
+            else {
+                System.out.println("неправильно, попробуй еще раз");
+                return false;
+            }
         }
         catch (NumberFormatException e){
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }
@@ -59,31 +92,53 @@ public class Validator {
             MpaaRating.valueOf(r);
             return true;
         } catch (IllegalArgumentException | NullPointerException e) {
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }
     public boolean validateBirthday(String bd){
         if (bd == null) {
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu");
             LocalDate date = LocalDate.parse(bd.trim(), formatter);
-            return !date.isAfter(LocalDate.now());
+            if (!date.isAfter(LocalDate.now())){
+                return true;
+            }
+            else{
+                System.out.println("дата после сегодняшней");
+                return false;
+            }
         } catch (DateTimeParseException e) {
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }
     public boolean validateHeight(String h){
         try {
-            return (h!=null)&&(Double.valueOf(h)>0);
+            if ((h!=null)&&(Double.valueOf(h)>0)) {
+                return true;
+            }
+            else{
+                System.out.println("неправильно, попробуй еще раз");
+                return false;
+            }
         }
         catch (NumberFormatException e){
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }
     public boolean validatePassportID(String p){
-        return (p == null) || (p.length()>10);
+        if( (p == null) || (p.length()>10)){
+            return true;
+        }
+        else{
+            System.out.println("неправильно, попробуй еще раз");
+            return false;
+        }
     }
     public boolean validateNationality(String n){
         if (n == null){
@@ -93,6 +148,7 @@ public class Validator {
             Country.valueOf(n);
             return true;
         } catch (IllegalArgumentException e) {
+            System.out.println("неправильно, попробуй еще раз");
             return false;
         }
     }

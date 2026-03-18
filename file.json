@@ -38,21 +38,5 @@
       "passportID": "gfddfgdfgfdgdfgdfgd",
       "nationality": "INDIA"
     }
-  },
-  {
-    "id": 3,
-    "name": "dggfdghh",
-    "coordinates": {
-      "x": 435.0,
-      "y": 534.0
-    },
-    "creationDate": "2026-03-18T02:35:46",
-    "usaBoxOffice": 34534,
-    "mpaaRating": "PG",
-    "screenwriter": {
-      "name": "fhfg",
-      "birthday": "2020-01-01T00:00:00",
-      "height": 5432.0
-    }
   }
 ]
