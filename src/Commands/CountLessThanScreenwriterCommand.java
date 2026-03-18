@@ -1,9 +1,26 @@
 package Commands;
 
+import BaseFiles.Movie;
+import BaseFiles.Person;
 import Manager.CollectionManager;
+import Manager.CommandManager;
+import Manager.ElementInputManager;
 
 public class CountLessThanScreenwriterCommand extends Command{
-    CountLessThanScreenwriterCommand(CollectionManager cm) {
+    public CountLessThanScreenwriterCommand(CollectionManager cm) {
         super(cm);
+    }
+    @Override
+    public void execute(){
+        int c = 0;
+        Person p = ElementInputManager.getPerson();
+        for (Movie m:cm.getCollection()){
+            Person sw = m.getScreenwriter();
+            if (p.compareTo(sw) > 0) {
+                c += 1;
+            }
+        }
+        System.out.println("Человек меньше чем этот:"+c);
+        CommandManager.addCommand("CountLessThanScreenwriter");
     }
 }

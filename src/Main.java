@@ -35,7 +35,9 @@ public class Main {
         commandMap.put("exit",new ExitCommand(cm));
         commandMap.put("add_if_max",new AddIfMaxCommand(cm));
         commandMap.put("add_if_min",new AddIfMinCommand(cm));
-
+        commandMap.put("print_field_ascending_mpaa_rating",new PrintFieldAscendingMpaaRatingCommand(cm));
+        commandMap.put("remove_any_by_usa_box_office",new RemoveAnyByUsaBoxOfficeCommand(cm));
+        commandMap.put("count_less_than_screenwriter",new CountLessThanScreenwriterCommand(cm));
 
         Scanner scanner = new Scanner(System.in);
         while(true){

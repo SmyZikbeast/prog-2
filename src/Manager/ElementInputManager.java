@@ -184,4 +184,82 @@ public class ElementInputManager {
         System.out.println("success");
         return new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
     }
+    public static Person getPerson(){
+        Validator v = new Validator();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Введите имя");
+        String Name = "";
+        do {
+            if (sc.hasNextLine()) {
+                try {
+                    Name = sc.nextLine();
+                } catch (NullPointerException e) {
+                    Name = null;
+                }
+            }
+        } while (!v.validateName(Name));
+        System.out.println("Введите день рождения (DD-MM-YYYY)");
+        String Sbirthday = "";
+        do {
+            if (sc.hasNextLine()) {
+                try {
+                    Sbirthday = sc.nextLine().replaceAll("[^0-9]", "");;
+                } catch (NullPointerException e) {
+                    Sbirthday = null;
+                }
+            }
+        } while (!v.validateBirthday(Sbirthday));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMuuuu")
+                .withResolverStyle(ResolverStyle.STRICT);
+        LocalDateTime Birthday = LocalDate.parse(Sbirthday, formatter).atStartOfDay();
+        System.out.println("Введите рост");
+        String Sheight = "";
+        do {
+            if (sc.hasNextLine()) {
+                try {
+                    Sheight = sc.nextLine();
+                } catch (NullPointerException e) {
+                    Sheight = null;
+                }
+            }
+        } while (!v.validateHeight(Sheight));
+        Double Height = Double.valueOf(Sheight);
+        System.out.println("Введите айди паспорта");
+        String PassportID = "";
+        do {
+            if (sc.hasNextLine()) {
+                try {
+                    PassportID = sc.nextLine();
+                } catch (NullPointerException e) {
+                    PassportID = null;
+                }
+                if (PassportID.length() == 0){
+                    PassportID = null;
+                }
+            }
+        } while (!v.validatePassportID(PassportID));
+        System.out.println("Введите страну рождения (UNITED_KINGDOM, USA, FRANCE, INDIA)");
+        String SCountry = "";
+        Country Nationality = null;
+        do {
+            if (sc.hasNextLine()) {
+                try {
+                    SCountry = sc.nextLine();
+                    if (SCountry.length() == 0){
+                        Nationality = null;
+                        SCountry = null;
+                    }
+                    else {
+                        Nationality = Country.valueOf(SCountry);
+                    }
+                } catch (NullPointerException | IllegalArgumentException e) {
+                    SCountry = null;
+                }
+            }
+        } while (!v.validateNationality(SCountry));
+
+        Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
+        System.out.println("success");
+        return screenwriter;
+    }
 }

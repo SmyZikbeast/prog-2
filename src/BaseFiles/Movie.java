@@ -45,6 +45,18 @@ public class Movie implements Comparable<Movie> {
         return id;
     }
 
+    public MpaaRating getMpaaRating() {
+        return mpaaRating;
+    }
+
+    public Person getScreenwriter() {
+        return screenwriter;
+    }
+
+    public int getUsaBoxOffice() {
+        return usaBoxOffice;
+    }
+
     @Override
     public String toString(){
          return "id:" + id + "\n" +

@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.time.LocalDateTime;
 
-public class Person {
+public class Person implements Comparable<Person>{
     @Expose
     private String name; //Поле не может быть null, Строка не может быть пустой
     @Expose
@@ -30,5 +30,9 @@ public class Person {
                 "height:" + height + "\n" +
                 "passportID:" + passportID +  "\n" +
                 "nationality:" + nationality;
+    }
+    @Override
+    public int compareTo(Person sw) {
+        return this.height.compareTo(sw.height);
     }
 }

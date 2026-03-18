@@ -3,6 +3,7 @@ package Manager;
 import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
+import BaseFiles.MpaaRating;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CollectionManager {
     String Type = "LinkedList";
@@ -85,12 +87,19 @@ public class CollectionManager {
         if (!collection.isEmpty()) {
             Movie.setNextId(this.getIds().getLast());
         }
-        System.out.println(collection);
+        System.out.println("collection loaded");
     }
     public void save(String path) throws IOException {
         try (OutputStreamWriter writer = new OutputStreamWriter(
                 new FileOutputStream(path), StandardCharsets.UTF_8)) {
             gson.toJson(collection, writer);
         }
+    }
+    public List<MpaaRating> getMpaaRatings(){
+        List<MpaaRating> ratings = new LinkedList<>();
+        for (Movie m:collection){
+            ratings.add(m.getMpaaRating());
+        }
+        return ratings;
     }
 }
