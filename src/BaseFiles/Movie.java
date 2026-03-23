@@ -38,6 +38,17 @@ public class Movie implements Comparable<Movie> {
         this.mpaaRating = mpaaRating;
         this.screenwriter = screenwriter;
     }
+    public Movie(int id, String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
+        this.oscarsCount = oscarsCount;
+        this.goldenPalmCount = goldenPalmCount;
+        this.usaBoxOffice = usaBoxOffice;
+        this.mpaaRating = mpaaRating;
+        this.screenwriter = screenwriter;
+    }
     public static void setNextId(int id){
         Movie.Nextid = id;
     }

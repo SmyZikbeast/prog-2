@@ -52,6 +52,9 @@ public class CollectionManager {
     public Movie getMovie(){
         return ElementInputManager.getMovie();
     }
+    public Movie getMovie(int id){
+        return ElementInputManager.getMovie(id);
+    }
     public void addMovie(Movie m){
         collection.add(m);
     }
@@ -85,14 +88,17 @@ public class CollectionManager {
     }
     public void load(String path) throws IOException {
         InputStream inputStream = new FileInputStream(path);
-        InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-        Type collectionType = new TypeToken<LinkedList<Movie>>(){}.getType();
-        collection = gson.fromJson(reader, collectionType);
-        reader.close();
-        if (collection != null) {
-            Movie.setNextId(this.getIds().getLast());
+        if (inputStream.available() > 0){
+            InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            Type collectionType = new TypeToken<LinkedList<Movie>>(){}.getType();
+            collection = gson.fromJson(reader, collectionType);
+            reader.close();
+            if (collection != null) {
+                Movie.setNextId(this.getIds().getLast());
+            }
+            System.out.println("collection loaded");
         }
-        System.out.println("collection loaded");
+
     }
     public void save(String path) throws IOException {
         try (OutputStreamWriter writer = new OutputStreamWriter(

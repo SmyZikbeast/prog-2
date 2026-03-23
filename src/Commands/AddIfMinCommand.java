@@ -23,5 +23,6 @@ public class AddIfMinCommand extends Command{
             cm.addMovie(m);
         }
         CommandManager.addCommand("AddIfMin");
+        System.out.println("success");
     }
 }

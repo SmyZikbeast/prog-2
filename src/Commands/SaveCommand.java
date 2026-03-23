@@ -13,5 +13,6 @@ public class SaveCommand extends Command{
     public void execute(String path) throws IOException {
         cm.save(path);
         CommandManager.addCommand("Save");
+        System.out.println("success");
     }
 }

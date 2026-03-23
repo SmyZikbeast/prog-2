@@ -14,9 +14,10 @@ public class UpdateIdCommand extends Command{
             System.out.println("Такого айди нет в списке");
         }
         else {
-            Movie m = cm.getMovie();
+            Movie m = cm.getMovie(Integer.valueOf(arg));
             cm.setMovie(Integer.valueOf(arg), m);
             CommandManager.addCommand("UpdateId");
+            System.out.println("success");
         }
     }
 }

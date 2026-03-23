@@ -22,5 +22,6 @@ public class ExecuteScriptCommand extends Command{
         Runner.start(inputStream, cm);
         CommandManager.addCommand("ExecuteScript");
         currentDepth--;
+        System.out.println("success");
     }
 }

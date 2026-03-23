@@ -12,5 +12,6 @@ public class ClearCommand extends Command{
     public void execute(){
         cm.clear();
         CommandManager.addCommand("Clear");
+        System.out.println("success");
     }
 }

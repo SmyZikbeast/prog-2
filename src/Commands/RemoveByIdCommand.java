@@ -11,5 +11,6 @@ public class RemoveByIdCommand extends Command{
     public void execute(String id) {
     cm.removeId(Integer.valueOf(id));
         CommandManager.addCommand("removeID");
+        System.out.println("success");
     }
 }

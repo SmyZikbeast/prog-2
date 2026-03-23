@@ -22,5 +22,6 @@ public class CountLessThanScreenwriterCommand extends Command{
         }
         System.out.println("Человек меньше чем этот:"+c);
         CommandManager.addCommand("CountLessThanScreenwriter");
+        System.out.println("success");
     }
 }

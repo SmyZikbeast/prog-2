@@ -23,5 +23,6 @@ public class AddIfMaxCommand extends Command{
             cm.addMovie(m);
         }
         CommandManager.addCommand("AddIfMax");
+        System.out.println("success");
     }
 }

@@ -17,5 +17,6 @@ public class RemoveAnyByUsaBoxOfficeCommand extends Command{
             }
         }
         CommandManager.addCommand("RemoveAnyByUsaBoxOffice");
+        System.out.println("success");
     }
 }
