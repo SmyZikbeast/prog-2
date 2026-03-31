@@ -13,7 +13,6 @@ public class ClearCommand extends Command{
     public Response execute(){
         cm.clear();
         CommandManager.addCommand("Clear");
-        System.out.println("success");
-        return null;
+        return new Response("String", "Successfully cleared");
     }
 }

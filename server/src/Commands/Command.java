@@ -1,6 +1,7 @@
 package Commands;
 
 import BaseFiles.Movie;
+import BaseFiles.Person;
 import Manager.CollectionManager;
 import Response.Response;
 
@@ -9,14 +10,14 @@ import java.io.IOException;
 public abstract class Command {
     CollectionManager cm;
     String arg = null;
-    Movie movie;
+    Movie movie = null;
+    Person person = null;
+
     Command(CollectionManager cm){
         this.cm = cm;
     }
-    public Response execute(){
-        return null;
-    }
-    public void execute(String arg) throws IOException {}
+
+    public Response execute(){return null;};
 
     public void setArg(String arg) {
         this.arg = arg;
@@ -24,5 +25,8 @@ public abstract class Command {
 
     public void setMovie(Movie commandMovie) {
         this.movie = commandMovie;
+    }
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

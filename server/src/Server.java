@@ -1,6 +1,7 @@
 import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
+import BaseFiles.Person;
 import Commands.*;
 import Manager.CollectionManager;
 import Response.CommandResponse;
@@ -64,10 +65,12 @@ public class Server {
                     String CommandType = commandResponse.getType().toLowerCase();
                     String CommandArg = commandResponse.getArg();
                     Movie CommandMovie = commandResponse.getMovie();
+                    Person CommandPerson = commandResponse.getPerson();
 
                     Command command = commandMap.get(CommandType);
                     command.setArg(CommandArg);
                     command.setMovie(CommandMovie);
+                    command.setPerson(CommandPerson);
                     Response response = command.execute();
                     System.out.println("executed command: " + CommandType);
                     System.out.println("sending" + mapper.toJson(response, Response.class));

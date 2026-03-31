@@ -13,17 +13,7 @@ public class CountLessThanScreenwriterCommand extends Command{
     }
     @Override
     public Response execute(){
-        int c = 0;
-        Person p = ElementInputManager.getPerson();
-        for (Movie m:cm.getCollection()){
-            Person sw = m.getScreenwriter();
-            if (p.compareTo(sw) > 0) {
-                c += 1;
-            }
-        }
-        System.out.println("Человек меньше чем этот:"+c);
-        CommandManager.addCommand("CountLessThanScreenwriter");
-        System.out.println("success");
-        return null;
+        long amount = cm.getCollection().stream().filter(m -> m.getScreenwriter().compareTo(this.person)<0).count();
+        return new Response("String", String.valueOf(amount));
     }
 }

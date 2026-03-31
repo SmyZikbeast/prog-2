@@ -1,6 +1,7 @@
 package Response;
 
 import BaseFiles.Movie;
+import BaseFiles.Person;
 import com.google.gson.annotations.Expose;
 
 public class CommandResponse {
@@ -10,11 +11,14 @@ public class CommandResponse {
     String arg;
     @Expose
     Movie movie;
+    @Expose
+    Person person;
 
-    public CommandResponse(String commandType, String arg, Movie movie) {
+    public CommandResponse(String commandType, String arg, Movie movie, Person person) {
         this.type = commandType;
         this.arg = arg;
         this.movie = movie;
+        this.person = person;
     }
 
     public String getType() {
@@ -27,5 +31,8 @@ public class CommandResponse {
 
     public Movie getMovie() {
         return this.movie;
+    }
+    public Person getPerson(){
+        return this.person;
     }
 }

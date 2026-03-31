@@ -1,6 +1,7 @@
 import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
+import BaseFiles.Person;
 import Manager.ElementInputManager;
 import Manager.OutputManager;
 import Response.CommandResponse;
@@ -43,6 +44,7 @@ public class Client {
                             if (Arrays.asList(Commands).contains(commandType)) {
                                 Movie movie = Arrays.asList(ObjectCommands).contains(commandType) ? ElementInputManager.getMovie() : null;
                                 String arg = tokens.length > 1 ? tokens[1] : null;
+                                Person person = commandType.equalsIgnoreCase("count_less_than_screenwriter") ? ElementInputManager.getPerson() : null;
                                 CommandResponse cmd = new CommandResponse(commandType, arg, movie);
                                 String json = mapper.toJson(cmd) + "\n";
                                 ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
