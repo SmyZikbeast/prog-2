@@ -25,11 +25,11 @@ public class Person implements Comparable<Person>{
 
     @Override
     public String toString() {
-        return  "name:" + name + '\n' +
-                "birthday:" + birthday + "\n" +
-                "height:" + height + "\n" +
-                "passportID:" + passportID +  "\n" +
-                "nationality:" + nationality;
+        return  "  name:" + name +
+                "  birthday:" + birthday+
+                "  height:" + height+
+                "  passportID:" + passportID +
+                "  nationality:" + nationality;
     }
     @Override
     public int compareTo(Person sw) {

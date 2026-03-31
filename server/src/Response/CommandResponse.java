@@ -1,7 +1,9 @@
+package Response;
+
 import BaseFiles.Movie;
 import com.google.gson.annotations.Expose;
 
-public class Command {
+public class CommandResponse {
     @Expose
     String type;
     @Expose
@@ -9,9 +11,13 @@ public class Command {
     @Expose
     Movie movie;
 
-    public Command(String commandType, String token, Movie movie) {
+    public CommandResponse(String commandType, String arg, Movie movie) {
         this.type = commandType;
-        this.arg = token;
+        this.arg = arg;
         this.movie = movie;
+    }
+
+    public String getType() {
+        return this.type;
     }
 }

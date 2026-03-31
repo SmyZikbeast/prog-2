@@ -70,15 +70,15 @@ public class Movie implements Comparable<Movie> {
 
     @Override
     public String toString(){
-         return "id:" + id + "\n" +
-        "name:" + name + "\n" +
-        "coordinates:" + coordinates + "\n" +
-        "creation Date:" + creationDate + "\n" +
-        "oscars Count:" + oscarsCount + "\n" +
-        "golden Palm Count:" + goldenPalmCount + "\n" +
-        "usa Box Office:" + usaBoxOffice + "\n" +
-        "mpaa Rating:" + mpaaRating + "\n" +
-        "screen Writer: \n" + screenwriter;
+         return "id:" + id +
+        "  name:" + name +
+        "  coordinates:" + coordinates +
+        "  creation Date:" + creationDate +
+        "  oscars Count:" + oscarsCount +
+        "  golden Palm Count:" + goldenPalmCount +
+        "  usa Box Office:" + usaBoxOffice +
+        "  mpaa Rating:" + mpaaRating +
+        "  screen Writer:" + screenwriter;
     }
     @Override
     public int compareTo(Movie other){

@@ -181,8 +181,10 @@ public class ElementInputManager {
         } while (!v.validateNationality(SCountry));
 
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
-        System.out.println("success");
-        return new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
+        System.out.println("Movie created successfully");
+        Movie movie = new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
+        System.out.println(movie);
+        return movie;
     }
     public static Movie getMovie(int id) {
         Validator v = new Validator();
@@ -356,8 +358,10 @@ public class ElementInputManager {
         } while (!v.validateNationality(SCountry));
 
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
-        System.out.println("success");
-        return new Movie(id, name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
+        System.out.println("Movie created successfully");
+        Movie movie = new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
+        System.out.println(movie);
+        return movie;
     }
     public static Person getPerson(){
         Validator v = new Validator();
@@ -435,6 +439,7 @@ public class ElementInputManager {
 
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
         System.out.println("success");
+        System.out.println(screenwriter);
         return screenwriter;
     }
 }

@@ -6,9 +6,9 @@ import Response.Response;
 import java.io.IOException;
 
 public abstract class Command {
-
-    Command(){
-
+    CollectionManager cm;
+    Command(CollectionManager cm){
+        this.cm = cm;
     }
     public Response execute(){
         return null;
