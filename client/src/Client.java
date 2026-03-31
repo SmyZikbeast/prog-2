@@ -1,7 +1,6 @@
 import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
-import Commands.*;
 import Manager.ElementInputManager;
 import Response.CommandResponse;
 import com.google.gson.Gson;
@@ -15,31 +14,12 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) throws InterruptedException {
         String[] ObjectCommands = {"add", "update", "add_if_max", "add_if_min"};
         String[] Commands = {"help", "info", "show", "add", "update", "remove_by_id", "clear", "execute_script", "exit", "add_if_max", "add_if_min", "history", "remove_any_by_usa_box_office", "count_less_than_screenwriter", "print_field_ascending_mpaa_rating"};
-        Map<String, Command> commandMap = new HashMap<>();
-        commandMap.put("help", new HelpCommand());
-        commandMap.put("info", new InfoCommand());
-        commandMap.put("show", new ShowCommand());
-        commandMap.put("add", new AddCommand());
-        commandMap.put("update", new UpdateIdCommand());
-        commandMap.put("remove_by_id", new RemoveByIdCommand());
-        commandMap.put("clear", new ClearCommand());
-        commandMap.put("save", new SaveCommand());
-        commandMap.put("exit", new ExitCommand());
-        commandMap.put("history", new HistoryCommand());
-        commandMap.put("add_if_max", new AddIfMaxCommand());
-        commandMap.put("add_if_min", new AddIfMinCommand());
-        commandMap.put("print_field_ascending_mpaa_rating", new PrintFieldAscendingMpaaRatingCommand());
-        commandMap.put("remove_any_by_usa_box_office", new RemoveAnyByUsaBoxOfficeCommand());
-        commandMap.put("count_less_than_screenwriter", new CountLessThanScreenwriterCommand());
-        commandMap.put("execute_script", new ExecuteScriptCommand());
         Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
