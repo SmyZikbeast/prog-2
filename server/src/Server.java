@@ -70,7 +70,7 @@ public class Server {
                     command.setMovie(CommandMovie);
                     Response response = command.execute();
                     System.out.println("executed command: " + CommandType);
-                    System.out.println(mapper.toJson(response, Response.class));
+                    System.out.println("sending" + mapper.toJson(response, Response.class));
                     writer.write(mapper.toJson(response)+"\n");
                     writer.flush();
                 }
