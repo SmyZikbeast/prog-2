@@ -10,11 +10,11 @@ public class InfoCommand extends Command{
     }
     @Override
     public Response execute(){
-        Response r = new Response("String",
-        "Тип коллекции:" + cm.getType() + "\n "+
-        "Дата инициализации:" + cm.getInitDate() + "\n "+
-        "Количество элементов:" + cm.getElementsAmount() + "\n "+
-        "Автор: @SmyZikBest\n");
+        Response r = new Response("StringList",
+                new String[] {"Тип коллекции:" + cm.getType(),
+        "Дата инициализации:" + cm.getInitDate(),
+        "Количество элементов:" + cm.getElementsAmount(),
+        "Автор: @SmyZikBest\n"});
         CommandManager.addCommand("Info");
         return r;
     }

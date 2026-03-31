@@ -15,10 +15,8 @@ public class PrintFieldAscendingMpaaRatingCommand extends Command{
     }
     @Override
     public Response execute(){
-        List<MpaaRating> ratings = cm.getMpaaRatings();
-        Collections.sort(ratings);
+        List<MpaaRating> ratings = cm.getCollection().stream().map(s -> s.getMpaaRating()).sorted().toList();
         CommandManager.addCommand("PrintFieldAscendingMpaaRating");
-        System.out.println(ratings);
-        return null;
+        return new Response("ObjectList", ratings);
     }
 }
