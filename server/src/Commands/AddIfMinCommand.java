@@ -12,19 +12,14 @@ public class AddIfMinCommand extends Command{
     }
     @Override
     public Response execute(){
-        Movie m = cm.getMovie();
-        boolean flag = true;
-        for (Movie mv : cm.getCollection()){
-            if (m.compareTo(mv) < 0) {
-                flag = false;
-                break;
-            }
-        }
-        if (flag) {
+        Movie m = this.movie;
+        CommandManager.addCommand("AddIfMax");
+        if(cm.getCollection().stream().allMatch(s -> m.compareTo(s)<0)){
             cm.addMovie(m);
+            return new Response("String", "Successfully added");
         }
-        CommandManager.addCommand("AddIfMin");
-        System.out.println("success");
-        return null;
+        else {
+            return new Response("String", "Movie is not min, not added");
+        }
     }
 }

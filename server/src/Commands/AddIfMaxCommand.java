@@ -12,19 +12,14 @@ public class AddIfMaxCommand extends Command{
     }
     @Override
     public Response execute(){
-        Movie m = cm.getMovie();
-        boolean flag = true;
-        for (Movie mv : cm.getCollection()){
-            if (m.compareTo(mv) < 0) {
-                flag = false;
-                break;
-            }
-        }
-        if (flag) {
-            cm.addMovie(m);
-        }
+        Movie m = this.movie;
         CommandManager.addCommand("AddIfMax");
-        System.out.println("success");
-        return null;
+        if(cm.getCollection().stream().allMatch(s -> m.compareTo(s)>0)){
+            cm.addMovie(m);
+            return new Response("String", "Successfully added");
+        }
+        else {
+            return new Response("String", "Movie is not max, not added");
+        }
     }
 }

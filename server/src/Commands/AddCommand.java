@@ -11,9 +11,9 @@ public class AddCommand extends Command{
     }
     @Override
     public Response execute(){
-        Movie m = cm.getMovie();
+        Movie m = this.movie;
         cm.addMovie(m);
         CommandManager.addCommand("Add");
-        return null;
+        return new Response("String", "Success");
     }
 }
