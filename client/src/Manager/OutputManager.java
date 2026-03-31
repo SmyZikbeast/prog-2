@@ -10,8 +10,8 @@ public class OutputManager {
         return (String) switch (Dt){
             case "String"-> Data;
             case "Movie" -> ((Movie) Data).toString();
-            case "MovieList" -> ((ArrayList) Data).stream().map(s -> s.toString()).collect(Collectors.joining(", ", "[", "]"));
-            case "StringList" -> ((ArrayList)Data).stream().collect(Collectors.joining(", ", "[", "]"));
+            case "MovieList" -> ((ArrayList) Data).stream().map(s -> s.toString()).collect(Collectors.joining(", \n", "[", "]"));
+            case "StringList" -> ((ArrayList)Data).stream().collect(Collectors.joining(", \n", "[", "]"));
             default -> throw new IllegalStateException("Unexpected value: " + Dt);
         };
     }

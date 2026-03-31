@@ -1,7 +1,5 @@
 package Manager;
 
-import Commands.Command;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,5 +14,8 @@ public class CommandManager {
         }
         int size = commands.size();
         return commands.subList(Math.max(0, size-9), size);
+    }
+    public static void clear(){
+        CommandManager.commands.clear();
     }
 }

@@ -11,10 +11,7 @@ public class HistoryCommand extends Command{
     @Override
     public Response execute(){
         CommandManager.addCommand("history");
-        for (String s : CommandManager.getHistory()){
-            System.out.println(s);
-        }
-        return null;
+        return new Response("StringList", CommandManager.getHistory());
     }
 
 }

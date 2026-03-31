@@ -13,7 +13,7 @@ public class AddIfMinCommand extends Command{
     @Override
     public Response execute(){
         Movie m = this.movie;
-        CommandManager.addCommand("AddIfMax");
+        CommandManager.addCommand("AddIfMin");
         if(cm.getCollection().stream().allMatch(s -> m.compareTo(s)<0)){
             cm.addMovie(m);
             return new Response("String", "Successfully added");

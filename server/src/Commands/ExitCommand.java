@@ -1,6 +1,7 @@
 package Commands;
 
 import Manager.CollectionManager;
+import Manager.CommandManager;
 import Response.Response;
 
 public class ExitCommand extends Command{
@@ -9,6 +10,7 @@ public class ExitCommand extends Command{
     }
     @Override
     public Response execute(){
+        CommandManager.clear();
         return new Response("String", "Closing client...");
     }
 }
