@@ -3,6 +3,7 @@ package Commands;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Manager.Runner;
+import Response.Response;
 
 import java.io.*;
 
@@ -13,15 +14,15 @@ public class ExecuteScriptCommand extends Command{
         super(cm);
     }
     @Override
-    public void execute(String path) throws IOException {
+    public Response execute() throws FileNotFoundException {
         if (currentDepth > MAX_DEPTH){
-            return;
+            return new Response("String", "Recursion depth exceeded");
         }
         currentDepth++;
-        InputStream inputStream = new FileInputStream(path);
+        InputStream inputStream = new FileInputStream(this.arg);
         Runner.start(inputStream, cm);
         CommandManager.addCommand("ExecuteScript");
         currentDepth--;
-        System.out.println("success");
+        return new Response("String", "Successfully executed script");
     }
 }
