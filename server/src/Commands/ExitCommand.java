@@ -9,7 +9,6 @@ public class ExitCommand extends Command{
     }
     @Override
     public Response execute(){
-        System.exit(0);
-        return null;
+        return new Response("String", "Closing client...");
     }
 }

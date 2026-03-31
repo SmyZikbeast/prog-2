@@ -59,27 +59,32 @@ public class Server {
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
                 while (true) {
-                    String message = reader.readLine();
-                    System.out.println("Получено: " + message);
-                    CommandResponse commandResponse = mapper.fromJson(message, CommandResponse.class);
-                    String CommandType = commandResponse.getType().toLowerCase();
-                    String CommandArg = commandResponse.getArg();
-                    Movie CommandMovie = commandResponse.getMovie();
-                    Person CommandPerson = commandResponse.getPerson();
 
-                    Command command = commandMap.get(CommandType);
-                    command.setArg(CommandArg);
-                    command.setMovie(CommandMovie);
-                    command.setPerson(CommandPerson);
-                    Response response = command.execute();
-                    System.out.println("executed command: " + CommandType);
-                    System.out.println("sending" + mapper.toJson(response, Response.class));
-                    writer.write(mapper.toJson(response)+"\n");
-                    writer.flush();
-                }
+                        String message = reader.readLine();
+                        System.out.println("Получено: " + message);
+                        CommandResponse commandResponse = mapper.fromJson(message, CommandResponse.class);
+                        String CommandType = commandResponse.getType().toLowerCase();
+                        String CommandArg = commandResponse.getArg();
+                        Movie CommandMovie = commandResponse.getMovie();
+                        Person CommandPerson = commandResponse.getPerson();
+
+                        Command command = commandMap.get(CommandType);
+                        command.setArg(CommandArg);
+                        command.setMovie(CommandMovie);
+                        command.setPerson(CommandPerson);
+                        Response response = command.execute();
+
+                        System.out.println("executed command: " + CommandType);
+                        System.out.println("sending: " + mapper.toJson(response, Response.class));
+                        writer.write(mapper.toJson(response) + "\n");
+                        writer.flush();
+                    }
              }
              catch (SocketException e) {
                  System.out.println("Client disconnected");
+             }
+             catch (NullPointerException e) {
+                 System.out.println("smth went wrong");;
              }
         }
     }

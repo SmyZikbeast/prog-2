@@ -45,7 +45,7 @@ public class Client {
                                 Movie movie = Arrays.asList(ObjectCommands).contains(commandType) ? ElementInputManager.getMovie() : null;
                                 String arg = tokens.length > 1 ? tokens[1] : null;
                                 Person person = commandType.equalsIgnoreCase("count_less_than_screenwriter") ? ElementInputManager.getPerson() : null;
-                                CommandResponse cmd = new CommandResponse(commandType, arg, movie);
+                                CommandResponse cmd = new CommandResponse(commandType, arg, movie, person);
                                 String json = mapper.toJson(cmd) + "\n";
                                 ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                                 channel.write(buffer);

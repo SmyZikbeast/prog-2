@@ -30,4 +30,6 @@ public abstract class Command {
     public void setPerson(Person person) {
         this.person = person;
     }
+
+    public void execute(String id) throws IOException {};
 }
