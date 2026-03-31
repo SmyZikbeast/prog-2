@@ -3,20 +3,20 @@ package Commands;
 import BaseFiles.Movie;
 import Manager.CollectionManager;
 import Manager.CommandManager;
+import Response.Response;
 
 public class RemoveAnyByUsaBoxOfficeCommand extends Command{
     public RemoveAnyByUsaBoxOfficeCommand(CollectionManager cm) {
         super(cm);
     }
     @Override
-    public void execute(String arg){
-        for (Movie m: cm.getCollection()){
-            if (m.getUsaBoxOffice() == Integer.valueOf(arg)) {
-                cm.removeId(m.getId());
-                break;
-            }
-        }
+    public Response execute(){
         CommandManager.addCommand("RemoveAnyByUsaBoxOffice");
-        System.out.println("success");
+        Movie mv = cm.getCollection().stream().filter(s -> Integer.valueOf(arg) == s.getUsaBoxOffice()).findAny().orElse(null);
+        if (mv != null){
+            cm.removeId(mv.getId());
+            return new Response("String", "Successfully removed");
+        }
+        return new Response("String", "Nothing removed");
     }
 }
