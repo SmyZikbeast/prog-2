@@ -2,7 +2,9 @@ import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
 import Manager.ElementInputManager;
+import Manager.OutputManager;
 import Response.CommandResponse;
+import Response.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -45,9 +47,20 @@ public class Client {
                                 String json = mapper.toJson(cmd) + "\n";
                                 ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                                 channel.write(buffer);
+
                                 ByteBuffer ReturnBuffer = ByteBuffer.allocate(1024);
+
                                 int bytesRead = channel.read(ReturnBuffer);
-                                System.out.println(mapper.fromJson(String.valueOf(ReturnBuffer), String.class));
+                                if (bytesRead>0){
+                                    ReturnBuffer.flip();
+                                    String ResponseString = StandardCharsets.UTF_8.decode(ReturnBuffer).toString();
+                                    Response response = mapper.fromJson(ResponseString, Response.class);
+                                    String DataType = response.getDataType();
+                                    Object Data = response.getData();
+                                    System.out.println(OutputManager.SerializeValue(DataType, Data));
+                                }
+
+
                                 if (commandType.equalsIgnoreCase("exit")){
                                     channel.close();
                                     System.exit(0);

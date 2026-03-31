@@ -20,4 +20,12 @@ public class CommandResponse {
     public String getType() {
         return this.type;
     }
+
+    public String getArg() {
+        return this.arg;
+    }
+
+    public Movie getMovie() {
+        return this.movie;
+    }
 }

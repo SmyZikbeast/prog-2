@@ -1,6 +1,8 @@
 import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
-import Commands.Command;
+import BaseFiles.Movie;
+import Commands.*;
+import Manager.CollectionManager;
 import Response.CommandResponse;
 import Response.Response;
 import com.google.gson.Gson;
@@ -13,6 +15,8 @@ import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Server {
 
@@ -21,6 +25,24 @@ public class Server {
 
     public static void main(String[] args) throws IOException{
         server = new ServerSocket(PORT);
+        CollectionManager cm = new CollectionManager();
+        Map<String, Command> commandMap = new HashMap<>();
+        commandMap.put("help", new HelpCommand(cm));
+        commandMap.put("info", new InfoCommand(cm));
+        commandMap.put("show", new ShowCommand(cm));
+        commandMap.put("add", new AddCommand(cm));
+        commandMap.put("update", new UpdateIdCommand(cm));
+        commandMap.put("remove_by_id", new RemoveByIdCommand(cm));
+        commandMap.put("clear", new ClearCommand(cm));
+        commandMap.put("save", new SaveCommand(cm));
+        commandMap.put("exit", new ExitCommand(cm));
+        commandMap.put("history", new HistoryCommand(cm));
+        commandMap.put("add_if_max", new AddIfMaxCommand(cm));
+        commandMap.put("add_if_min", new AddIfMinCommand(cm));
+        commandMap.put("print_field_ascending_mpaa_rating", new PrintFieldAscendingMpaaRatingCommand(cm));
+        commandMap.put("remove_any_by_usa_box_office", new RemoveAnyByUsaBoxOfficeCommand(cm));
+        commandMap.put("count_less_than_screenwriter", new CountLessThanScreenwriterCommand(cm));
+        commandMap.put("execute_script", new ExecuteScriptCommand(cm));
         Gson mapper = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
@@ -39,13 +61,20 @@ public class Server {
                     String message = reader.readLine();
                     System.out.println("Получено: " + message);
                     CommandResponse commandResponse = mapper.fromJson(message, CommandResponse.class);
-                    Command command = commandMap.get(commandResponse.getType().toLowerCase());
+                    String CommandType = commandResponse.getType().toLowerCase();
+                    String CommandArg = commandResponse.getArg();
+                    Movie CommandMovie = commandResponse.getMovie();
+
+                    Command command = commandMap.get(CommandType);
+                    command.setArg(CommandArg);
+                    command.setMovie(CommandMovie);
                     Response response = command.execute();
-                    if (response != null) {
-                        writer.write(mapper.toJson(response.getDataType()));
-                    }
+                    System.out.println("executed command: " + CommandType);
+                    System.out.println(mapper.toJson(response, Response.class));
+                    writer.write(mapper.toJson(response)+"\n");
+                    writer.flush();
                 }
-            }
+             }
              catch (SocketException e) {
                  System.out.println("Client disconnected");
              }
