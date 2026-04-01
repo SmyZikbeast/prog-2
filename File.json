@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "dgf",
+    "coordinates": {
+      "x": 3.0,
+      "y": 4.0
+    },
+    "creationDate": "2026-04-01T05:13:21",
+    "oscarsCount": 4,
+    "goldenPalmCount": 4,
+    "usaBoxOffice": 4,
+    "mpaaRating": "G",
+    "screenwriter": {
+      "name": "fds",
+      "birthday": "0101-01-01T00:00:00",
+      "height": 5.0,
+      "passportID": "53454353453",
+      "nationality": "USA"
+    }
+  }
+]
