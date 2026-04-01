@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "gfd",
+    "coordinates": {
+      "x": 453.0,
+      "y": 54.0
+    },
+    "creationDate": "2026-04-01T02:50:40",
+    "oscarsCount": 3,
+    "goldenPalmCount": 345,
+    "usaBoxOffice": 435,
+    "mpaaRating": "PG",
+    "screenwriter": {
+      "name": "gfd",
+      "birthday": "0101-01-01T00:00:00",
+      "height": 5.5555555E7,
+      "passportID": "gdfgdfgdfgdfg",
+      "nationality": "USA"
+    }
+  }
+]

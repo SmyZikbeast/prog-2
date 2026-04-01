@@ -20,13 +20,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Server {
-
+    private static volatile boolean running = true;
     private static ServerSocket server;
     private static final int PORT = 13377;
 
     public static void main(String[] args) throws IOException{
-        server = new ServerSocket(PORT);
         CollectionManager cm = new CollectionManager();
+        File collectionFile = new File("File.json");
+        server = new ServerSocket(PORT);
+        if (!collectionFile.createNewFile()) {
+            cm.load("File.json");
+        }
         Map<String, Command> commandMap = new HashMap<>();
         commandMap.put("help", new HelpCommand(cm));
         commandMap.put("info", new InfoCommand(cm));
@@ -35,7 +39,6 @@ public class Server {
         commandMap.put("update", new UpdateIdCommand(cm));
         commandMap.put("remove_by_id", new RemoveByIdCommand(cm));
         commandMap.put("clear", new ClearCommand(cm));
-        commandMap.put("save", new SaveCommand(cm));
         commandMap.put("exit", new ExitCommand(cm));
         commandMap.put("history", new HistoryCommand(cm));
         commandMap.put("add_if_max", new AddIfMaxCommand(cm));
@@ -49,7 +52,28 @@ public class Server {
                 .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
-        while (true) {
+        new Thread(() -> {
+            try {
+                BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+                while (true) {
+                    String line = console.readLine();
+                    if ("exit".equalsIgnoreCase(line)) {
+                        System.out.println("Shutting down server..");
+                        running = false;
+                        cm.save("File.json");
+                        server.close();
+                        System.exit(0);
+                    }
+                    if ("save".equalsIgnoreCase(line)) {
+                        System.out.println("saving to file");
+                        cm.save("File.json");
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("Server stopped");
+            }
+        }).start();
+        while (running) {
              try {
                 System.out.println("Waiting for the client request");
                 Socket socket = server.accept();
@@ -58,9 +82,12 @@ public class Server {
                         new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-                while (true) {
-
+                while (running) {
                         String message = reader.readLine();
+                        if (message == null) {
+                            System.out.println("Client disconnected");
+                            break;
+                        }
                         System.out.println("Получено: " + message);
                         CommandResponse commandResponse = mapper.fromJson(message, CommandResponse.class);
                         String CommandType = commandResponse.getType().toLowerCase();
@@ -72,8 +99,15 @@ public class Server {
                         command.setArg(CommandArg);
                         command.setMovie(CommandMovie);
                         command.setPerson(CommandPerson);
-                        Response response = command.execute();
-
+                        Response response;
+                        if (CommandType.equalsIgnoreCase("Update") & CommandMovie == null){
+                             Command FindIdCommand = new FindIdCommand(cm);
+                             FindIdCommand.setArg(CommandArg);
+                             response = FindIdCommand.execute();
+                        }
+                        else {
+                             response = command.execute();
+                        }
                         System.out.println("executed command: " + CommandType);
                         System.out.println("sending: " + mapper.toJson(response, Response.class));
                         writer.write(mapper.toJson(response) + "\n");

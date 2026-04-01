@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) throws InterruptedException {
-        String[] ObjectCommands = {"add", "update", "add_if_max", "add_if_min"};
+        String[] ObjectCommands = {"add", "add_if_max", "add_if_min"};
         String[] Commands = {"help", "info", "show", "add", "update", "remove_by_id", "clear", "execute_script", "exit", "add_if_max", "add_if_min", "history", "remove_any_by_usa_box_office", "count_less_than_screenwriter", "print_field_ascending_mpaa_rating"};
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -34,7 +34,6 @@ public class Client {
                         .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
                         .excludeFieldsWithoutExposeAnnotation()
                         .create();
-
                 while (true)
                     {
                         if (scanner.hasNextLine()) {
@@ -50,7 +49,7 @@ public class Client {
                                 ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                                 channel.write(buffer);
 
-                                ByteBuffer ReturnBuffer = ByteBuffer.allocate(1024);
+                                ByteBuffer ReturnBuffer = ByteBuffer.allocate(8192);
 
                                 int bytesRead = channel.read(ReturnBuffer);
                                 if (bytesRead>0){
@@ -60,14 +59,28 @@ public class Client {
                                     String DataType = response.getDataType();
                                     Object Data = response.getData();
                                     System.out.println(OutputManager.SerializeValue(DataType, Data));
+                                    if (OutputManager.SerializeValue(DataType, Data).equalsIgnoreCase("Found Such ID")){
+                                        movie = ElementInputManager.getMovie(Integer.valueOf(arg));
+                                        cmd = new CommandResponse(commandType, arg, movie, person);
+                                        json = mapper.toJson(cmd) + "\n";
+                                        buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
+                                        channel.write(buffer);
+                                        ReturnBuffer = ByteBuffer.allocate(1024);
+                                        bytesRead = channel.read(ReturnBuffer);
+                                        if (bytesRead>0) {
+                                            ReturnBuffer.flip();
+                                            ResponseString = StandardCharsets.UTF_8.decode(ReturnBuffer).toString();
+                                            response = mapper.fromJson(ResponseString, Response.class);
+                                            DataType = response.getDataType();
+                                            Data = response.getData();
+                                            System.out.println(OutputManager.SerializeValue(DataType, Data));
+                                        }
+                                    }
                                 }
-
-
                                 if (commandType.equalsIgnoreCase("exit")){
                                     channel.close();
                                     System.exit(0);
                                 }
-
                             }
                             else {
                                 System.out.println("Incorrect command!");

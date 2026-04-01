@@ -1,10 +1,7 @@
 package Commands;
 
-import BaseFiles.Movie;
-import BaseFiles.Person;
 import Manager.CollectionManager;
 import Manager.CommandManager;
-import Manager.ElementInputManager;
 import Response.Response;
 
 public class CountLessThanScreenwriterCommand extends Command{

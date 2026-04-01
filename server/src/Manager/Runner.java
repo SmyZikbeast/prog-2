@@ -25,7 +25,6 @@ public class Runner {
         commandMap.put("update", new UpdateIdCommand(cm));
         commandMap.put("remove_by_id", new RemoveByIdCommand(cm));
         commandMap.put("clear", new ClearCommand(cm));
-        commandMap.put("save", new SaveCommand(cm));
         commandMap.put("exit", new ExitCommand(cm));
         commandMap.put("history", new HistoryCommand(cm));
         commandMap.put("add_if_max", new AddIfMaxCommand(cm));

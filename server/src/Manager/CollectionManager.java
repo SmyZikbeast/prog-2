@@ -4,6 +4,7 @@ import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
 import BaseFiles.MpaaRating;
+import Response.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -17,6 +18,9 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 public class CollectionManager {
     String Type = "LinkedList";
@@ -49,38 +53,19 @@ public class CollectionManager {
     public LinkedList<Movie> getCollection(){
         return this.collection;
     }
-    public Movie getMovie(){
-        return ElementInputManager.getMovie();
-    }
-    public Movie getMovie(int id){
-        return ElementInputManager.getMovie(id);
-    }
     public void addMovie(Movie m){
         collection.add(m);
     }
     public void setMovie(int id, Movie m){
-        for (int i = 0; i < collection.size(); i++){
-            if (collection.get(i).getId() == id){
-                collection.set(i, m);
-                break;
-            }
-        }
+        collection = collection.stream()
+                .map(o -> o.getId() == id ? m : o).collect(toCollection(LinkedList::new));
     }
     public ArrayList<Integer> getIds(){
-        ArrayList<Integer> IDs = new ArrayList<>();
-        for (Movie mv : collection){
-            IDs.add(mv.getId());
-        }
-        return IDs;
+        return collection.stream().map(o -> o.getId()).collect(toCollection(ArrayList::new));
     }
 
     public void removeId(Integer id) {
-        for (int i = 0; i < collection.size(); i++){
-            if (collection.get(i).getId() == id){
-                collection.remove(i);
-                break;
-            }
-        }
+        collection = collection.stream().filter(c -> c.getId()!=id).collect(toCollection(LinkedList::new));
     }
 
     public void clear(){
@@ -91,14 +76,16 @@ public class CollectionManager {
         if (inputStream.available() > 0){
             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             Type collectionType = new TypeToken<LinkedList<Movie>>(){}.getType();
-            collection = gson.fromJson(reader, collectionType);
+            this.collection = gson.fromJson(reader, collectionType);
             reader.close();
             if (collection != null) {
                 Movie.setNextId(this.getIds().getLast());
+                System.out.println("Collection loaded from file");
             }
-            System.out.println("collection loaded");
         }
-
+        else {
+            System.out.println("Source File empty");
+        }
     }
     public void save(String path) throws IOException {
         try (OutputStreamWriter writer = new OutputStreamWriter(
@@ -106,11 +93,9 @@ public class CollectionManager {
             gson.toJson(collection, writer);
         }
     }
-    public List<MpaaRating> getMpaaRatings(){
-        List<MpaaRating> ratings = new LinkedList<>();
-        for (Movie m:collection){
-            ratings.add(m.getMpaaRating());
-        }
-        return ratings;
+
+
+    public void setCollection(LinkedList<Movie> collection) {
+        this.collection = collection;
     }
 }

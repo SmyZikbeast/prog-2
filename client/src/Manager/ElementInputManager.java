@@ -186,7 +186,7 @@ public class ElementInputManager {
         System.out.println(movie);
         return movie;
     }
-    public static Movie getMovie(int id) {
+    public static Movie getMovie(Integer id) {
         Validator v = new Validator();
         Scanner sc = new Scanner(System.in);
         System.out.println("Введите имя");
@@ -359,7 +359,7 @@ public class ElementInputManager {
 
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
         System.out.println("Movie created successfully");
-        Movie movie = new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
+        Movie movie = new Movie(id, name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
         System.out.println(movie);
         return movie;
     }

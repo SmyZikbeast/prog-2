@@ -3,7 +3,6 @@ package Response;
 import com.google.gson.annotations.Expose;
 
 public class Response {
-
     @Expose
     String DataType;
     @Expose

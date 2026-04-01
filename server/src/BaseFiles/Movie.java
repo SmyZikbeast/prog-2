@@ -67,7 +67,9 @@ public class Movie implements Comparable<Movie> {
     public int getUsaBoxOffice() {
         return usaBoxOffice;
     }
-
+    public double getCoordinates(){
+        return Math.sqrt(Math.pow(this.coordinates.getX(),2)+Math.pow(this.coordinates.getY(),2));
+    }
     @Override
     public String toString(){
          return "id:" + id + "\n" +
