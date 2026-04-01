@@ -1,5 +1,10 @@
 package BaseFiles;
-
+/**
+ * base MpaaRating enum
+ *
+ *
+ *
+ */
 public enum MpaaRating {
     G,
     PG,

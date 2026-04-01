@@ -8,7 +8,12 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
+/**
+ * Adapter for LocalDateTime Class
+ *
+ *
+ *
+ */
 public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
     private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 

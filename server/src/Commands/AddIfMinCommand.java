@@ -10,6 +10,13 @@ public class AddIfMinCommand extends Command{
     public AddIfMinCommand(CollectionManager cm) {
         super(cm);
     }
+    /**
+     * adds new movie to collection if it's usaBoxOffice is min
+     *
+     *
+     *
+     *
+     */
     @Override
     public Response execute(){
         Movie m = this.movie;

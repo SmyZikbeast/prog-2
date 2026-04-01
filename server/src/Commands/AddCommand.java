@@ -9,6 +9,12 @@ public class AddCommand extends Command{
     public AddCommand(CollectionManager cm) {
         super(cm);
     }
+    /**
+     * adds new movie to collection
+     *
+     *
+     *
+     */
     @Override
     public Response execute(){
         Movie m = this.movie;

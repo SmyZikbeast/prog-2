@@ -8,7 +8,12 @@ import Response.Response;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * used to get all mpaa rating in ascending order
+ *
+ *
+ *
+ */
 public class PrintFieldAscendingMpaaRatingCommand extends Command{
     public PrintFieldAscendingMpaaRatingCommand(CollectionManager cm) {
         super(cm);

@@ -4,7 +4,12 @@ import BaseFiles.Movie;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
-
+/**
+ * used to replace item with given id
+ *
+ *
+ *
+ */
 public class UpdateIdCommand extends Command{
     public UpdateIdCommand(CollectionManager cm) {
         super(cm);

@@ -7,7 +7,12 @@ import Response.Response;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
+/**
+ * parent class for all commands
+ *
+ *
+ *
+ */
 public abstract class Command {
     CollectionManager cm;
     String arg = null;

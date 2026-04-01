@@ -4,7 +4,12 @@ import BaseFiles.Movie;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
+/**
+ * class that turns values from server to string
+ *
+ *
+ *
+ */
 public class OutputManager {
     public static String SerializeValue(String Dt, Object Data){
         return (String) switch (Dt){

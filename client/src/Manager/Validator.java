@@ -8,7 +8,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-
+/**
+ * class that validates all values separately
+ *
+ *
+ *
+ */
 public class Validator {
     public boolean validateName(String name){
         if ((name != null) && (!name.trim().isEmpty()) && name.matches("[a-zA-Zа-яА-ЯёЁ]+")){

@@ -5,7 +5,12 @@ import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-
+/**
+ * Adapter for ZonedDateTime class
+ *
+ *
+ *
+ */
 public class ZonedDateTimeAdapter implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_ZONED_DATE_TIME;

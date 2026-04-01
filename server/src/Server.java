@@ -18,7 +18,12 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * main server class
+ *
+ *
+ *
+ */
 public class Server {
     private static volatile boolean running = true;
     private static ServerSocket server;

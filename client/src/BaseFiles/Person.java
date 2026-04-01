@@ -3,7 +3,12 @@ package BaseFiles;
 import com.google.gson.annotations.Expose;
 
 import java.time.LocalDateTime;
-
+/**
+ * Base Person class for screenwriters
+ *
+ *
+ *
+ */
 public class Person implements Comparable<Person>{
     @Expose
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -31,6 +36,12 @@ public class Person implements Comparable<Person>{
                 "  passportID:" + passportID +
                 "  nationality:" + nationality;
     }
+    /**
+     * compares using person's height
+     *
+     *
+     *
+     */
     @Override
     public int compareTo(Person sw) {
         return this.height.compareTo(sw.height);

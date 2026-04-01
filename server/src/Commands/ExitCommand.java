@@ -3,7 +3,12 @@ package Commands;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
-
+/**
+ * used to close client
+ *
+ *
+ *
+ */
 public class ExitCommand extends Command{
     public ExitCommand(CollectionManager cm) {
         super(cm);

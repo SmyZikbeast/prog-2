@@ -7,7 +7,12 @@ import Response.Response;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-
+/**
+ * used to remove movie by its id
+ *
+ *
+ *
+ */
 public class RemoveByIdCommand extends Command{
     public RemoveByIdCommand(CollectionManager cm) {
         super(cm);

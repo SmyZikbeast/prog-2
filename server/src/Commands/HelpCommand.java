@@ -3,7 +3,12 @@ package Commands;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
-
+/**
+ * used to get list of all commands
+ *
+ *
+ *
+ */
 public class HelpCommand extends Command{
     public HelpCommand(CollectionManager cm) {
         super(cm);

@@ -9,6 +9,12 @@ public class ClearCommand extends Command{
     public ClearCommand(CollectionManager cm) {
         super(cm);
     }
+    /**
+     * clears collection
+     *
+     *
+     *
+     */
     @Override
     public Response execute(){
         cm.clear();

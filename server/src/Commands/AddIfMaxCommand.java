@@ -10,6 +10,12 @@ public class AddIfMaxCommand extends Command{
     public AddIfMaxCommand(CollectionManager cm) {
         super(cm);
     }
+    /**
+     * adds new movie to colection if it's usaBoxOffice if max
+     *
+     *
+     *
+     */
     @Override
     public Response execute(){
         Movie m = this.movie;

@@ -5,7 +5,12 @@ import com.google.gson.annotations.Expose;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-
+/**
+ * Main collection object class
+ *
+ *
+ *
+ */
 public class Movie implements Comparable<Movie> {
     private static int Nextid = 0;
     @Expose

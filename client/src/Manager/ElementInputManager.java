@@ -7,7 +7,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 import java.util.Scanner;
-
+/**
+ * class used to get movie and person objects from user
+ *
+ *
+ *
+ */
 public class ElementInputManager {
     public static Movie getMovie() {
         Validator v = new Validator();

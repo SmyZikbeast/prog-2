@@ -9,7 +9,12 @@ import Comparator.CoordinatesComparator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-
+/**
+ * used to print all collection items
+ * sorts them by their distance from (0,0)
+ *
+ *
+ */
 public class ShowCommand extends Command{
     public ShowCommand(CollectionManager cm) {
         super(cm);

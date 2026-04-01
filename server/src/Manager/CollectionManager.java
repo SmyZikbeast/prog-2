@@ -21,7 +21,12 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
-
+/**
+ * class that manages collection of movies
+ *
+ *
+ *
+ */
 public class CollectionManager {
     String Type = "LinkedList";
     LinkedList<Movie> collection = new LinkedList<>();

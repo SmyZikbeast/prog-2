@@ -1,7 +1,12 @@
 package BaseFiles;
 
 import com.google.gson.annotations.Expose;
-
+/**
+ * Coordinates base class
+ *
+ *
+ *
+ */
 public class Coordinates {
     @Expose
     private Double x; //Значение поля должно быть больше -790, Поле не может быть null

@@ -2,7 +2,12 @@ package Manager;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * helping class for history command
+ * stores all commands used on client
+ *
+ *
+ */
 public class CommandManager {
     private static ArrayList<String> commands = new ArrayList<>();
     public static void addCommand(String c){

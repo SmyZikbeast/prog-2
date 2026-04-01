@@ -1,7 +1,11 @@
 package Response;
 
 import com.google.gson.annotations.Expose;
-
+/**
+ * class used to send data from server to client
+ *
+ *
+ */
 public class Response {
     @Expose
     String DataType;

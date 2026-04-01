@@ -2,7 +2,12 @@ package Commands;
 
 import Manager.CollectionManager;
 import Response.Response;
-
+/**
+ * helping class used for update id command
+ *
+ *
+ *
+ */
 public class FindIdCommand extends Command{
     public FindIdCommand(CollectionManager cm) {
         super(cm);

@@ -4,7 +4,12 @@ import BaseFiles.Movie;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
-
+/**
+ * used to remove first element by its usaboxoffice
+ *
+ *
+ *
+ */
 public class RemoveAnyByUsaBoxOfficeCommand extends Command{
     public RemoveAnyByUsaBoxOfficeCommand(CollectionManager cm) {
         super(cm);

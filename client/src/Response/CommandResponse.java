@@ -3,7 +3,12 @@ package Response;
 import BaseFiles.Movie;
 import BaseFiles.Person;
 import com.google.gson.annotations.Expose;
-
+/**
+ * class used to send objects from server
+ *
+ *
+ *
+ */
 public class CommandResponse {
     @Expose
     String type;
