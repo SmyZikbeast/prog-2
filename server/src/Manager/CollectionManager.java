@@ -83,7 +83,7 @@ public class CollectionManager {
             Type collectionType = new TypeToken<LinkedList<Movie>>(){}.getType();
             this.collection = gson.fromJson(reader, collectionType);
             reader.close();
-            if (collection != null) {
+            if (!collection.isEmpty()) {
                 Movie.setNextId(this.getIds().getLast());
                 System.out.println("Collection loaded from file");
             }

@@ -92,6 +92,9 @@ public class Runner {
                         }
                     }
                 }
+                else {
+                    throw new IOException();
+                }
                 if (commandType.equalsIgnoreCase("exit")) {
                     channel.close();
                     System.exit(0);
