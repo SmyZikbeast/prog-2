@@ -8,12 +8,14 @@ import Response.Request;
 import Response.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import java.security.MessageDigest;
+import java.nio.charset.StandardCharsets;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
@@ -35,7 +37,15 @@ public class Runner {
             .excludeFieldsWithoutExposeAnnotation()
             .create();
 
-    public void run(Scanner scanner, SocketChannel channel) throws IOException, InterruptedException {
+    public void run(Scanner scanner, SocketChannel channel) throws IOException, InterruptedException, NoSuchAlgorithmException {
+        System.out.println("user:");
+        String username = scanner.nextLine();
+        System.out.println("passwd:");
+        String password = scanner.nextLine();
+        MessageDigest md = MessageDigest.getInstance("SHA-224");
+        byte[] hashBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+        String passwd = new String(hashBytes, StandardCharsets.UTF_8);
+        System.out.println(passwd);
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] tokens = line.split(" ");

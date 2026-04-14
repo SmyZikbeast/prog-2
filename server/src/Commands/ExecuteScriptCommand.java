@@ -12,8 +12,6 @@ import java.io.*;
  *
  */
 public class ExecuteScriptCommand extends Command{
-    private final static int MAX_DEPTH = 5;
-    private static int currentDepth = 0;
     public ExecuteScriptCommand(CollectionManager cm) {
         super(cm);
     }

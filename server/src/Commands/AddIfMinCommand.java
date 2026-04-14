@@ -5,6 +5,9 @@ import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class AddIfMinCommand extends Command{
 
     public AddIfMinCommand(CollectionManager cm) {
@@ -18,15 +21,16 @@ public class AddIfMinCommand extends Command{
      *
      */
     @Override
-    public Response execute(){
+    public Response execute() throws SQLException, IOException {
         Movie m = this.movie;
         CommandManager.addCommand("AddIfMin");
         if(cm.getCollection().stream().allMatch(s -> m.compareTo(s)<0)){
             cm.addMovie(m);
+            cm.load();
             return new Response("String", "Successfully added");
         }
         else {
-            return new Response("String", "Movie is not min, not added");
+            return new Response("String", "Movie is not min, nothing added");
         }
     }
 }

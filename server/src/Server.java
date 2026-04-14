@@ -8,12 +8,16 @@ import Response.Request;
 import Response.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import postgres.Connector;
+import postgres.DBInteractor;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -29,13 +33,14 @@ public class Server {
     private static ServerSocket server;
     private static final int PORT = 13377;
 
-    public static void main(String[] args) throws IOException{
-        CollectionManager cm = new CollectionManager();
-        File collectionFile = new File("File.json");
+    public static void main(String[] args) throws IOException, SQLException {
+        Connector connector = new Connector();
+        Connection con = connector.connect();
+        DBInteractor interactor = new DBInteractor(con);
+        System.out.println(interactor.getMovies());
+        CollectionManager cm = new CollectionManager(interactor);
+        cm.load();
         server = new ServerSocket(PORT);
-        if (!collectionFile.createNewFile()) {
-            cm.load("File.json");
-        }
         Map<String, Command> commandMap = new HashMap<>();
         commandMap.put("help", new HelpCommand(cm));
         commandMap.put("info", new InfoCommand(cm));
@@ -57,6 +62,7 @@ public class Server {
                 .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
                 .excludeFieldsWithoutExposeAnnotation()
                 .create();
+
         new Thread(() -> {
             try {
                 BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -65,13 +71,8 @@ public class Server {
                     if ("exit".equalsIgnoreCase(line)) {
                         System.out.println("Shutting down server..");
                         running = false;
-                        cm.save("File.json");
                         server.close();
                         System.exit(0);
-                    }
-                    if ("save".equalsIgnoreCase(line)) {
-                        System.out.println("saving to file");
-                        cm.save("File.json");
                     }
                 }
             } catch (IOException e) {
@@ -123,7 +124,7 @@ public class Server {
                  System.out.println("Client disconnected");
              }
              catch (NullPointerException e) {
-                 System.out.println("smth went wrong");;
+                 System.out.println("smth went wrong");
              }
         }
     }

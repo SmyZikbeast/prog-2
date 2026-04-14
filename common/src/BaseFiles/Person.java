@@ -15,7 +15,7 @@ public class Person implements Comparable<Person>{
     @Expose
     private String name; //Поле не может быть null, Строка не может быть пустой
     @Expose
-    private java.time.LocalDateTime birthday; //Поле не может быть null
+    private LocalDateTime birthday; //Поле не может быть null
     @Expose
     private Double height; //Поле может быть null, Значение поля должно быть больше 0
     @Expose
@@ -23,6 +23,14 @@ public class Person implements Comparable<Person>{
     @Expose
     private Country nationality; //Поле может быть null
     public Person(String name, LocalDateTime birthday, Double height, String passportID, Country nationality) {
+        this.name = name;
+        this.birthday = birthday;
+        this.height = height;
+        this.passportID = passportID;
+        this.nationality = nationality;
+    }
+    public Person(int id, String name, LocalDateTime birthday, Double height, String passportID, Country nationality) {
+        this.id = id;
         this.name = name;
         this.birthday = birthday;
         this.height = height;
@@ -49,4 +57,11 @@ public class Person implements Comparable<Person>{
         return this.height.compareTo(sw.height);
     }
     public Object getId() {return this.id;}
+    public String toSql(){
+        return "'"+name+"', '"+birthday+"', "+height+", '"+passportID+"', '"+nationality+"'";
+    }
+
+    public void setId(int nextPersonId) {
+        this.id = nextPersonId;
+    }
 }

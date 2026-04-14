@@ -2,6 +2,7 @@ import Manager.Runner;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 /**
  * Main client class
@@ -22,6 +23,8 @@ public class Client {
                 } catch (IOException e) {
                 System.out.println(e.getMessage());
                 Thread.sleep(5000);
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
             }
         }
     }

@@ -1,8 +1,6 @@
 package Manager;
 
-import BaseFiles.Coordinates;
-import BaseFiles.Country;
-import BaseFiles.MpaaRating;
+import BaseFiles.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

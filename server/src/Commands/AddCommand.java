@@ -4,7 +4,8 @@ import BaseFiles.Movie;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
-import postgres.DBStatement;
+
+import java.sql.SQLException;
 
 public class AddCommand extends Command{
     public AddCommand(CollectionManager cm) {
@@ -17,11 +18,11 @@ public class AddCommand extends Command{
      *
      */
     @Override
-    public Response execute(){
+    public Response execute() throws SQLException {
         Movie m = this.movie;
         cm.addMovie(m);
+        cm.load();
         CommandManager.addCommand("Add");
-        System.out.println(DBStatement.CreateStatement("add", m));
         return new Response("String", "Success");
     }
 }

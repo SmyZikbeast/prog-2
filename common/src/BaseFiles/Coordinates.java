@@ -19,6 +19,11 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
+    public Coordinates(int id, Double x, float y) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+    }
 
     @Override
     public String toString() {
@@ -34,5 +39,12 @@ public class Coordinates {
     }
     public int getId() {
         return id;
+    }
+    public String toSql(){
+        return x+", "+y;
+    }
+
+    public void setId(int Id) {
+        this.id = Id;
     }
 }

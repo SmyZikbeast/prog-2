@@ -1,7 +1,6 @@
 package Response;
 
-import BaseFiles.Movie;
-import BaseFiles.Person;
+import BaseFiles.*;
 import com.google.gson.annotations.Expose;
 /**
  * class used to send objects from client to server

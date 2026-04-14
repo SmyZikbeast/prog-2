@@ -7,6 +7,8 @@ import Response.Response;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * parent class for all commands
  *
@@ -23,7 +25,7 @@ public abstract class Command {
         this.cm = cm;
     }
 
-    public Response execute() throws FileNotFoundException {return null;};
+    public Response execute() throws IOException, SQLException {return null;};
 
     public void setArg(String arg) {
         this.arg = arg;
