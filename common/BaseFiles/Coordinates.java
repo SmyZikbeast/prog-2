@@ -1,9 +1,18 @@
 package BaseFiles;
 
 import com.google.gson.annotations.Expose;
-
+/**
+ * Coordinates base class
+ *
+ *
+ *
+ */
 public class Coordinates {
-    @Expose
+    public Double getX() {
+    return x;
+}public Float getY() {
+    return y;
+}@Expose
     private Double x; //Значение поля должно быть больше -790, Поле не может быть null
     @Expose
     private Float y; //Значение поля должно быть больше -716, Поле не может быть null
@@ -11,12 +20,7 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
-    public double getX(){
-        return this.x;
-    }
-    public double getY(){
-        return this.y;
-    }
+
     @Override
     public String toString(){
         return "X:"+this.x+" Y:"+this.y;

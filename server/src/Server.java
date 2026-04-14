@@ -4,7 +4,7 @@ import BaseFiles.Movie;
 import BaseFiles.Person;
 import Commands.*;
 import Manager.CollectionManager;
-import Response.CommandResponse;
+import Response.Request;
 import Response.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -94,11 +94,11 @@ public class Server {
                             break;
                         }
                         System.out.println("Получено: " + message);
-                        CommandResponse commandResponse = mapper.fromJson(message, CommandResponse.class);
-                        String CommandType = commandResponse.getType().toLowerCase();
-                        String CommandArg = commandResponse.getArg();
-                        Movie CommandMovie = commandResponse.getMovie();
-                        Person CommandPerson = commandResponse.getPerson();
+                        Request request = mapper.fromJson(message, Request.class);
+                        String CommandType = request.getType().toLowerCase();
+                        String CommandArg = request.getArg();
+                        Movie CommandMovie = request.getMovie();
+                        Person CommandPerson = request.getPerson();
 
                         Command command = commandMap.get(CommandType);
                         command.setArg(CommandArg);

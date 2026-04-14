@@ -1,6 +1,5 @@
 package Commands;
 
-import BaseFiles.Movie;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;

@@ -4,7 +4,7 @@ import Adapters.LocalDateTimeAdapter;
 import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
 import BaseFiles.Person;
-import Response.CommandResponse;
+import Response.Request;
 import Response.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,7 +60,7 @@ public class Runner {
 
                 String arg = tokens.length > 1 ? tokens[1] : null;
                 Person person = commandType.equalsIgnoreCase("count_less_than_screenwriter") ? ElementInputManager.getPerson() : null;
-                CommandResponse cmd = new CommandResponse(commandType, arg, movie, person);
+                Request cmd = new Request(commandType, arg, movie, person);
                 String json = mapper.toJson(cmd) + "\n";
                 ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                 channel.write(buffer);
@@ -76,7 +76,7 @@ public class Runner {
                     System.out.println(OutputManager.SerializeValue(DataType, Data));
                     if (OutputManager.SerializeValue(DataType, Data).equalsIgnoreCase("Found Such ID")) {
                         movie = ElementInputManager.getMovie(Integer.valueOf(arg));
-                        cmd = new CommandResponse(commandType, arg, movie, person);
+                        cmd = new Request(commandType, arg, movie, person);
                         json = mapper.toJson(cmd) + "\n";
                         buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                         channel.write(buffer);
