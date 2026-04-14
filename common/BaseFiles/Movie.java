@@ -1,6 +1,8 @@
 package BaseFiles;
 
 import com.google.gson.annotations.Expose;
+import postgres.DBStatement;
+import postgres.SQLConverter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -58,6 +60,7 @@ public class Movie implements Comparable<Movie> {
     public static void setNextId(int id){
         Movie.Nextid = id;
     }
+
     public int getId() {
         return id;
     }
@@ -93,4 +96,7 @@ public class Movie implements Comparable<Movie> {
 
 public double getCoordinates() {
         return Math.sqrt(Math.pow(this.coordinates.getX(),2) - Math.pow(this.coordinates.getY(),2));
-}}
+}
+public String toSQL() {
+        return SQLConverter.toSQL(new Object[]{name, coordinates.getId(), creationDate, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter.getId()});
+    }}

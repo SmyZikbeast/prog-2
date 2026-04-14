@@ -4,6 +4,7 @@ import BaseFiles.Movie;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
+import postgres.DBStatement;
 
 public class AddCommand extends Command{
     public AddCommand(CollectionManager cm) {
@@ -20,6 +21,7 @@ public class AddCommand extends Command{
         Movie m = this.movie;
         cm.addMovie(m);
         CommandManager.addCommand("Add");
+        System.out.println(DBStatement.CreateStatement("add", m));
         return new Response("String", "Success");
     }
 }

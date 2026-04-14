@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
  */
 public class Person implements Comparable<Person>{
     @Expose
+    private int id;
+    @Expose
     private String name; //Поле не может быть null, Строка не может быть пустой
     @Expose
     private java.time.LocalDateTime birthday; //Поле не может быть null
@@ -46,4 +48,5 @@ public class Person implements Comparable<Person>{
     public int compareTo(Person sw) {
         return this.height.compareTo(sw.height);
     }
+    public Object getId() {return this.id;}
 }
