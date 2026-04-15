@@ -17,6 +17,8 @@ public class Request {
     Movie movie;
     @Expose
     byte[] arg2;
+    @Expose
+    String username;
     public String getArg() {
         return arg;
     }
@@ -30,18 +32,20 @@ public class Request {
     @Expose
     Person person;
 
-    public Request(String commandType, String token, Movie movie, Person person) {
+    public Request(String commandType, String token, Movie movie, Person person, String username) {
         this.type = commandType;
         this.arg = token;
         this.movie = movie;
         this.person = person;
+        this.username = username;
     }
-    public Request(String commandType, String token, Movie movie, Person person, byte[] bytes) {
+    public Request(String commandType, String token, Movie movie, Person person, byte[] bytes, String username) {
         this.type = commandType;
         this.arg = token;
         this.movie = movie;
         this.person = person;
         this.arg2 = bytes;
+        this.username = username;
     }
 
     public String getType() {
@@ -50,5 +54,9 @@ public class Request {
 
     public Movie getMovie() {
         return this.movie;
+    }
+
+    public String getUser() {
+        return this.username;
     }
 }

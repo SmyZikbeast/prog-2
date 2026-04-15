@@ -42,6 +42,7 @@ public class Runner {
         String[] s = Am.authorize();
         String username = s[0];
         String password = s[1];
+        ElementInputManager.setUser(username);
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] tokens = line.split(" ");
@@ -66,7 +67,7 @@ public class Runner {
 
                 String arg = tokens.length > 1 ? tokens[1] : null;
                 Person person = commandType.equalsIgnoreCase("count_less_than_screenwriter") ? ElementInputManager.getPerson() : null;
-                Request cmd = new Request(commandType, arg, movie, person);
+                Request cmd = new Request(commandType, arg, movie, person, username);
                 String json = mapper.toJson(cmd) + "\n";
                 ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                 channel.write(buffer);
@@ -82,7 +83,7 @@ public class Runner {
                     System.out.println(OutputManager.SerializeValue(DataType, Data));
                     if (OutputManager.SerializeValue(DataType, Data).equalsIgnoreCase("Found Such ID")) {
                         movie = ElementInputManager.getMovie(Integer.valueOf(arg));
-                        cmd = new Request(commandType, arg, movie, person);
+                        cmd = new Request(commandType, arg, movie, person, username);
                         json = mapper.toJson(cmd) + "\n";
                         buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                         channel.write(buffer);

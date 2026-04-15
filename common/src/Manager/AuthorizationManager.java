@@ -42,7 +42,7 @@ public class AuthorizationManager {
             byte[] hashBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
             passwd = hashBytes.toString();
             Request cmd = null;
-            cmd = new Request(way.toLowerCase(), username, null, null, hashBytes);
+            cmd = new Request(way.toLowerCase(), username, null, null, hashBytes, username);
             String json = mapper.toJson(cmd) + "\n";
             ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
             channel.write(buffer);

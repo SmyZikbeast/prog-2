@@ -30,8 +30,10 @@ public class Movie implements Comparable<Movie> {
     private MpaaRating mpaaRating; //Поле не может быть null
     @Expose
     private Person screenwriter;
+    @Expose
+    private String user;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    public Movie(String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter) {
+    public Movie(String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, String user) {
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
@@ -40,8 +42,9 @@ public class Movie implements Comparable<Movie> {
         this.usaBoxOffice = usaBoxOffice;
         this.mpaaRating = mpaaRating;
         this.screenwriter = screenwriter;
+        this.user = user;
     }
-    public Movie(int id, String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter) {
+    public Movie(int id, String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, String user) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -51,8 +54,9 @@ public class Movie implements Comparable<Movie> {
         this.usaBoxOffice = usaBoxOffice;
         this.mpaaRating = mpaaRating;
         this.screenwriter = screenwriter;
+        this.user = user;
     }
-    public Movie(int id, String name, Coordinates coordinates, LocalDateTime creationDate, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter) {
+    public Movie(int id, String name, Coordinates coordinates, LocalDateTime creationDate, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, String user) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -62,6 +66,7 @@ public class Movie implements Comparable<Movie> {
         this.usaBoxOffice = usaBoxOffice;
         this.mpaaRating = mpaaRating;
         this.screenwriter = screenwriter;
+        this.user = user;
     }
 
     public int getId() {
@@ -90,7 +95,9 @@ public class Movie implements Comparable<Movie> {
         "  golden Palm Count:" + goldenPalmCount +
         "  usa Box Office:" + usaBoxOffice +
         "  mpaa Rating:" + mpaaRating +
-        "  screen Writer:" + screenwriter;
+        "  screen Writer:" + screenwriter +
+        "  user: " + user;
+
     }
     @Override
     public int compareTo(Movie other){
@@ -102,10 +109,10 @@ public class Movie implements Comparable<Movie> {
     }
 
     public String toSQL() {
-        return ("'"+name+"', "+coordinates.id+", '"+creationDate+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId());
+        return ("'"+name+"', "+coordinates.id+", '"+creationDate+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId()+", '"+user+"'");
     }
     public String toSQLid() {
-        return (id+", '"+name+"', "+coordinates.id+", '"+creationDate+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId());
+        return (id+", '"+name+"', "+coordinates.id+", '"+creationDate+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId()+", '"+user+"'");
     }
 
     public Coordinates getCoordinates() {
@@ -122,5 +129,9 @@ public class Movie implements Comparable<Movie> {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUser() {
+        return this.user;
     }
 }

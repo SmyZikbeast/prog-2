@@ -2,6 +2,7 @@ package Manager;
 
 import Adapters.*;
 import BaseFiles.*;
+import Response.Request;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import postgres.DBInteractor;
@@ -79,5 +80,9 @@ public class CollectionManager {
     }
     public void setCollection(LinkedList<Movie> collection) {
         this.collection = collection;
+    }
+
+    public Movie getMovie(int arg) {
+        return collection.stream().filter(o -> o.getId() == arg).findFirst().orElse(null);
     }
 }

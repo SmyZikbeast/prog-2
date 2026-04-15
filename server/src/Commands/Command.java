@@ -20,6 +20,7 @@ public abstract class Command {
     String arg = null;
     Movie movie = null;
     Person person = null;
+    String user = null;
 
     Command(CollectionManager cm){
         this.cm = cm;
@@ -39,4 +40,12 @@ public abstract class Command {
     }
 
     public void execute(String id) throws IOException {};
+
+    public void setUser(String commandUser) {
+        this.user = commandUser;
+    }
+    @Override
+    public String toString(){
+        return "arg "+arg + " movie: "+ movie + " user: "+user;
+    }
 }

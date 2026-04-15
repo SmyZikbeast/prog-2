@@ -13,9 +13,14 @@ import java.util.Scanner;
  *
  */
 public class ElementInputManager {
+    public static String user;
+    public static void setUser(String u){
+        user = u;
+    }
     public static Movie getMovie() {
         Validator v = new Validator();
         Scanner sc = new Scanner(System.in);
+
         System.out.println("Введите имя");
         String name = "";
         do {
@@ -186,7 +191,7 @@ public class ElementInputManager {
 
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
         System.out.println("Movie created successfully");
-        Movie movie = new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
+        Movie movie = new Movie(name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter, user);
         System.out.println(movie);
         return movie;
     }
@@ -363,7 +368,7 @@ public class ElementInputManager {
 
         Person screenwriter = new Person(Name, Birthday, Height, PassportID, Nationality);
         System.out.println("Movie created successfully");
-        Movie movie = new Movie(id, name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter);
+        Movie movie = new Movie(id, name, coordinates, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, screenwriter, user);
         System.out.println(movie);
         return movie;
     }

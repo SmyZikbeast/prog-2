@@ -14,7 +14,7 @@ public class AddIfMaxCommand extends Command{
         super(cm);
     }
     /**
-     * adds new movie to colection if it's usaBoxOffice if max
+     * adds new movie to collection if it's usaBoxOffice if max
      *
      *
      *

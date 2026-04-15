@@ -129,14 +129,16 @@ public class Server {
                         String CommandArg = request.getArg();
                         Movie CommandMovie = request.getMovie();
                         Person CommandPerson = request.getPerson();
-
+                        String CommandUser = request.getUser();
                         Command command = commandMap.get(CommandType);
                         command.setArg(CommandArg);
                         command.setMovie(CommandMovie);
                         command.setPerson(CommandPerson);
+                        command.setUser(CommandUser);
                         Response response;
                         if (CommandType.equalsIgnoreCase("Update") & CommandMovie == null) {
                             Command FindIdCommand = new FindIdCommand(cm);
+                            FindIdCommand.setUser(CommandUser);
                             FindIdCommand.setArg(CommandArg);
                             response = FindIdCommand.execute();
                         } else {

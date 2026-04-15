@@ -6,6 +6,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
+
 public class DBInteractor {
     Connection con;
     public DBInteractor(Connection con) {
@@ -27,6 +28,7 @@ public class DBInteractor {
             int UsaBoxOffice = rs.getInt("USA_BOX_OFFICE");
             MpaaRating mpaaRating = MpaaRating.valueOf(rs.getString("MPAA_RATING"));
             int PersonId = rs.getInt("PERSON_ID");
+            String user = rs.getString("USERNAME");
             ResultSet rsC = st2.executeQuery(String.format("SELECT * FROM COORDINATES WHERE ID = %s;",CoordsId));
             rsC.next();
             double X = rsC.getDouble("X");
@@ -38,7 +40,7 @@ public class DBInteractor {
             Double height = rsS.getDouble(4);
             String passportID = rsS.getString(5);
             Country nationality = Country.valueOf(rsS.getString(6));
-            Movie m = new Movie(Id, Name, new Coordinates(CoordsId, X,Y), DateTimeConverter.toDate(CreationDate), OscarsCount, GoldenPalmCount, UsaBoxOffice, mpaaRating, new Person(PersonId, Scname, birthday, height, passportID, nationality));
+            Movie m = new Movie(Id, Name, new Coordinates(CoordsId, X,Y), DateTimeConverter.toDate(CreationDate), OscarsCount, GoldenPalmCount, UsaBoxOffice, mpaaRating, new Person(PersonId, Scname, birthday, height, passportID, nationality), user);
             Movies.add(m);
         }
         return Movies;
