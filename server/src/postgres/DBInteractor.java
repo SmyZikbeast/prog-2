@@ -112,4 +112,10 @@ public class DBInteractor {
         }
         return false;
     }
+    public void clear() throws SQLException {
+        Statement st = con.createStatement();
+        st.executeUpdate("TRUNCATE TABLE COORDINATES CASCADE");
+        st.executeUpdate("TRUNCATE TABLE PERSON CASCADE");
+        st.executeUpdate("TRUNCATE TABLE MOVIES CASCADE");
+    }
 }

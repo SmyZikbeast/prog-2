@@ -4,6 +4,8 @@ import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
 
+import java.sql.SQLException;
+
 public class ClearCommand extends Command{
 
     public ClearCommand(CollectionManager cm) {
@@ -16,7 +18,7 @@ public class ClearCommand extends Command{
      *
      */
     @Override
-    public Response execute(){
+    public Response execute() throws SQLException {
         cm.clear();
         CommandManager.addCommand("Clear");
         return new Response("String", "Successfully cleared");

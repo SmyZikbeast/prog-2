@@ -72,8 +72,9 @@ public class CollectionManager {
         this.load();
         return f;
     }
-    public void clear(){
+    public void clear() throws SQLException {
         collection.clear();
+        interactor.clear();
     }
     public void load() throws SQLException {
         this.collection = interactor.getMovies();
