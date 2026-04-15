@@ -2,12 +2,8 @@ package postgres;
 
 import BaseFiles.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class DBInteractor {
@@ -89,5 +85,29 @@ public class DBInteractor {
         Statement st = con.createStatement();
         int changed = st.executeUpdate(String.format("DELETE FROM MOVIES WHERE ID = %s",id));
         return (changed>0);
+    }
+    public boolean addUser(String username, String password) throws SQLException {
+        System.out.println(username);
+        System.out.println(password);
+        Statement st = con.createStatement();
+        PreparedStatement rq = con.prepareStatement("SELECT USERNAME, PASSWORD FROM USERS WHERE USERNAME = ?");
+        rq.setString(1,username);
+        ResultSet rs = rq.executeQuery();
+        System.out.println(rq);
+        if(rs.next()){
+            return false;
+        }
+        st.executeUpdate(String.format("INSERT INTO USERS(USERNAME, PASSWORD) VALUES ('%s', '%s')",username,password));
+        return true;
+    }
+
+    public boolean loginUser(String username, String password) throws SQLException {
+        PreparedStatement rq = con.prepareStatement(String.format("SELECT USERNAME, PASSWORD FROM USERS WHERE USERNAME = ?",username));
+        rq.setString(1,username);
+        ResultSet rs = rq.executeQuery();
+        if (rs.next()){
+            return rs.getString(2).equals(password);
+        }
+        return false;
     }
 }

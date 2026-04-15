@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -89,14 +90,42 @@ public class Server {
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
                 while (running) {
-                        String message = reader.readLine();
-                        if (message == null) {
-                            System.out.println("Client disconnected");
-                            break;
+                    String message = reader.readLine();
+                    if (message == null) {
+                        System.out.println("Client disconnected");
+                        break;
+                    }
+                    System.out.println("Получено: " + message);
+                    Request request = mapper.fromJson(message, Request.class);
+                    String CommandType = request.getType().toLowerCase();
+                    if (CommandType.equalsIgnoreCase("register")) {
+                        boolean f = interactor.addUser(request.getArg(), Arrays.toString(request.getArg2()));
+                        if (!f){
+                            Response response = new Response("String", "Username already taken");
+                            writer.write(mapper.toJson(response) + "\n");
+                            writer.flush();
                         }
-                        System.out.println("Получено: " + message);
-                        Request request = mapper.fromJson(message, Request.class);
-                        String CommandType = request.getType().toLowerCase();
+                        else{
+                            Response response = new Response("String", "Register success");
+                            writer.write(mapper.toJson(response) + "\n");
+                            writer.flush();
+                        }
+
+                    } else if(CommandType.equalsIgnoreCase("login")){
+                        boolean f = interactor.loginUser(request.getArg(), Arrays.toString(request.getArg2()));
+                        if (!f){
+                            Response response = new Response("String", "Wrong password or no such user");
+                            writer.write(mapper.toJson(response) + "\n");
+                            writer.flush();
+                        }
+                        else{
+                            Response response = new Response("String", "Login success");
+                            writer.write(mapper.toJson(response) + "\n");
+                            writer.flush();
+                        }
+                    }
+                    else
+                    {
                         String CommandArg = request.getArg();
                         Movie CommandMovie = request.getMovie();
                         Person CommandPerson = request.getPerson();
@@ -106,19 +135,19 @@ public class Server {
                         command.setMovie(CommandMovie);
                         command.setPerson(CommandPerson);
                         Response response;
-                        if (CommandType.equalsIgnoreCase("Update") & CommandMovie == null){
-                             Command FindIdCommand = new FindIdCommand(cm);
-                             FindIdCommand.setArg(CommandArg);
-                             response = FindIdCommand.execute();
-                        }
-                        else {
-                             response = command.execute();
+                        if (CommandType.equalsIgnoreCase("Update") & CommandMovie == null) {
+                            Command FindIdCommand = new FindIdCommand(cm);
+                            FindIdCommand.setArg(CommandArg);
+                            response = FindIdCommand.execute();
+                        } else {
+                            response = command.execute();
                         }
                         System.out.println("executed command: " + CommandType);
                         System.out.println("sending: " + mapper.toJson(response, Response.class));
                         writer.write(mapper.toJson(response) + "\n");
                         writer.flush();
                     }
+                }
              }
              catch (SocketException e) {
                  System.out.println("Client disconnected");
