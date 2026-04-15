@@ -133,14 +133,14 @@ public class Server {
                     System.out.println("Client disconnected");
                     break;
                 }
-                System.out.println("Получено: " + message);
+                System.out.println("Received: " + message);
                 Request request = mapper.fromJson(message, Request.class);
                 processPool.execute(() -> {
                     try {
                         Response response = processRequest(request);
                         writePool.execute(() -> sendResponse(writer, response));
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
                     }
                 });
             }
