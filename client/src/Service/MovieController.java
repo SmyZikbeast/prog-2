@@ -24,19 +24,5 @@ public class MovieController {
 
         frame.openEditor(movie);
     }
-    public void updateMovie(Movie movie) {
-        try {
-            Response r = new Request("update", movie, service.getUser())
-                    .send(channel);
 
-            // если сервер подтвердил успех
-            if (r != null) {
-                refreshMovies();
-            }
-
-        } catch (Exception e) {
-            System.out.println("update failed: " + e.getMessage());
-        }
-
-    }
 }

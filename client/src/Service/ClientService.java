@@ -112,4 +112,18 @@ public class ClientService {
             System.out.println("refresh error: " + e.getMessage());
         }
     }
+    public void updateMovie(Movie movie) {
+        try {
+            Response r = new Request("update", movie, this.getUser())
+                    .send(channel);
+            if (r != null) {
+                refreshMovies();
+            }
+        } catch (Exception e) {
+            System.out.println("update failed: " + e.getMessage());
+        }
+    }
+    public void deleteMovie(int id) throws IOException {
+        Response r = new Request("remove", id, this.getUser()).send(channel);
+    }
 }

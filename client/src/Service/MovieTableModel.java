@@ -20,7 +20,7 @@ public class MovieTableModel extends AbstractTableModel {
             .create();
     private List<Movie> movies = new LinkedList<>();
 
-    private final String[] cols = {"ID", "Name","Creation Date", "Oscars Count", "Golden Palm Count", "Usa Box Office",  "User"};
+    private final String[] cols = {"ID", "Name","Creation Date", "Oscars Count", "Golden Palm Count", "Usa Box Office", "MPAA rating",  "User"};
     @Override
     public Object getValueAt(int row, int col) {
 
@@ -36,7 +36,8 @@ public class MovieTableModel extends AbstractTableModel {
             case 3 -> m.getOscarsCount();
             case 4 -> m.getGoldenPalmCount();
             case 5 -> m.getUsaBoxOffice();
-            case 6 -> m.getUser();
+            case 6 -> m.getMpaaRating();
+            case 7 -> m.getUser();
             default -> "";
         };
     }

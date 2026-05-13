@@ -1,5 +1,6 @@
 package Commands;
 
+import BaseFiles.Movie;
 import Manager.CollectionManager;
 import Manager.CommandManager;
 import Response.Response;
@@ -18,8 +19,16 @@ public class UpdateIdCommand extends Command{
     }
     @Override
     public Response execute() throws SQLException {
-
-            return new Response("String", "No permission");
-
+        Movie m = (Movie)arg;
+        if (!cm.findId(m)){
+            m.setUser(user.getUsername());
+            cm.addMovie(m);
+            return new Response("String", "Added successfully");
+        }
+        if (m.getUser().equalsIgnoreCase(user.getUsername())) {
+            cm.setMovie(m);
+            return new Response("String", "Updated successfully");
+        }
+        return new Response("String", "No permission");
     }
 }

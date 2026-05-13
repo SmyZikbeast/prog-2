@@ -121,4 +121,17 @@ public class DBInteractor {
         st.executeUpdate("TRUNCATE TABLE PERSON CASCADE");
         st.executeUpdate("TRUNCATE TABLE MOVIES CASCADE");
     }
+    public boolean findId(Movie m) throws SQLException {
+        PreparedStatement rq = con.prepareStatement("SELECT * FROM MOVIES WHERE ID  = ?");
+        rq.setInt(1, (m.getId()));
+        ResultSet rs = rq.executeQuery();
+        return rs.next();
+    }
+    public boolean matchesId(int id, String user) throws SQLException {
+        PreparedStatement rq = con.prepareStatement("SELECT * FROM MOVIES WHERE ID = ? AND USERNAME= ?");
+        rq.setInt(1, id);
+        rq.setString(2, user);
+        ResultSet rs = rq.executeQuery();
+        return rs.next();
+    }
 }

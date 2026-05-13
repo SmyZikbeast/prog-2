@@ -22,7 +22,9 @@ public class RemoveByIdCommand extends Command{
     }
     @Override
     public Response execute() throws SQLException, IOException {
-
+        if (cm.removeId(((Double)arg).intValue(), user.getUsername())){
+            return new Response("String", "Removed successfully");
+        }
         return new Response("String", "Nothing to remove");
     }
 }

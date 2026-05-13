@@ -9,6 +9,7 @@ import Response.Response;
 import Utility.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 import postgres.Connector;
 import postgres.DBInteractor;
 
@@ -21,9 +22,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 
 /**
@@ -61,7 +60,7 @@ public class Server {
         map.put("show", new ShowCommand(cm));
         map.put("add", new AddCommand(cm));
         map.put("update", new UpdateIdCommand(cm));
-        map.put("remove_by_id", new RemoveByIdCommand(cm));
+        map.put("remove", new RemoveByIdCommand(cm));
         map.put("clear", new ClearCommand(cm));
         map.put("exit", new ExitCommand(cm));
         map.put("history", new HistoryCommand(cm));
@@ -138,10 +137,20 @@ public class Server {
                 }
                 System.out.println("Received: " + message);
                 Request request = mapper.fromJson(message, Request.class);
-                System.out.println("444");
+                Object arg = request.getArg();
+                System.out.println(arg);
+                Movie movie = null;
+                if (arg instanceof LinkedTreeMap<?,?>) {
+                    movie = mapper.fromJson(
+                            mapper.toJson(request.getArg()),
+                            Movie.class
+                    );
+                }
+                if (movie != null) {
+                    request.setArg(movie);
+                }
                 processPool.execute(() -> {
                     try {
-                        System.out.println("1231231231231231");
                         Response response = processRequest(request);
                         writePool.execute(() -> sendResponse(writer, response));
                     } catch (Exception e) {
@@ -157,6 +166,7 @@ public class Server {
             Command command = commandMap.get(CommandType);
             command.setArg(CommandArg);
             command.setUser(CommandUser);
+            System.out.println(command);
             Response response = command.execute();
             return response;
         }

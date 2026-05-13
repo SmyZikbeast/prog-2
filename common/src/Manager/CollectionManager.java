@@ -2,7 +2,6 @@ package Manager;
 
 import Adapters.*;
 import BaseFiles.*;
-import Response.Request;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import postgres.DBInteractor;
@@ -80,11 +79,11 @@ public class CollectionManager {
             lock.writeLock().unlock();
         }
     }
-    public boolean setMovie(int id, Movie m) throws SQLException {
+    public boolean setMovie(Movie m) throws SQLException {
         lock.writeLock().lock();
         try {
-            boolean f = interactor.removeId(id);
-            interactor.addMovie(m, m.getScreenwriter(), m.getCoordinates(), id);
+            boolean f = interactor.removeId(m.getId());
+            interactor.addMovie(m, m.getScreenwriter(), m.getCoordinates(), m.getId());
             this.load();
             return f;
         }
@@ -95,7 +94,10 @@ public class CollectionManager {
     public ArrayList<Integer> getIds(){
         return collection.stream().map(o -> o.getId()).collect(toCollection(ArrayList::new));
     }
-    public boolean removeId(Integer id) throws SQLException{
+    public boolean removeId(Integer id, String username) throws SQLException{
+        if (!interactor.matchesId(id,username)){
+            return false;
+        }
         lock.writeLock().lock();
         try {
             boolean f = interactor.removeId(id);
@@ -137,5 +139,8 @@ public class CollectionManager {
         finally {
             lock.readLock().unlock();
         }
+    }
+    public boolean findId(Movie m) throws SQLException {
+        return interactor.findId(m);
     }
 }

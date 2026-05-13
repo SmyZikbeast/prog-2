@@ -15,6 +15,14 @@ public class Coordinates {
     @Expose
     private Float y; //Значение поля должно быть больше -716, Поле не может быть null
 
+    public void setX(Double x) {
+        this.x = x;
+    }
+
+    public void setY(Float y) {
+        this.y = y;
+    }
+
     public Coordinates(Double x, float y) {
         this.x = x;
         this.y = y;

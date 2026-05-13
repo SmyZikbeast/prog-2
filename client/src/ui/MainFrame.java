@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
         JLabel userLabel = new JLabel(service.getUser().getUsername());
         controller = new MovieController(service,this);
         filmList = new FilmList(service, controller);
-        filmRedactor = new FilmRedactor(controller);
+        filmRedactor = new FilmRedactor(service);
         filmView = new FilmView();
         JPanel header = new JPanel();
         header.add(userLabel);
@@ -39,6 +39,7 @@ public class MainFrame extends JFrame {
         this.setVisible(true);
     }
     public void openEditor(Movie movie) {
+        filmView.setMovie(movie);
         filmRedactor.setMovie(movie);
         tabs.setSelectedComponent(filmRedactor);
     }
