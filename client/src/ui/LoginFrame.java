@@ -2,28 +2,37 @@ package ui;
 
 import Service.ClientService;
 import Utility.User;
+import localization.LocalizationManager;
+import localization.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class LoginFrame extends JFrame {
-    public LoginFrame(ClientService service){
+public class LoginFrame extends JFrame implements Localizable{
+    JLabel LoginLabel;
+    JLabel PassLabel;
+    JButton b1;
+    JButton b2;
+    LocalizationManager lm;
+    public LoginFrame(ClientService service, LocalizationManager lm){
+        this.lm = lm;
         this.setLayout(new BorderLayout());
         this.setSize(500,500);
         this.setTitle("Client");
         this.setLocationRelativeTo(null);
 
-        JLabel LoginLabel = new JLabel("Username");
+        LoginLabel = new JLabel(lm.getLang().username());
         LoginField LoginField = new LoginField();
         LoginPanel LoginPanel = new LoginPanel(LoginLabel, LoginField);
 
-        JLabel PassLabel = new JLabel("Password");
+        PassLabel = new JLabel(lm.getLang().password());
         JPasswordField PassField = new PassField();
         PassPanel PassPanel = new PassPanel(PassLabel, PassField);
 
         JPanel FieldsPanel = new FieldsPanel(LoginPanel, PassPanel);
         JPanel ButtonPanel = new JPanel();
-        JButton b1 = new JButton("Login");
+        b1 = new JButton(lm.getLang().login());
         b1.addActionListener( e -> {
             try {
                 User user = new User(LoginField.getText(), String.valueOf(PassField.getPassword()));
@@ -39,7 +48,7 @@ public class LoginFrame extends JFrame {
                 throw new RuntimeException(ex);
             }
         });
-        JButton b2 = new JButton("Register");
+        b2 = new JButton(lm.getLang().register());
         b2.addActionListener( e -> {
             try {
                 User user = new User(LoginField.getText(), String.valueOf(PassField.getPassword()));
@@ -53,9 +62,26 @@ public class LoginFrame extends JFrame {
                 throw new RuntimeException(ex);
             }
         });
+        JPanel header = new JPanel();
+        JComboBox<String> langBox = new JComboBox<>(
+                new String[]{"RU", "SV", "NO", "ES"}
+        );
+        langBox.addActionListener(e -> {
+            String selected = (String) langBox.getSelectedItem();
+            lm.setLanguage(selected);
+            switch (selected) {
+                case "RU" -> lm.setLang(new RuLang());
+                case "SV" -> lm.setLang(new SeLang());
+                case "NO" -> lm.setLang(new NoLang());
+                case "ES" -> lm.setLang(new EsLang());
+            }
+            updateLanguage();
+        });
+        header.add(langBox);
+        this.add(header,BorderLayout.NORTH);
         ButtonPanel.add(b1);
         ButtonPanel.add(b2);
-        this.add(FieldsPanel, BorderLayout.NORTH);
+        this.add(FieldsPanel, BorderLayout.CENTER);
         this.add(ButtonPanel, BorderLayout.SOUTH);
         this.setVisible(true);
     }
@@ -94,5 +120,14 @@ public class LoginFrame extends JFrame {
             this.add(LoginPanel);
             this.add(PassPanel);
         }
+    }
+    @Override
+    public void updateLanguage(){
+        LoginLabel.setText(lm.getLang().username());
+        PassLabel.setText(lm.getLang().password());
+        b1.setText(lm.getLang().login());
+        b2.setText(lm.getLang().register());
+        repaint();
+        revalidate();
     }
 }

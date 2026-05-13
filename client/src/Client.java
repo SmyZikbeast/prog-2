@@ -1,5 +1,7 @@
 
 import Service.ClientService;
+import localization.LocalizationManager;
+import localization.RuLang;
 import ui.*;
 
 import java.io.IOException;
@@ -13,9 +15,10 @@ import java.io.IOException;
 
 public class Client {
     public static void main(String[] args) throws InterruptedException, IOException {
+        LocalizationManager lm = new LocalizationManager(new RuLang());
         ClientService service = new ClientService();
-        LoginFrame LFrame = new LoginFrame(service);
+        LoginFrame LFrame = new LoginFrame(service, lm);
         while (!service.getUserState()){}
-        MainFrame MFrame = new MainFrame(service);
+        MainFrame MFrame = new MainFrame(service, lm);
     }
 }

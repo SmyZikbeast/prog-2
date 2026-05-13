@@ -3,44 +3,76 @@ package ui;
 import BaseFiles.Movie;
 import Service.ClientService;
 import Service.MovieController;
+import localization.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements Localizable{
     JTabbedPane tabs = new JTabbedPane();
     private FilmList filmList;
     private FilmRedactor filmRedactor;
     private FilmView filmView;
     private MovieController controller;
-    public MainFrame(ClientService service) throws InterruptedException, IOException {
+    private LocalizationManager lm;
+    public MainFrame(ClientService service, LocalizationManager lm) throws InterruptedException {
+        this.lm = lm;
         this.setLayout(new BorderLayout());
-        this.setTitle("My App");
+        this.setTitle("Client");
         this.setSize(900, 600);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         JLabel userLabel = new JLabel(service.getUser().getUsername());
         controller = new MovieController(service,this);
-        filmList = new FilmList(service, controller);
-        filmRedactor = new FilmRedactor(service);
-        filmView = new FilmView();
+        filmList = new FilmList(service, controller, lm);
+        filmRedactor = new FilmRedactor(service, lm);
+        filmView = new FilmView(lm);
         JPanel header = new JPanel();
+        JComboBox<String> langBox = new JComboBox<>(
+                new String[]{"RU", "SV", "NO", "ES"}
+        );
+        langBox.setSelectedItem(lm.getLanguage());
+        langBox.addActionListener(e -> {
+            String selected = (String) langBox.getSelectedItem();
+            switch (selected) {
+                case "RU" -> lm.setLang(new RuLang());
+                case "SV" -> lm.setLang(new SeLang());
+                case "NO" -> lm.setLang(new NoLang());
+                case "ES" -> lm.setLang(new EsLang());
+            }
+            updateAllLanguages();
+        });
         header.add(userLabel);
-        tabs.addTab("Список", filmList);
-        tabs.addTab("Просмотр", filmView);
-        tabs.addTab("Редактор", filmRedactor);
+        header.add(langBox);
+        tabs.addTab(lm.getLang().list(), filmList);
+        tabs.addTab(lm.getLang().view(), filmView);
+        tabs.addTab(lm.getLang().editor(), filmRedactor);
         this.add(header, BorderLayout.NORTH);
         this.add(tabs, BorderLayout.CENTER);
         while (!service.getUserState()){
-            Thread.sleep(1000);
+            Thread.sleep(100);
         }
 
         this.setVisible(true);
+        updateAllLanguages();
     }
     public void openEditor(Movie movie) {
         filmView.setMovie(movie);
         filmRedactor.setMovie(movie);
         tabs.setSelectedComponent(filmRedactor);
+    }
+    @Override
+    public void updateLanguage(){
+        tabs.setTitleAt(0, lm.getLang().list());
+        tabs.setTitleAt(1, lm.getLang().view());
+        tabs.setTitleAt(2, lm.getLang().editor());
+        repaint();
+        revalidate();
+    }
+    public void updateAllLanguages(){
+        this.updateLanguage();
+        filmView.updateLanguage();
+        filmList.updateLanguage();
+        filmRedactor.updateLanguage();
     }
 }
