@@ -6,6 +6,7 @@ import Commands.*;
 import Manager.CollectionManager;
 import Response.Request;
 import Response.Response;
+import Utility.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import postgres.Connector;
@@ -70,6 +71,8 @@ public class Server {
         map.put("remove_any_by_usa_box_office", new RemoveAnyByUsaBoxOfficeCommand(cm));
         map.put("count_less_than_screenwriter", new CountLessThanScreenwriterCommand(cm));
         map.put("execute_script", new ExecuteScriptCommand(cm));
+        map.put("login", new LoginCommand(cm));
+        map.put("register", new RegisterCommand(cm));
         return map;
     }
 
@@ -135,8 +138,10 @@ public class Server {
                 }
                 System.out.println("Received: " + message);
                 Request request = mapper.fromJson(message, Request.class);
+                System.out.println("444");
                 processPool.execute(() -> {
                     try {
+                        System.out.println("1231231231231231");
                         Response response = processRequest(request);
                         writePool.execute(() -> sendResponse(writer, response));
                     } catch (Exception e) {
@@ -146,35 +151,13 @@ public class Server {
             }
         }
         Response processRequest (Request request) throws SQLException, IOException {
-            String CommandType = request.getType().toLowerCase();
-            Response response;
-            if (CommandType.equalsIgnoreCase("register")) {
-                boolean f = interactor.addUser(request.getArg(), Arrays.toString(request.getArg2()));
-                response = new Response("String", f ? "Register success" : "Username already taken");
-            } else if (CommandType.equalsIgnoreCase("login")) {
-                boolean f = interactor.loginUser(request.getArg(), Arrays.toString(request.getArg2()));
-                response = new Response("String", f ? "Login success" : "Wrong password or no such user");
-            } else {
-                String CommandArg = request.getArg();
-                Movie CommandMovie = request.getMovie();
-                Person CommandPerson = request.getPerson();
-                String CommandUser = request.getUser();
-                Command command = commandMap.get(CommandType);
-                command.setArg(CommandArg);
-                command.setMovie(CommandMovie);
-                command.setPerson(CommandPerson);
-                command.setUser(CommandUser);
-                if (CommandType.equalsIgnoreCase("Update") && CommandMovie == null) {
-                    Command FindIdCommand = new FindIdCommand(cm);
-                    FindIdCommand.setUser(CommandUser);
-                    FindIdCommand.setArg(CommandArg);
-                    response = FindIdCommand.execute();
-                } else {
-                    response = command.execute();
-                }
-                System.out.println("executed command: " + CommandType);
-                System.out.println("sending: " + mapper.toJson(response, Response.class));
-            }
+            String CommandType = request.getType();
+            Object CommandArg = request.getArg();
+            User CommandUser = request.getUser();
+            Command command = commandMap.get(CommandType);
+            command.setArg(CommandArg);
+            command.setUser(CommandUser);
+            Response response = command.execute();
             return response;
         }
         void sendResponse (BufferedWriter writer, Response response){

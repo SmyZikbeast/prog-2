@@ -18,6 +18,7 @@ public class OutputManager {
             case "ObjectList" -> ((ArrayList) Data).stream().map(s -> s.toString()).collect(Collectors.joining(", \n", "[", "]"));
             case "StringList" -> ((ArrayList)Data).stream().collect(Collectors.joining(", \n", "[", "]"));
             case "Integer" -> "Found Such ID";
+            case "Boolean" -> (boolean) Data ? "true" : "false";
             default -> throw new IllegalStateException("Unexpected value: " + Dt);
         };
     }

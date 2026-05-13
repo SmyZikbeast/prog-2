@@ -17,7 +17,7 @@ public class ExecuteScriptCommand extends Command{
     }
     @Override
     public Response execute() throws FileNotFoundException {
-        CommandManager.addCommand("Execute script");
+
         return new Response("String", "Successfully executed script");
     }
 }

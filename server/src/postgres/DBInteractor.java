@@ -1,6 +1,7 @@
 package postgres;
 
 import BaseFiles.*;
+import Utility.User;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -88,9 +89,9 @@ public class DBInteractor {
         int changed = st.executeUpdate(String.format("DELETE FROM MOVIES WHERE ID = %s",id));
         return (changed>0);
     }
-    public boolean addUser(String username, String password) throws SQLException {
-        System.out.println(username);
-        System.out.println(password);
+    public boolean addUser(User user) throws SQLException {
+        String username = user.getUsername();
+        String password = user.getPassword();
         Statement st = con.createStatement();
         PreparedStatement rq = con.prepareStatement("SELECT USERNAME, PASSWORD FROM USERS WHERE USERNAME = ?");
         rq.setString(1,username);
@@ -103,7 +104,9 @@ public class DBInteractor {
         return true;
     }
 
-    public boolean loginUser(String username, String password) throws SQLException {
+    public boolean loginUser(User user) throws SQLException {
+        String username = user.getUsername();
+        String password = user.getPassword();
         PreparedStatement rq = con.prepareStatement(String.format("SELECT USERNAME, PASSWORD FROM USERS WHERE USERNAME = ?",username));
         rq.setString(1,username);
         ResultSet rs = rq.executeQuery();

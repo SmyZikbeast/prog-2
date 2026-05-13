@@ -19,8 +19,7 @@ public class ClearCommand extends Command{
      */
     @Override
     public Response execute() throws SQLException {
-        cm.clear();
-        CommandManager.addCommand("Clear");
+
         return new Response("String", "Successfully cleared");
     }
 }

@@ -15,7 +15,6 @@ public class ShowCommand extends Command{
     }
     @Override
     public Response execute(){
-        CommandManager.addCommand("Show");
         return new Response("ObjectList",cm.getCollection());
     }
 }

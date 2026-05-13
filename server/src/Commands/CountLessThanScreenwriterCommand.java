@@ -16,8 +16,6 @@ public class CountLessThanScreenwriterCommand extends Command{
      */
     @Override
     public Response execute(){
-        CommandManager.addCommand("CountLessThanScreenwriter");
-        long amount = cm.getCollection().stream().filter(m -> m.getScreenwriter().compareTo(this.person)<0).count();
-        return new Response("String", String.valueOf(amount));
+        return new Response("String", "1");
     }
 }

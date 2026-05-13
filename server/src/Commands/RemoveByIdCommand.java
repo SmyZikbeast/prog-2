@@ -22,13 +22,7 @@ public class RemoveByIdCommand extends Command{
     }
     @Override
     public Response execute() throws SQLException, IOException {
-        CommandManager.addCommand("removeID");
-        Movie mv = cm.getCollection().stream().filter(s -> Integer.valueOf(arg) == s.getId()).findAny().orElse(null);
-        if (mv != null && Objects.equals(this.user, mv.getUser())){
-            cm.removeId(mv.getId());
-            cm.load();
-            return new Response("String", "Successfully removed");
-        }
+
         return new Response("String", "Nothing to remove");
     }
 }

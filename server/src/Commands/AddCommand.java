@@ -19,10 +19,7 @@ public class AddCommand extends Command{
      */
     @Override
     public Response execute() throws SQLException {
-        Movie m = this.movie;
-        cm.addMovie(m);
-        cm.load();
-        CommandManager.addCommand("Add");
+
         return new Response("String", "Success");
     }
 }

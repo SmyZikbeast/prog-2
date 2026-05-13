@@ -27,6 +27,11 @@ public class CollectionManager {
     String Type = "LinkedList";
     LinkedList<Movie> collection = new LinkedList<>();
     LocalDateTime InitDate;
+
+    public DBInteractor getInteractor() {
+        return interactor;
+    }
+
     DBInteractor interactor;
     Gson gson = new GsonBuilder()
             .setPrettyPrinting()
@@ -130,7 +135,7 @@ public class CollectionManager {
             return collection.stream().filter(o -> o.getId() == arg).findFirst().orElse(null);
         }
         finally {
-            lock.writeLock().unlock();
+            lock.readLock().unlock();
         }
     }
 }

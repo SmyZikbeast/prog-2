@@ -21,7 +21,7 @@ public class AddIfMaxCommand extends Command{
      */
     @Override
     public Response execute() throws SQLException, IOException {
-        Movie m = this.movie;
+        Movie m = (Movie)this.arg;
         CommandManager.addCommand("AddIfMax");
         if(cm.getCollection().stream().allMatch(s -> m.compareTo(s)>0)){
             cm.addMovie(m);

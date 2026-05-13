@@ -18,15 +18,8 @@ public class UpdateIdCommand extends Command{
     }
     @Override
     public Response execute() throws SQLException {
-        if (cm.getMovie(Integer.parseInt(arg)).getUser().equals(user)) {
-            if (cm.setMovie(Integer.parseInt(arg), movie)) {
-                CommandManager.addCommand("UpdateId");
-                return new Response("String", "Successfully updated");
-            }
-            return new Response("String", "Nothing to update");
-        }
-        else {
+
             return new Response("String", "No permission");
-        }
+
     }
 }

@@ -6,6 +6,7 @@ import BaseFiles.Movie;
 import BaseFiles.Person;
 import Response.Request;
 import Response.Response;
+import Utility.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.security.MessageDigest;
@@ -27,6 +28,7 @@ import java.util.Scanner;
  *
  */
 public class Runner {
+    private User user;
     public static int RecursionDepth = 0;
     public final int MAX_RECURSION_DEPTH = 5;
     String[] ObjectCommands = {"add", "add_if_max", "add_if_min"};
@@ -48,18 +50,6 @@ public class Runner {
             String[] tokens = line.split(" ");
             String commandType = tokens[0];
             if (Arrays.asList(Commands).contains(commandType)) {
-                if ("execute_script".equalsIgnoreCase(commandType)) {
-                    RecursionDepth++;
-                    if (RecursionDepth > MAX_RECURSION_DEPTH) {
-                        System.out.println("max recursion depth exceeded");
-                        return;
-                    }
-
-                    this.run(new Scanner(new File(tokens[1])), channel);
-                    Thread.sleep(100);
-                    RecursionDepth--;
-                    continue;
-                }
 
                 Movie movie = Arrays.asList(ObjectCommands).contains(commandType)
                         ? ElementInputManager.getMovie()
@@ -67,7 +57,7 @@ public class Runner {
 
                 String arg = tokens.length > 1 ? tokens[1] : null;
                 Person person = commandType.equalsIgnoreCase("count_less_than_screenwriter") ? ElementInputManager.getPerson() : null;
-                Request cmd = new Request(commandType, arg, movie, person, username);
+                Request cmd = new Request(commandType, arg, null);
                 String json = mapper.toJson(cmd) + "\n";
                 ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                 channel.write(buffer);
@@ -83,7 +73,7 @@ public class Runner {
                     System.out.println(OutputManager.SerializeValue(DataType, Data));
                     if (OutputManager.SerializeValue(DataType, Data).equalsIgnoreCase("Found Such ID")) {
                         movie = ElementInputManager.getMovie(Integer.valueOf(arg));
-                        cmd = new Request(commandType, arg, movie, person, username);
+                        cmd = new Request(commandType, arg, null);
                         json = mapper.toJson(cmd) + "\n";
                         buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
                         channel.write(buffer);

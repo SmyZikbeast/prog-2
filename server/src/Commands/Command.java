@@ -4,6 +4,7 @@ import BaseFiles.Movie;
 import BaseFiles.Person;
 import Manager.CollectionManager;
 import Response.Response;
+import Utility.User;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,10 +18,8 @@ import java.sql.SQLException;
  */
 public abstract class Command {
     CollectionManager cm;
-    String arg = null;
-    Movie movie = null;
-    Person person = null;
-    String user = null;
+    Object arg = null;
+    User user = null;
 
     Command(CollectionManager cm){
         this.cm = cm;
@@ -28,24 +27,19 @@ public abstract class Command {
 
     public Response execute() throws IOException, SQLException {return null;};
 
-    public void setArg(String arg) {
+    public void setArg(Object arg) {
         this.arg = arg;
     }
 
-    public void setMovie(Movie commandMovie) {
-        this.movie = commandMovie;
-    }
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+    public Response execute(String id) throws IOException {
+        return null;
+    };
 
-    public void execute(String id) throws IOException {};
-
-    public void setUser(String commandUser) {
+    public void setUser(User commandUser) {
         this.user = commandUser;
     }
     @Override
     public String toString(){
-        return "arg "+arg + " movie: "+ movie + " user: "+user;
+        return "arg: "+arg + " user: "+user;
     }
 }

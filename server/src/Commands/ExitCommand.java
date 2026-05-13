@@ -15,7 +15,7 @@ public class ExitCommand extends Command{
     }
     @Override
     public Response execute(){
-        CommandManager.clear();
+
         return new Response("String", "Closing client...");
     }
 }
