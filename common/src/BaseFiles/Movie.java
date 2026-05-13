@@ -14,6 +14,59 @@ import java.time.format.DateTimeFormatter;
 public class Movie implements Comparable<Movie> {
     @Expose
     private int id;//Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Integer getOscarsCount() {
+        return oscarsCount;
+    }
+
+    public void setOscarsCount(Integer oscarsCount) {
+        this.oscarsCount = oscarsCount;
+    }
+
+    public Long getGoldenPalmCount() {
+        return goldenPalmCount;
+    }
+
+    public void setGoldenPalmCount(Long goldenPalmCount) {
+        this.goldenPalmCount = goldenPalmCount;
+    }
+
+    public void setUsaBoxOffice(int usaBoxOffice) {
+        this.usaBoxOffice = usaBoxOffice;
+    }
+
+    public void setMpaaRating(MpaaRating mpaaRating) {
+        this.mpaaRating = mpaaRating;
+    }
+
+    public void setScreenwriter(Person screenwriter) {
+        this.screenwriter = screenwriter;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
     @Expose
     private String name; //Поле не может быть null, Строка не может быть пустой
     @Expose
