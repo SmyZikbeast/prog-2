@@ -19,6 +19,8 @@ public class DBInteractor {
         Statement st2 = con.createStatement();
         Statement st3 = con.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM MOVIES;");
+
+
         while (rs.next()){
             int Id = rs.getInt("ID");
             String Name = rs.getString("NAME");

@@ -48,6 +48,9 @@ public class FilmRedactor extends JPanel implements Localizable {
     private JTextField swPassportField;
     private JComboBox<Country> swNationalityField;
 
+    private JButton save;
+    private JButton delete;
+
     private Movie currentMovie =
             new Movie(0, "0",
                     new Coordinates(0.0, 0),
@@ -106,8 +109,8 @@ public class FilmRedactor extends JPanel implements Localizable {
 
     private void buildUI() {
 
-        JButton save = new JButton("Save");
-        JButton delete = new JButton("Delete");
+        save = new JButton(lm.getLang().save());
+        delete = new JButton(lm.getLang().delete());
 
         save.addActionListener(e -> saveMovie());
 
@@ -185,6 +188,8 @@ public class FilmRedactor extends JPanel implements Localizable {
         swPassportLabel.setText(lm.getLang().passportId());
         swNationalityLabel.setText(lm.getLang().nationality());
 
+        save.setText(lm.getLang().save());
+        delete.setText(lm.getLang().delete());
         revalidate();
         repaint();
     }

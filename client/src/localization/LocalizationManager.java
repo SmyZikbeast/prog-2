@@ -9,7 +9,7 @@ public class LocalizationManager {
         Language = language;
     }
 
-    private String Language;
+    private String Language = "RU";
     public Lang getLang() {
         return lang;
     }
