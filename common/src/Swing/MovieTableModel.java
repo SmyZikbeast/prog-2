@@ -3,7 +3,7 @@ package Swing;
 import Adapters.LocalDateAdapter;
 import Adapters.LocalDateTimeAdapter;
 import BaseFiles.Movie;
-import com.google.gson.Gson;
+import BaseFiles.MpaaRating;import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.swing.table.AbstractTableModel;
@@ -68,6 +68,20 @@ public class MovieTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int col) {
         return cols[col];
+    }
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return switch (columnIndex) {
+            case 0 -> Integer.class;
+            case 1 -> String.class;
+            case 2 -> LocalDate.class;
+            case 3 -> Integer.class;
+            case 4 -> Integer.class;
+            case 5 -> Integer.class;
+            case 6 -> MpaaRating.class;
+            case 7 -> String.class;
+            default -> Object.class;
+        };
     }
 
 }

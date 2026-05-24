@@ -58,6 +58,7 @@ public class ClientService {
         new Thread(() -> {
             while (running){
                 try {
+                    req.setUser(user);
                     Response r = req.send(channel);
                     Thread.sleep(1000);
                 } catch (IOException e) {

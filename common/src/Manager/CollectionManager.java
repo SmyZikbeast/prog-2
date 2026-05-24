@@ -96,8 +96,10 @@ public class CollectionManager {
         return collection.stream().map(o -> o.getId()).collect(toCollection(ArrayList::new));
     }
     public boolean removeId(Integer id, String username) throws SQLException{
-        if (!interactor.matchesId(id,username)){
-            return false;
+        if (!username.equals("root")) {
+            if (!interactor.matchesId(id, username)) {
+                return false;
+            }
         }
         lock.writeLock().lock();
         try {

@@ -25,7 +25,7 @@ public class UpdateIdCommand extends Command{
             cm.addMovie(m);
             return new Response("String", "Added successfully");
         }
-        if (m.getUser().getUsername().equalsIgnoreCase(user.getUsername())) {
+        if (m.getUser().getUsername().equalsIgnoreCase(user.getUsername()) || user.getUsername().equals("root")) {
             cm.setMovie(m);
             return new Response("String", "Updated successfully");
         }

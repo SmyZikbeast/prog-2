@@ -3,10 +3,9 @@ package ui;
 import Manager.CollectionManager;
 
 import javax.swing.*;
+import java.util.HashSet;
 
 public class ServerFrame extends JFrame {
-
-
     private CollectionManager cm;
     MainTab mainTab = new MainTab();
     UserTab userTab = new UserTab();
@@ -16,6 +15,7 @@ public class ServerFrame extends JFrame {
         JTabbedPane tabs = new JTabbedPane();
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setSize(1000,1000);
+        this.updateUserSet(new HashSet<String>());
         tabs.add("Main", mainTab);
         tabs.add("Users", userTab);
         tabs.add("Films", filmTab);
@@ -28,5 +28,8 @@ public class ServerFrame extends JFrame {
     public void FTsetCm(CollectionManager cm) {
         filmTab.setCm(cm);
         filmTab.startAutoRefresh();
+    }
+    public void updateUserSet(HashSet<String> userSet) {
+        userTab.update(userSet);
     }
 }

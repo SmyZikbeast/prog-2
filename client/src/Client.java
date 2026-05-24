@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 
 public class Client {
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws InterruptedException {
         LocalizationManager lm = new LocalizationManager(new RuLang());
         ClientService service = new ClientService();
         LoginFrame LFrame = new LoginFrame(service, lm);

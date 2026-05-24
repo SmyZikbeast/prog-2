@@ -3,18 +3,14 @@ package ui;
 import BaseFiles.*;
 import Service.ClientService;
 import Utility.User;
-import com.google.gson.internal.bind.util.ISO8601Utils;
 import localization.Localizable;
 import localization.LocalizationManager;
 
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import static BaseFiles.MpaaRating.G;
 
@@ -167,7 +163,7 @@ public class FilmRedactor extends JPanel implements Localizable {
         ratingBox.setSelectedItem(movie.getMpaaRating());
 
         swNameField.setText(movie.getScreenwriter().getName());
-        swBdayField.setText(movie.getScreenwriter().getBirthday().toString());
+        swBdayField.setText(movie.getScreenwriter().getBirthday().format(Dformatter));
         swHeightField.setText(String.valueOf(movie.getScreenwriter().getHeight()));
         swPassportField.setText(movie.getScreenwriter().getPassportID());
         swNationalityField.setSelectedItem(movie.getScreenwriter().getNationality());

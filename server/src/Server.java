@@ -44,6 +44,7 @@ public class Server {
     private final ForkJoinPool writePool = new ForkJoinPool();
     private ServerSocket server;
     private ServerFrame serverFrame = new ServerFrame();
+    private volatile HashSet userSet = new HashSet<String>();
     private final Gson mapper = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -87,7 +88,7 @@ public class Server {
     public void start() throws IOException {
         server = new ServerSocket(PORT);
         serverFrame.FTsetCm(cm);
-
+        autoRefreshUserSet();
         new Thread(() -> {
             while (true) {
                 serverFrame.update(userCount);
@@ -119,6 +120,21 @@ public class Server {
         }
     }
 
+    public void autoRefreshUserSet(){
+        new Thread(() -> {
+            while (true) {
+                userCount = this.userSet.size();
+                userSet.clear();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                serverFrame.updateUserSet(new HashSet<String>(userSet));
+                System.out.println("update");
+            }
+        }).start();
+}
     public static void main(String[] args) throws IOException, SQLException {
         Server server = new Server();
         new Thread(() -> {
@@ -137,70 +153,74 @@ public class Server {
             }
         }).start();
         server.start();
+    }
+
+    void HandleClient(Socket socket) throws IOException {
+        System.out.println("client accepted");
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+        BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+        while (running) {
+            String message = reader.readLine();
+            if (message == null) {
+                System.out.println("Client disconnected");
+                break;
+            }
+            Request request = mapper.fromJson(message, Request.class);
+            System.out.println(request);
+            if (request.getUser()!= null){
+                userSet.add(request.getUser().getUsername());
+            }
+            if (request.getPacketType() != PacketType.PING  && !Objects.equals(request.getType(), "show")){
+                System.out.println("request: " + request);
+            }
+            Object arg = request.getArg();
+            Movie movie = null;
+            if (arg instanceof LinkedTreeMap<?,?>) {
+                movie = mapper.fromJson(
+                        mapper.toJson(request.getArg()),
+                        Movie.class
+                );
+            }
+            if (movie != null) {
+                request.setArg(movie);
+            }
+            processPool.execute(() -> {
+                try {
+                    Response response = processRequest(request);
+                    writePool.execute(() -> sendResponse(writer, response));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
         }
-        void HandleClient(Socket socket) throws IOException {
-            System.out.println("client accepted");
-            userCount++;
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-            while (running) {
-                String message = reader.readLine();
-                if (message == null) {
-                    System.out.println("Client disconnected");
-                    break;
-                }
-                Request request = mapper.fromJson(message, Request.class);
-                if (request.getPacketType() != PacketType.PING  && !Objects.equals(request.getType(), "show")){
-                    System.out.println("request: " + request);
-                }
-                Object arg = request.getArg();
-                Movie movie = null;
-                if (arg instanceof LinkedTreeMap<?,?>) {
-                    movie = mapper.fromJson(
-                            mapper.toJson(request.getArg()),
-                            Movie.class
-                    );
-                }
-                if (movie != null) {
-                    request.setArg(movie);
-                }
-                processPool.execute(() -> {
-                    try {
-                        Response response = processRequest(request);
-                        writePool.execute(() -> sendResponse(writer, response));
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                });
-            }
+    }
+    Response processRequest (Request request) throws SQLException, IOException {
+        if (request.getPacketType() == PacketType.COMMAND) {
+            String CommandType = request.getType();
+            Object CommandArg = request.getArg();
+            User CommandUser = request.getUser();
+            Command command = commandMap.get(CommandType);
+            command.setArg(CommandArg);
+            command.setUser(CommandUser);
+            Response response = command.execute();
+            return response;
         }
-        Response processRequest (Request request) throws SQLException, IOException {
-            if (request.getPacketType() == PacketType.COMMAND) {
-                String CommandType = request.getType();
-                Object CommandArg = request.getArg();
-                User CommandUser = request.getUser();
-                Command command = commandMap.get(CommandType);
-                command.setArg(CommandArg);
-                command.setUser(CommandUser);
-                Response response = command.execute();
-                return response;
-            }
-            else {
-                Response r = new Response("String", "PONG");
-                r.setPacketType(PacketType.PING);
-                return r;
-            }
+        else {
+            Response r = new Response("String", "PONG");
+            r.setPacketType(PacketType.PING);
+            return r;
         }
-        void sendResponse (BufferedWriter writer, Response response){
-            try {
-                synchronized (writer) {
-                    writer.write(mapper.toJson(response) + "\n");
-                    writer.flush();
-                }
-            } catch (IOException e) {
-                System.out.println("Error sending response");
+    }
+    void sendResponse (BufferedWriter writer, Response response){
+        try {
+            synchronized (writer) {
+                writer.write(mapper.toJson(response) + "\n");
+                writer.flush();
             }
+        } catch (IOException e) {
+            System.out.println("Error sending response");
+        }
     }
 }

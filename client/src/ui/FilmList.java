@@ -6,7 +6,6 @@ import localization.Localizable;
 import localization.LocalizationManager;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
