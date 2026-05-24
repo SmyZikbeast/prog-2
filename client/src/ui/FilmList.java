@@ -6,6 +6,7 @@ import localization.Localizable;
 import localization.LocalizationManager;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,6 +20,7 @@ public class FilmList extends JPanel implements Localizable {
                 service.getTableModel()
         );
         table.getTableHeader().setReorderingAllowed(false);
+        table.setAutoCreateRowSorter(true);
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

@@ -1,21 +1,21 @@
-package Service;
+package Swing;
 
+import Adapters.LocalDateAdapter;
 import Adapters.LocalDateTimeAdapter;
-import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import javax.swing.table.AbstractTableModel;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
 public class MovieTableModel extends AbstractTableModel {
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
             .excludeFieldsWithoutExposeAnnotation()
             .create();
     private List<Movie> movies = new LinkedList<>();
@@ -37,7 +37,7 @@ public class MovieTableModel extends AbstractTableModel {
             case 4 -> m.getGoldenPalmCount();
             case 5 -> m.getUsaBoxOffice();
             case 6 -> m.getMpaaRating();
-            case 7 -> m.getUser();
+            case 7 -> m.getUser().getUsername();
             default -> "";
         };
     }

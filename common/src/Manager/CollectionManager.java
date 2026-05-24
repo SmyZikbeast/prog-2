@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import postgres.DBInteractor;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class CollectionManager {
     Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
             .excludeFieldsWithoutExposeAnnotation()
             .create();
     public CollectionManager(DBInteractor interactor){
@@ -73,7 +74,7 @@ public class CollectionManager {
     public void addMovie(Movie m) throws SQLException {
         lock.writeLock().lock();
         try {
-            interactor.addMovie(m, m.getScreenwriter(), m.getCoordinates());
+            interactor.addMovie(m, m.getScreenwriter(), m.getCoordinates(), m.getUser());
             this.load();
         } finally {
             lock.writeLock().unlock();
@@ -83,7 +84,7 @@ public class CollectionManager {
         lock.writeLock().lock();
         try {
             boolean f = interactor.removeId(m.getId());
-            interactor.addMovie(m, m.getScreenwriter(), m.getCoordinates(), m.getId());
+            interactor.addMovie(m, m.getScreenwriter(), m.getCoordinates(), m.getId(), m.getUser());
             this.load();
             return f;
         }

@@ -2,19 +2,24 @@ package ui;
 
 import BaseFiles.*;
 import Service.ClientService;
+import Utility.User;
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import localization.Localizable;
 import localization.LocalizationManager;
 
 import javax.swing.*;
+import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import static BaseFiles.MpaaRating.G;
 
 public class FilmRedactor extends JPanel implements Localizable {
-
+    private final static DateTimeFormatter Dformatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private final ClientService service;
     private final LocalizationManager lm;
 
@@ -56,11 +61,11 @@ public class FilmRedactor extends JPanel implements Localizable {
                     new Coordinates(0.0, 0),
                     0, 0L, 0, G,
                     new Person(0, "0",
-                            LocalDateTime.now(),
+                            LocalDate.of(1,1, 1),
                             0.0,
                             "0",
                             Country.INDIA),
-                    "0");
+                    new User("test", "test"));
 
     public FilmRedactor(ClientService service, LocalizationManager lm) {
 
@@ -207,16 +212,9 @@ public class FilmRedactor extends JPanel implements Localizable {
         currentMovie.getCoordinates().setY(Float.parseFloat(coordinatesYfield.getText()));
 
         currentMovie.getScreenwriter().setName(swNameField.getText());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy'T'HH:mm");
-
-        String bday = swBdayField.getText();
-        if (!bday.contains("T")) {
-            bday = bday + "T00:00";
-        }
-
+        System.out.println(swBdayField.getText());
         currentMovie.getScreenwriter().setBirthday(
-                LocalDateTime.parse(bday, formatter)
+                LocalDate.parse(swBdayField.getText(), Dformatter)
         );
 
         currentMovie.getScreenwriter().setHeight(Double.parseDouble(swHeightField.getText()));

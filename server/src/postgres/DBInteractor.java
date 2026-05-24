@@ -1,26 +1,30 @@
 package postgres;
 
 import BaseFiles.*;
+import Response.Request;
 import Utility.User;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 
 public class DBInteractor {
     Connection con;
-    public DBInteractor(Connection con) {
+    DateTimeFormatter dtformatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+    DateTimeFormatter dtformatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public DBInteractor(Connection con) throws SQLException {
         this.con = con;
     }
     public LinkedList<Movie> getMovies() throws SQLException {
+
         LinkedList<Movie> Movies = new LinkedList<>();
         Statement st = con.createStatement();
         Statement st2 = con.createStatement();
         Statement st3 = con.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM MOVIES;");
-
-
         while (rs.next()){
             int Id = rs.getInt("ID");
             String Name = rs.getString("NAME");
@@ -31,7 +35,7 @@ public class DBInteractor {
             int UsaBoxOffice = rs.getInt("USA_BOX_OFFICE");
             MpaaRating mpaaRating = MpaaRating.valueOf(rs.getString("MPAA_RATING"));
             int PersonId = rs.getInt("PERSON_ID");
-            String user = rs.getString("USERNAME");
+            int UserId = rs.getInt("USER_ID");
             ResultSet rsC = st2.executeQuery(String.format("SELECT * FROM COORDINATES WHERE ID = %s;",CoordsId));
             rsC.next();
             double X = rsC.getDouble("X");
@@ -39,50 +43,142 @@ public class DBInteractor {
             ResultSet rsS = st3.executeQuery(String.format("SELECT * FROM PERSON WHERE ID = %s",PersonId));
             rsS.next();
             String Scname = rsS.getString(2);
-            LocalDateTime birthday = DateTimeConverter.toDate(rsS.getString(3));
+            LocalDate birthday = rsS.getObject(3, LocalDate.class);
             Double height = rsS.getDouble(4);
             String passportID = rsS.getString(5);
             Country nationality = Country.valueOf(rsS.getString(6));
-            Movie m = new Movie(Id, Name, new Coordinates(CoordsId, X,Y), DateTimeConverter.toDate(CreationDate), OscarsCount, GoldenPalmCount, UsaBoxOffice, mpaaRating, new Person(PersonId, Scname, birthday, height, passportID, nationality), user);
+            ResultSet rsU = st3.executeQuery(String.format("SELECT * FROM USERS WHERE ID = %s",UserId));
+            rsU.next();
+            String username = rsU.getString(2);
+            String password = rsU.getString(3);
+            Movie m = new Movie(Id, Name, new Coordinates(CoordsId, X,Y), LocalDateTime.parse(CreationDate, dtformatter2), OscarsCount, GoldenPalmCount, UsaBoxOffice, mpaaRating, new Person(PersonId, Scname, birthday, height, passportID, nationality), new User(username,password));
             Movies.add(m);
         }
         return Movies;
     }
-    public void addMovie(Movie m, Person p, Coordinates c) throws SQLException {
-        Statement st1 = con.createStatement();
-        Statement st2 = con.createStatement();
-        String q2 = DBQuery.CreateQuery("add_person", p);
-        String q3 = DBQuery.CreateQuery("add_coords", c);
-        ResultSet set = st1.executeQuery("SELECT LAST_VALUE FROM PERSON_ID_SEQ");
-        set.next();
-        int PersonId = set.getInt(1)+1;
-        ResultSet set1 = st1.executeQuery("SELECT LAST_VALUE FROM COORDINATES_ID_SEQ");
-        set1.next();
-        int CoordsId = set1.getInt(1)+1;
-        m.setPersonId(PersonId);
-        System.out.println(CoordsId);
-        m.setCoordsId(CoordsId);
-        st2.executeUpdate(q2);
-        st2.executeUpdate(q3);
-        String q1 = DBQuery.CreateQuery("add_movie",m);
-        st1.executeUpdate(q1);
+    public void initialize() throws SQLException {
+        Statement st = con.createStatement();
+        st.executeUpdate("SET search_path TO prog;");
+        st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS COORDINATES  (
+                    ID SERIAL PRIMARY KEY,
+                    X DOUBLE PRECISION NOT NULL,
+                    Y REAL NOT NULL
+                );""");
+        st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS PERSON  (
+                ID SERIAL PRIMARY KEY,
+                NAME VARCHAR(255) NOT NULL,
+                BIRTHDAY DATE,
+                HEIGHT DOUBLE PRECISION,
+                PASSPORT_ID VARCHAR(50),
+                NATIONALITY VARCHAR(50)
+        );""");
+        st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS USERS (
+                    ID SERIAL PRIMARY KEY,
+                    USERNAME VARCHAR(255) NOT NULL,
+                    PASSWORD VARCHAR(255) NOT NULL);
+        """);
+        st.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS MOVIES (
+                ID SERIAL PRIMARY KEY,
+                NAME VARCHAR(255) NOT NULL,
+                COORDINATES_ID INTEGER NOT NULL REFERENCES COORDINATES(ID),
+                CREATION_DATE TIMESTAMP NOT NULL ,
+                OSCARS_COUNT INTEGER,
+                GOLDEN_PALM_COUNT BIGINT,
+                USA_BOX_OFFICE INTEGER,
+                MPAA_RATING VARCHAR(20),
+                PERSON_ID INTEGER NOT NULL REFERENCES PERSON(ID),
+                USER_ID INTEGER NOT NULL REFERENCES USERS(ID)
+        );""");
     }
-    public void addMovie(Movie m, Person p, Coordinates c, int id) throws SQLException {
-        m.setId(id);
-        Statement st1 = con.createStatement();
-        Statement st2 = con.createStatement();
-        String q2 = DBQuery.CreateQuery("add_person", p);
-        String q3 = DBQuery.CreateQuery("add_coords", c);
-        ResultSet set = st1.executeQuery("SELECT LAST_VALUE FROM PERSON_ID_SEQ");
+    public void addMovie(Movie m, Person p, Coordinates c, User u) throws SQLException {
+        PreparedStatement st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
+        st2.setString(1,p.getName());
+        st2.setObject(2,p.getBirthday());
+        st2.setDouble(3,p.getHeight());
+        st2.setString(4,p.getPassportID());
+        st2.setString(5,p.getNationality().toString());
+        st2.executeUpdate();
+        st2 = con.prepareStatement(DBQuery.CreateQuery("add_coords", c));
+        st2.setDouble(1,c.getX());
+        st2.setFloat(2,c.getY());
+        st2.executeUpdate();
+        st2 = con.prepareStatement("SELECT ID FROM PERSON WHERE NAME = ? AND PASSPORT_ID = ?");
+        st2.setString(1,p.getName());
+        st2.setString(2,p.getPassportID());
+        ResultSet set = st2.executeQuery();
         set.next();
+        int PersonId = set.getInt(1);
+        st2 = con.prepareStatement("SELECT ID FROM COORDINATES WHERE X = ? AND Y = ?");
+        st2.setDouble(1,c.getX());
+        st2.setFloat(2,c.getY());
+        set = st2.executeQuery();
+        set.next();
+        int CoordsId = set.getInt(1);
+        PreparedStatement st3 = con.prepareStatement("SELECT ID FROM USERS WHERE USERNAME = ?");
+        st3.setString(1,u.getUsername());
+        ResultSet set2 = st3.executeQuery();
+        set2.next();
+        int UserId = set2.getInt(1);
+        m.setPersonId(PersonId);
+        m.setCoordsId(CoordsId);
+        m.setUserId(UserId);
+        st2 = con.prepareStatement(DBQuery.CreateQuery("add_movie",m));
+        st2.setString(1,m.getName());
+        st2.setInt(2,CoordsId);
+        st2.setObject(3,m.getCreationDate());
+        st2.setInt(4,m.getOscarsCount());
+        st2.setLong(5,m.getGoldenPalmCount());
+        st2.setInt(6,m.getUsaBoxOffice());
+        st2.setString(7,m.getMpaaRating().toString());
+        st2.setInt(8,PersonId);
+        st2.setInt(9,UserId);
+        st2.executeUpdate();
+    }
+    public void addMovie(Movie m, Person p, Coordinates c, int id, User u) throws SQLException {
+        m.setId(id);
+        System.out.println(0);
+        Statement st1 = con.createStatement();
+        System.out.println(1);
+        PreparedStatement st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
+        System.out.println(2);
+        st2.setString(1,p.getName());
+        st2.setObject(2,p.getBirthday());
+        st2.setDouble(3,p.getHeight());
+        st2.setString(4,p.getPassportID());
+        st2.setString(5,p.getNationality().toString());
+        System.out.println(3);
+        st2.executeUpdate();
+        System.out.println(4);
+        st2 = con.prepareStatement(DBQuery.CreateQuery("add_coords", c));
+        System.out.println(5);
+        st2.setDouble(1,c.getX());
+        st2.setFloat(2,c.getY());
+        System.out.println(6);
+        st2.executeUpdate();
+        System.out.println(7);
+        ResultSet set = st1.executeQuery("SELECT LAST_VALUE FROM PERSON_ID_SEQ");
+        System.out.println(8);
+        set.next();
+        System.out.println(9);
         int PersonId = set.getInt(1)+1;
         ResultSet set1 = st1.executeQuery("SELECT LAST_VALUE FROM COORDINATES_ID_SEQ");
         set1.next();
+        System.out.println(10);
         int CoordsId = set1.getInt(1)+1;
+
+        PreparedStatement st3 = con.prepareStatement("SELECT ID FROM USER WHERE USERNAME = ?");
+        st3.setString(1,u.getUsername());
+        ResultSet set2 = st3.executeQuery();
+        set2.next();
+        int UserId = set2.getInt(1);
+
         m.setPersonId(PersonId);
         m.setCoordsId(CoordsId);
-        st2.executeUpdate(q2);
-        st2.executeUpdate(q3);
+        m.setUserId(UserId);
         String q1 = DBQuery.CreateQuery("add_movie_id",m);
         st1.executeUpdate(q1);
     }
@@ -98,7 +194,6 @@ public class DBInteractor {
         PreparedStatement rq = con.prepareStatement("SELECT USERNAME, PASSWORD FROM USERS WHERE USERNAME = ?");
         rq.setString(1,username);
         ResultSet rs = rq.executeQuery();
-        System.out.println(rq);
         if(rs.next()){
             return false;
         }
@@ -130,7 +225,7 @@ public class DBInteractor {
         return rs.next();
     }
     public boolean matchesId(int id, String user) throws SQLException {
-        PreparedStatement rq = con.prepareStatement("SELECT * FROM MOVIES WHERE ID = ? AND USERNAME= ?");
+        PreparedStatement rq = con.prepareStatement("SELECT * FROM MOVIES JOIN USERS ON MOVIES.USER_ID = USERS.ID WHERE MOVIES.ID = ? AND USERNAME= ?");
         rq.setInt(1, id);
         rq.setString(2, user);
         ResultSet rs = rq.executeQuery();

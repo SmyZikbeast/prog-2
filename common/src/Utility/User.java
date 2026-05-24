@@ -3,6 +3,10 @@ package Utility;
 import com.google.gson.annotations.Expose;
 
 public class User {
+
+
+    @Expose
+    private int id;
     @Expose
     private String Username;
     @Expose
@@ -27,5 +31,16 @@ public class User {
     public User(String Username, String Password){
         this.Username = Username;
         this.Password = Password;
+    }
+
+    public void setId(int userId) {
+        this.id = userId;
+    }
+    public int getId() {
+        return id;
+    }
+    @Override
+    public String toString(){
+        return Username;
     }
 }

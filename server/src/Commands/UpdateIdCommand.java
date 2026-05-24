@@ -21,11 +21,11 @@ public class UpdateIdCommand extends Command{
     public Response execute() throws SQLException {
         Movie m = (Movie)arg;
         if (!cm.findId(m)){
-            m.setUser(user.getUsername());
+            m.setUser(user);
             cm.addMovie(m);
             return new Response("String", "Added successfully");
         }
-        if (m.getUser().equalsIgnoreCase(user.getUsername())) {
+        if (m.getUser().getUsername().equalsIgnoreCase(user.getUsername())) {
             cm.setMovie(m);
             return new Response("String", "Updated successfully");
         }

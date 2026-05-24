@@ -18,10 +18,7 @@ public class MovieController {
     }
 
     public void openMovieEditor(int row) {
-
-        Movie movie =
-                service.getTableModel().getMovieAt(row);
-
+        Movie movie = service.getTableModel().getMovieAt(row);
         frame.openEditor(movie);
     }
 

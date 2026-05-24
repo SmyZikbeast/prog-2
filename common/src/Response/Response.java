@@ -7,6 +7,9 @@ import com.google.gson.annotations.Expose;
  *
  */
 public class Response {
+
+    @Expose
+    PacketType packetType = PacketType.COMMAND;
     @Expose
     String DataType;
     @Expose
@@ -35,5 +38,13 @@ public class Response {
     public void setData(Object data) {
         Data = data;
     }
+    public PacketType getPacketType() {
+        return packetType;
+    }
+
+    public void setPacketType(PacketType packetType) {
+        this.packetType = packetType;
+    }
+
 
 }

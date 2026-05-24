@@ -1,5 +1,6 @@
 package BaseFiles;
 
+import Utility.User;
 import com.google.gson.annotations.Expose;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,25 @@ import java.time.format.DateTimeFormatter;
 public class Movie implements Comparable<Movie> {
     @Expose
     private int id;//Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-
+    @Expose
+    private String name; //Поле не может быть null, Строка не может быть пустой
+    @Expose
+    private Coordinates coordinates; //Поле не может быть null
+    @Expose
+    private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    @Expose
+    private Integer oscarsCount; //Значение поля должно быть больше 0, Поле может быть null
+    @Expose
+    private Long goldenPalmCount; //Значение поля должно быть больше 0, Поле может быть null
+    @Expose
+    private int usaBoxOffice; //Значение поля должно быть больше 0
+    @Expose
+    private MpaaRating mpaaRating; //Поле не может быть null
+    @Expose
+    private Person screenwriter;
+    @Expose
+    private User user;
+    DateTimeFormatter dtformatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
     public String getName() {
         return name;
     }
@@ -63,33 +82,15 @@ public class Movie implements Comparable<Movie> {
         this.screenwriter = screenwriter;
     }
 
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    @Expose
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    @Expose
-    private Coordinates coordinates; //Поле не может быть null
-    @Expose
-    private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    @Expose
-    private Integer oscarsCount; //Значение поля должно быть больше 0, Поле может быть null
-    @Expose
-    private Long goldenPalmCount; //Значение поля должно быть больше 0, Поле может быть null
-    @Expose
-    private int usaBoxOffice; //Значение поля должно быть больше 0
-    @Expose
-    private MpaaRating mpaaRating; //Поле не может быть null
-    @Expose
-    private Person screenwriter;
-    @Expose
-    private String user;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    public Movie(String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, String user) {
+
+    public Movie(String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, User user) {
         this.name = name;
         this.coordinates = coordinates;
-        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
+        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(dtformatter),dtformatter);
         this.oscarsCount = oscarsCount;
         this.goldenPalmCount = goldenPalmCount;
         this.usaBoxOffice = usaBoxOffice;
@@ -97,11 +98,11 @@ public class Movie implements Comparable<Movie> {
         this.screenwriter = screenwriter;
         this.user = user;
     }
-    public Movie(int id, String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, String user) {
+    public Movie(int id, String name, Coordinates coordinates, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, User user) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
-        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(formatter),formatter);
+        this.creationDate = LocalDateTime.parse(LocalDateTime.now().format(dtformatter),dtformatter);
         this.oscarsCount = oscarsCount;
         this.goldenPalmCount = goldenPalmCount;
         this.usaBoxOffice = usaBoxOffice;
@@ -109,7 +110,7 @@ public class Movie implements Comparable<Movie> {
         this.screenwriter = screenwriter;
         this.user = user;
     }
-    public Movie(int id, String name, Coordinates coordinates, LocalDateTime creationDate, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, String user) {
+    public Movie(int id, String name, Coordinates coordinates, LocalDateTime creationDate, Integer oscarsCount, Long goldenPalmCount, int usaBoxOffice, MpaaRating mpaaRating, Person screenwriter, User user) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -162,10 +163,10 @@ public class Movie implements Comparable<Movie> {
     }
 
     public String toSQL() {
-        return ("'"+name+"', "+coordinates.id+", '"+creationDate+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId()+", '"+user+"'");
+        return ("'"+name+"', "+coordinates.id+", '"+creationDate.format(dtformatter)+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId()+", '"+user.getId()+"'");
     }
     public String toSQLid() {
-        return (id+", '"+name+"', "+coordinates.id+", '"+creationDate+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId()+", '"+user+"'");
+        return (id+", '"+name+"', "+coordinates.id+", '"+creationDate.format(dtformatter)+"', "+oscarsCount+", "+goldenPalmCount+", "+usaBoxOffice+", '"+mpaaRating+"', "+ screenwriter.getId()+", '"+user.getId()+"'");
     }
 
     public Coordinates getCoordinates() {
@@ -184,7 +185,11 @@ public class Movie implements Comparable<Movie> {
         this.id = id;
     }
 
-    public String getUser() {
+    public User getUser() {
         return this.user;
+    }
+
+    public void setUserId(int userId) {
+        this.user.setId(userId);
     }
 }

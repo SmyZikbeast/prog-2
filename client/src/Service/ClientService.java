@@ -1,20 +1,21 @@
 package Service;
 
+import Adapters.LocalDateAdapter;
 import Adapters.LocalDateTimeAdapter;
-import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
 import Response.Request;
 import Response.Response;
+import Swing.MovieTableModel;
 import Utility.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
+import Response.PacketType;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 public class ClientService {
@@ -25,12 +26,13 @@ public class ClientService {
     private User user;
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
             .excludeFieldsWithoutExposeAnnotation()
             .create();
-    public ClientService(){
+    public ClientService() throws InterruptedException {
         this.model = new MovieTableModel();
         this.connect();
+        startAutoConnect();
         startAutoRefresh();
     }
     public boolean getUserState(){
@@ -43,32 +45,44 @@ public class ClientService {
                     if (userState) {
                         refreshMovies();
                     }
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                 } catch (Exception e) {
                     System.out.println("refresh error: " + e.getMessage());
                 }
             }
         }).start();
     }
-    public void connect() {
+    private void startAutoConnect(){
+        Request req = new Request(null,null,user);
+        req.setPacketType(PacketType.PING);
         new Thread(() -> {
-        while (running) {
-            try {
-                SocketChannel channel = SocketChannel.open();
-                channel.connect(new InetSocketAddress("localhost", 13377));
-                this.channel = channel;
-                System.out.println("Connected to server!");
-                while(channel.isConnected()){}
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+            while (running){
                 try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
+                    Response r = req.send(channel);
+                    Thread.sleep(1000);
+                } catch (IOException e) {
+                    try {
+                        Thread.sleep(500);
+                        this.connect();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
-        }
         }).start();
+    }
+    public void connect() throws InterruptedException {
+        try {
+            SocketChannel channel = SocketChannel.open();
+            channel.connect(new InetSocketAddress("localhost", 13377));
+            this.channel = channel;
+            System.out.println("Connected to server!");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            Thread.sleep(100);
+        }
     }
     public void authorize(User u) throws IOException {
         Response r = new Request("login", null, u).send(channel);
@@ -114,8 +128,8 @@ public class ClientService {
     }
     public void updateMovie(Movie movie) {
         try {
-            Response r = new Request("update", movie, this.getUser())
-                    .send(channel);
+            Request req = new Request("update", movie, this.getUser());
+            Response r = req.send(channel);
             if (r != null) {
                 refreshMovies();
             }

@@ -1,7 +1,6 @@
+import Adapters.LocalDateAdapter;
 import Adapters.LocalDateTimeAdapter;
-import Adapters.ZonedDateTimeAdapter;
 import BaseFiles.Movie;
-import BaseFiles.Person;
 import Commands.*;
 import Manager.CollectionManager;
 import Response.Request;
@@ -12,7 +11,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 import postgres.Connector;
 import postgres.DBInteractor;
-
+import ui.ServerFrame;
+import Response.PacketType;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -20,8 +20,8 @@ import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
 
@@ -32,6 +32,8 @@ import java.util.concurrent.ForkJoinPool;
  *
  */
 public class Server {
+
+    private static volatile int userCount = 0;
     private final int PORT = 13377;
     private static volatile boolean running = true;
     private final DBInteractor interactor;
@@ -41,14 +43,21 @@ public class Server {
     private final ForkJoinPool processPool = new ForkJoinPool();
     private final ForkJoinPool writePool = new ForkJoinPool();
     private ServerSocket server;
+    private ServerFrame serverFrame = new ServerFrame();
     private final Gson mapper = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
             .excludeFieldsWithoutExposeAnnotation()
             .create();
 
-    public Server(DBInteractor interactor, CollectionManager cm) {
-        this.interactor = interactor;
+    public Server() throws SQLException {
+        Connector connector = new Connector();
+        Connection con = connector.connect();
+        interactor = new DBInteractor(con);
+        interactor.initialize();
+        CollectionManager cm = new CollectionManager(interactor);
+        serverFrame.FTsetCm(cm);
+        cm.load();
         this.cm = cm;
         this.commandMap = initCommands();
     }
@@ -77,6 +86,19 @@ public class Server {
 
     public void start() throws IOException {
         server = new ServerSocket(PORT);
+        serverFrame.FTsetCm(cm);
+
+        new Thread(() -> {
+            while (true) {
+                serverFrame.update(userCount);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+
         while (running) {
             try {
                 System.out.println("Waiting for the client request");
@@ -85,6 +107,7 @@ public class Server {
                     try {
                         HandleClient(socket);
                     } catch (IOException e) {
+                        userCount--;
                         System.out.println(e.getMessage());
                     }
                 });
@@ -97,13 +120,7 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException, SQLException {
-        Connector connector = new Connector();
-        Connection con = connector.connect();
-
-        DBInteractor interactor = new DBInteractor(con);
-        CollectionManager cm = new CollectionManager(interactor);
-        cm.load();
-        Server server = new Server(interactor, cm);
+        Server server = new Server();
         new Thread(() -> {
             try {
                 BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
@@ -121,10 +138,9 @@ public class Server {
         }).start();
         server.start();
         }
-
-
         void HandleClient(Socket socket) throws IOException {
             System.out.println("client accepted");
+            userCount++;
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             BufferedWriter writer = new BufferedWriter(
@@ -135,10 +151,11 @@ public class Server {
                     System.out.println("Client disconnected");
                     break;
                 }
-                System.out.println("Received: " + message);
                 Request request = mapper.fromJson(message, Request.class);
+                if (request.getPacketType() != PacketType.PING  && !Objects.equals(request.getType(), "show")){
+                    System.out.println("request: " + request);
+                }
                 Object arg = request.getArg();
-                System.out.println(arg);
                 Movie movie = null;
                 if (arg instanceof LinkedTreeMap<?,?>) {
                     movie = mapper.fromJson(
@@ -160,15 +177,21 @@ public class Server {
             }
         }
         Response processRequest (Request request) throws SQLException, IOException {
-            String CommandType = request.getType();
-            Object CommandArg = request.getArg();
-            User CommandUser = request.getUser();
-            Command command = commandMap.get(CommandType);
-            command.setArg(CommandArg);
-            command.setUser(CommandUser);
-            System.out.println(command);
-            Response response = command.execute();
-            return response;
+            if (request.getPacketType() == PacketType.COMMAND) {
+                String CommandType = request.getType();
+                Object CommandArg = request.getArg();
+                User CommandUser = request.getUser();
+                Command command = commandMap.get(CommandType);
+                command.setArg(CommandArg);
+                command.setUser(CommandUser);
+                Response response = command.execute();
+                return response;
+            }
+            else {
+                Response r = new Response("String", "PONG");
+                r.setPacketType(PacketType.PING);
+                return r;
+            }
         }
         void sendResponse (BufferedWriter writer, Response response){
             try {

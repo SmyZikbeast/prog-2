@@ -1,8 +1,7 @@
 package Response;
 
+import Adapters.LocalDateAdapter;
 import Adapters.LocalDateTimeAdapter;
-import Adapters.ZonedDateTimeAdapter;
-import BaseFiles.*;
 import Utility.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,8 +11,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 /**
  * class used to send objects from client to server
@@ -22,6 +21,8 @@ import java.time.ZonedDateTime;
  *
  */
 public class Request {
+    @Expose
+    PacketType packetType = PacketType.COMMAND;
     @Expose
     String type;
     @Expose
@@ -39,7 +40,7 @@ public class Request {
 
     Gson mapper = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-            .registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeAdapter())
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
             .excludeFieldsWithoutExposeAnnotation()
             .create();
     public Request(String type, Object arg, User user){
@@ -62,10 +63,14 @@ public class Request {
     public void setArg(Object arg) {
         this.arg = arg;
     }
-
+    public void setPacketType(PacketType pt){
+        this.packetType = pt;
+    }
+    public PacketType getPacketType(){
+        return this.packetType;
+    }
     public Response send(SocketChannel channel) throws IOException {
         String json = mapper.toJson(this, Request.class) + "\n";
-        System.out.println(json);
         ByteBuffer buffer = ByteBuffer.wrap(json.getBytes(StandardCharsets.UTF_8));
         channel.write(buffer);
         ByteBuffer returnBuffer = ByteBuffer.allocate(8192);
@@ -78,5 +83,9 @@ public class Request {
                 .decode(returnBuffer)
                 .toString();
         return mapper.fromJson(responseJson, Response.class);
+    }
+    @Override
+    public String toString(){
+        return "packettype:" + this.getPacketType() + " type:"+this.getType()+ " arg:"+this.getArg()+" user:"+this.getUser();
     }
 }

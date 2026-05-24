@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class Connector {
     public Connection connect() throws SQLException {
-        String url = "jdbc:postgresql://localhost:5432/postgres";
+        String url = "jdbc:postgresql://localhost:5432/postgres?currentSchema=prog";
         String uname = "postgres";
         String pass = "uqCC<8977";
         Connection con = DriverManager.getConnection(url, uname, pass);
