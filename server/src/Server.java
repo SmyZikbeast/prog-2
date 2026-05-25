@@ -89,17 +89,7 @@ public class Server {
         server = new ServerSocket(PORT);
         serverFrame.FTsetCm(cm);
         autoRefreshUserSet();
-        new Thread(() -> {
-            while (true) {
-                serverFrame.update(userCount);
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();
-
+        autoRefreshUserCount();
         while (running) {
             try {
                 System.out.println("Waiting for the client request");
@@ -119,7 +109,18 @@ public class Server {
             }
         }
     }
-
+    public void autoRefreshUserCount(){
+        new Thread(() -> {
+            while (true) {
+                serverFrame.update(userCount);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
+    }
     public void autoRefreshUserSet(){
         new Thread(() -> {
             while (true) {
@@ -204,8 +205,7 @@ public class Server {
             Command command = commandMap.get(CommandType);
             command.setArg(CommandArg);
             command.setUser(CommandUser);
-            Response response = command.execute();
-            return response;
+            return command.execute();
         }
         else {
             Response r = new Response("String", "PONG");

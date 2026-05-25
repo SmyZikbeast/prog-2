@@ -140,47 +140,49 @@ public class DBInteractor {
     }
     public void addMovie(Movie m, Person p, Coordinates c, int id, User u) throws SQLException {
         m.setId(id);
-        System.out.println(0);
-        Statement st1 = con.createStatement();
-        System.out.println(1);
         PreparedStatement st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
-        System.out.println(2);
         st2.setString(1,p.getName());
         st2.setObject(2,p.getBirthday());
         st2.setDouble(3,p.getHeight());
         st2.setString(4,p.getPassportID());
         st2.setString(5,p.getNationality().toString());
-        System.out.println(3);
         st2.executeUpdate();
-        System.out.println(4);
         st2 = con.prepareStatement(DBQuery.CreateQuery("add_coords", c));
-        System.out.println(5);
         st2.setDouble(1,c.getX());
         st2.setFloat(2,c.getY());
-        System.out.println(6);
         st2.executeUpdate();
-        System.out.println(7);
-        ResultSet set = st1.executeQuery("SELECT LAST_VALUE FROM PERSON_ID_SEQ");
-        System.out.println(8);
+        st2 = con.prepareStatement("SELECT ID FROM PERSON WHERE NAME = ? AND PASSPORT_ID = ?");
+        st2.setString(1,p.getName());
+        st2.setString(2,p.getPassportID());
+        ResultSet set = st2.executeQuery();
         set.next();
-        System.out.println(9);
-        int PersonId = set.getInt(1)+1;
-        ResultSet set1 = st1.executeQuery("SELECT LAST_VALUE FROM COORDINATES_ID_SEQ");
-        set1.next();
-        System.out.println(10);
-        int CoordsId = set1.getInt(1)+1;
-
-        PreparedStatement st3 = con.prepareStatement("SELECT ID FROM USER WHERE USERNAME = ?");
+        int PersonId = set.getInt(1);
+        st2 = con.prepareStatement("SELECT ID FROM COORDINATES WHERE X = ? AND Y = ?");
+        st2.setDouble(1,c.getX());
+        st2.setFloat(2,c.getY());
+        set = st2.executeQuery();
+        set.next();
+        int CoordsId = set.getInt(1);
+        PreparedStatement st3 = con.prepareStatement("SELECT ID FROM USERS WHERE USERNAME = ?");
         st3.setString(1,u.getUsername());
         ResultSet set2 = st3.executeQuery();
         set2.next();
         int UserId = set2.getInt(1);
-
         m.setPersonId(PersonId);
         m.setCoordsId(CoordsId);
         m.setUserId(UserId);
-        String q1 = DBQuery.CreateQuery("add_movie_id",m);
-        st1.executeUpdate(q1);
+        st2 = con.prepareStatement(DBQuery.CreateQuery("add_movie_id",m));
+        st2.setInt(1,m.getId());
+        st2.setString(2,m.getName());
+        st2.setInt(3,CoordsId);
+        st2.setObject(4,m.getCreationDate());
+        st2.setInt(5,m.getOscarsCount());
+        st2.setLong(6,m.getGoldenPalmCount());
+        st2.setInt(7,m.getUsaBoxOffice());
+        st2.setString(8,m.getMpaaRating().toString());
+        st2.setInt(9,PersonId);
+        st2.setInt(10,UserId);
+        st2.executeUpdate();
     }
     public boolean removeId(int id) throws SQLException {
         Statement st = con.createStatement();

@@ -10,6 +10,8 @@ import Utility.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import Response.PacketType;
+import ui.MainFrame;
+
 import javax.swing.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -24,6 +26,7 @@ public class ClientService {
     private MovieTableModel model;
     private SocketChannel channel;
     private User user;
+    private MainFrame mainFrame;
     Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -56,7 +59,7 @@ public class ClientService {
         Request req = new Request(null,null,user);
         req.setPacketType(PacketType.PING);
         new Thread(() -> {
-            while (running){
+            while (running && this.channel !=null){
                 try {
                     req.setUser(user);
                     Response r = req.send(channel);
@@ -75,14 +78,17 @@ public class ClientService {
         }).start();
     }
     public void connect() throws InterruptedException {
-        try {
-            SocketChannel channel = SocketChannel.open();
-            channel.connect(new InetSocketAddress("localhost", 13377));
-            this.channel = channel;
-            System.out.println("Connected to server!");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            Thread.sleep(100);
+        while (this.channel == null) {
+            try {
+                SocketChannel channel = SocketChannel.open();
+                channel.connect(new InetSocketAddress("localhost", 13377));
+                this.channel = channel;
+                System.out.println("Connected to server!");
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                Thread.sleep(100);
+            }
         }
     }
     public void authorize(User u) throws IOException {
@@ -140,5 +146,8 @@ public class ClientService {
     }
     public void deleteMovie(int id) throws IOException {
         Response r = new Request("remove", id, this.getUser()).send(channel);
+    }
+    public void setMainFrame(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
     }
 }

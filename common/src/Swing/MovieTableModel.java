@@ -18,6 +18,9 @@ public class MovieTableModel extends AbstractTableModel {
             .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
             .excludeFieldsWithoutExposeAnnotation()
             .create();
+
+
+
     private List<Movie> movies = new LinkedList<>();
 
     private final String[] cols = {"ID", "Name","Creation Date", "Oscars Count", "Golden Palm Count", "Usa Box Office", "MPAA rating",  "User"};
@@ -83,5 +86,7 @@ public class MovieTableModel extends AbstractTableModel {
             default -> Object.class;
         };
     }
-
+    public List<Movie> getMovies() {
+        return movies;
+    }
 }

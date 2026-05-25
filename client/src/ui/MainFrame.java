@@ -26,22 +26,9 @@ public class MainFrame extends JFrame implements Localizable{
         controller = new MovieController(service,this);
         filmList = new FilmList(service, controller, lm);
         filmRedactor = new FilmRedactor(service, lm);
-        filmView = new FilmView(lm);
+        filmView = new FilmView(service);
         JPanel header = new JPanel();
-        JComboBox<String> langBox = new JComboBox<>(
-                new String[]{"RU", "SV", "NO", "ES"}
-        );
-        langBox.setSelectedItem(lm.getLanguage());
-        langBox.addActionListener(e -> {
-            String selected = (String) langBox.getSelectedItem();
-            switch (selected) {
-                case "RU" -> lm.setLang(new RuLang());
-                case "SV" -> lm.setLang(new SeLang());
-                case "NO" -> lm.setLang(new NoLang());
-                case "ES" -> lm.setLang(new EsLang());
-            }
-            updateAllLanguages();
-        });
+        JComboBox<String> langBox = getStringJComboBox(lm);
         header.add(userLabel);
         header.add(langBox);
         tabs.addTab(lm.getLang().list(), filmList);
@@ -56,8 +43,26 @@ public class MainFrame extends JFrame implements Localizable{
         this.setVisible(true);
         updateAllLanguages();
     }
+
+    private JComboBox<String> getStringJComboBox(LocalizationManager lm) {
+        JComboBox<String> langBox = new JComboBox<>(
+                new String[]{"RU", "SV", "NO", "ES"}
+        );
+        langBox.setSelectedItem(lm.getLanguage());
+        langBox.addActionListener(e -> {
+            String selected = (String) langBox.getSelectedItem();
+            switch (selected) {
+                case "RU" -> lm.setLang(new RuLang());
+                case "SV" -> lm.setLang(new SeLang());
+                case "NO" -> lm.setLang(new NoLang());
+                case "ES" -> lm.setLang(new EsLang());
+            }
+            updateAllLanguages();
+        });
+        return langBox;
+    }
+
     public void openEditor(Movie movie) {
-        filmView.setMovie(movie);
         filmRedactor.setMovie(movie);
         tabs.setSelectedComponent(filmRedactor);
     }
@@ -71,7 +76,6 @@ public class MainFrame extends JFrame implements Localizable{
     }
     public void updateAllLanguages(){
         this.updateLanguage();
-        filmView.updateLanguage();
         filmList.updateLanguage();
         filmRedactor.updateLanguage();
     }

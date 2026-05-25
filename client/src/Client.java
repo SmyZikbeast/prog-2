@@ -20,5 +20,6 @@ public class Client {
         LoginFrame LFrame = new LoginFrame(service, lm);
         while (!service.getUserState()){}
         MainFrame MFrame = new MainFrame(service, lm);
+        service.setMainFrame(MFrame);
     }
 }

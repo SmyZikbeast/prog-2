@@ -24,7 +24,7 @@ public class FilmRedactor extends JPanel implements Localizable {
     private JLabel coordinatesXLabel;
     private JLabel coordinatesYLabel;
     private JLabel oscarsLabel;
-    private JLabel boxOfficeLabel;
+    private JLabel goldenPalmLabel;
     private JLabel usaBoxOfficeLabel;
     private JLabel ratingLabel;
 
@@ -39,7 +39,7 @@ public class FilmRedactor extends JPanel implements Localizable {
     private JTextField coordinatesXfield;
     private JTextField coordinatesYfield;
     private JTextField oscarsField;
-    private JTextField boxOfficeField;
+    private JTextField goldenPalmField;
     private JTextField usaBoxOfficeField;
     private JComboBox<MpaaRating> ratingBox;
 
@@ -81,7 +81,7 @@ public class FilmRedactor extends JPanel implements Localizable {
         coordinatesXLabel = new JLabel();
         coordinatesYLabel = new JLabel();
         oscarsLabel = new JLabel();
-        boxOfficeLabel = new JLabel();
+        goldenPalmLabel = new JLabel();
         usaBoxOfficeLabel = new JLabel();
         ratingLabel = new JLabel();
 
@@ -96,7 +96,7 @@ public class FilmRedactor extends JPanel implements Localizable {
         coordinatesXfield = new JTextField();
         coordinatesYfield = new JTextField();
         oscarsField = new JTextField();
-        boxOfficeField = new JTextField();
+        goldenPalmField = new JTextField();
         usaBoxOfficeField = new JTextField();
 
         ratingBox = new JComboBox<>(MpaaRating.values());
@@ -130,7 +130,7 @@ public class FilmRedactor extends JPanel implements Localizable {
         add(coordinatesYLabel); add(coordinatesYfield);
 
         add(oscarsLabel); add(oscarsField);
-        add(boxOfficeLabel); add(boxOfficeField);
+        add(goldenPalmLabel); add(goldenPalmField);
         add(usaBoxOfficeLabel); add(usaBoxOfficeField);
         add(ratingLabel); add(ratingBox);
 
@@ -157,7 +157,7 @@ public class FilmRedactor extends JPanel implements Localizable {
         coordinatesYfield.setText(String.valueOf(movie.getCoordinates().getY()));
 
         oscarsField.setText(String.valueOf(movie.getOscarsCount()));
-        boxOfficeField.setText(String.valueOf(movie.getGoldenPalmCount()));
+        goldenPalmField.setText(String.valueOf(movie.getGoldenPalmCount()));
         usaBoxOfficeField.setText(String.valueOf(movie.getUsaBoxOffice()));
 
         ratingBox.setSelectedItem(movie.getMpaaRating());
@@ -179,7 +179,7 @@ public class FilmRedactor extends JPanel implements Localizable {
         coordinatesYLabel.setText(lm.getLang().coordinates() + " Y");
 
         oscarsLabel.setText(lm.getLang().oscarsCount());
-        boxOfficeLabel.setText(lm.getLang().goldenPalmCount());
+        goldenPalmLabel.setText(lm.getLang().goldenPalmCount());
         usaBoxOfficeLabel.setText(lm.getLang().usaBoxOffice());
         ratingLabel.setText(lm.getLang().MPAARating());
 
@@ -203,12 +203,11 @@ public class FilmRedactor extends JPanel implements Localizable {
         currentMovie.setUsaBoxOffice(Integer.parseInt(usaBoxOfficeField.getText()));
         currentMovie.setOscarsCount(Integer.parseInt(oscarsField.getText()));
         currentMovie.setMpaaRating((MpaaRating) ratingBox.getSelectedItem());
-
+        currentMovie.setGoldenPalmCount(Long.valueOf(goldenPalmField.getText()));
         currentMovie.getCoordinates().setX(Double.parseDouble(coordinatesXfield.getText()));
         currentMovie.getCoordinates().setY(Float.parseFloat(coordinatesYfield.getText()));
 
         currentMovie.getScreenwriter().setName(swNameField.getText());
-        System.out.println(swBdayField.getText());
         currentMovie.getScreenwriter().setBirthday(
                 LocalDate.parse(swBdayField.getText(), Dformatter)
         );
