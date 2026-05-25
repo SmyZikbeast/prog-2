@@ -150,4 +150,8 @@ public class ClientService {
     public void setMainFrame(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
     }
+
+    public MainFrame getMainFrame() {
+        return this.mainFrame;
+    }
 }

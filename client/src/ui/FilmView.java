@@ -7,14 +7,31 @@ import Service.ClientService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilmView extends JPanel {
+    List<FilmCircle> circleList = new ArrayList<>();
     ClientService service;
     List<Movie> movieList;
     public FilmView(ClientService cs){
         this.service = cs;
         movieList = service.getTableModel().getMovies();
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int mx = e.getX();
+                int my = e.getY();
+                for (FilmCircle c : circleList) {
+                    if (c.contains(mx, my)) {
+                        service.getMainFrame().openEditor(c.getMovie());
+                        break;
+                    }
+                }
+            }
+        });
     }
     public static double map(
             double value,
@@ -25,18 +42,6 @@ public class FilmView extends JPanel {
     ) {
         if (inMax == inMin) return outMin;
 
-        return (value - inMin) *
-                (outMax - outMin) /
-                (inMax - inMin) +
-                outMin;
-    }
-    public static Integer mapInt(
-            Integer value,
-            Integer inMin,
-            Integer inMax,
-            Integer outMin,
-            Integer outMax
-    ) {
         return (value - inMin) *
                 (outMax - outMin) /
                 (inMax - inMin) +
@@ -60,17 +65,14 @@ public class FilmView extends JPanel {
                     .min(Integer::compareTo)
                     .orElse(1);
             for(Movie m: movieList) {
-                Integer id = m.getId();
                 Double x = m.getCoordinates().getX();
                 Double y = (double)m.getCoordinates().getY();
                 Integer oscar = m.getOscarsCount();
                 Integer mappedX = (int)FilmView.map(x, 0, maxX, 0, this.getWidth()/2 - 50);
                 Integer mappedY = (int)FilmView.map(y, 0, maxY, 0, this.getHeight()/2 - 50);
-                Integer mappedOscar = (int)FilmView.map(oscar, minOscar, maxOscar, 100, 2000);
-                System.out.println("x: "+mappedX);
-                System.out.println("y: "+mappedY);
-                System.out.println("oscar: "+Math.sqrt(mappedOscar));
+                Integer mappedOscar = (int)FilmView.map(oscar, minOscar, maxOscar, 100, 5000);
                 g.drawOval(this.getWidth()/2+mappedX-(int)Math.sqrt(mappedOscar)/2,this.getHeight()/2+mappedY-(int)Math.sqrt(mappedOscar)/2, (int)Math.sqrt(mappedOscar), (int)Math.sqrt(mappedOscar));
+                circleList.add(new FilmCircle(m,this.getWidth()/2+mappedX-(int)Math.sqrt(mappedOscar)/2,this.getHeight()/2+mappedY-(int)Math.sqrt(mappedOscar)/2,(int)Math.sqrt(mappedOscar)));
             }
         }
     }
