@@ -95,7 +95,24 @@ public class DBInteractor {
         );""");
     }
     public void addMovie(Movie m, Person p, Coordinates c, User u) throws SQLException {
-        PreparedStatement st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
+        PreparedStatement st2 = con.prepareStatement("DELETE FROM movies m USING person p, coordinates c WHERE m.person_id = p.id AND m.coordinates_id = c.id AND p.name = ? AND p.passport_id = ? AND c.x = ? AND c.y = ?;");
+        st2.setString(1,p.getName());
+        st2.setString(2,p.getPassportID());
+        st2.setDouble(3,c.getX());
+        st2.setFloat(4,c.getY());
+        st2.executeUpdate();
+
+        st2 = con.prepareStatement("DELETE FROM PERSON WHERE NAME = ? AND PASSPORT_ID = ?");
+        st2.setString(1,p.getName());
+        st2.setString(2,p.getPassportID());
+        st2.executeUpdate();
+
+        st2 = con.prepareStatement("DELETE FROM COORDINATES WHERE X = ? AND Y = ?");
+        st2.setDouble(1,c.getX());
+        st2.setFloat(2,c.getY());
+        st2.executeUpdate();
+
+        st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
         st2.setString(1,p.getName());
         st2.setObject(2,p.getBirthday());
         st2.setDouble(3,p.getHeight());
@@ -139,8 +156,26 @@ public class DBInteractor {
         st2.executeUpdate();
     }
     public void addMovie(Movie m, Person p, Coordinates c, int id, User u) throws SQLException {
+        PreparedStatement st2 = con.prepareStatement("DELETE FROM movies m USING person p, coordinates c WHERE m.person_id = p.id AND m.coordinates_id = c.id AND m.name = ? AND p.passport_id = ? AND c.x = ? AND c.y = ?;");
+        st2.setString(1,p.getName());
+        st2.setString(2,p.getPassportID());
+        st2.setDouble(3,c.getX());
+        st2.setFloat(4,c.getY());
+        st2.executeUpdate();
+
+        st2 = con.prepareStatement("DELETE FROM PERSON WHERE NAME = ? AND PASSPORT_ID = ?");
+        st2.setString(1,p.getName());
+        st2.setString(2,p.getPassportID());
+        st2.executeUpdate();
+
+        st2 = con.prepareStatement("DELETE FROM COORDINATES WHERE X = ? AND Y = ?");
+        st2.setDouble(1,c.getX());
+        st2.setFloat(2,c.getY());
+        st2.executeUpdate();
+
         m.setId(id);
-        PreparedStatement st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
+
+        st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
         st2.setString(1,p.getName());
         st2.setObject(2,p.getBirthday());
         st2.setDouble(3,p.getHeight());

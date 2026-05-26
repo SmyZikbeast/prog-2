@@ -1,5 +1,7 @@
 package localization;
 
+import java.time.format.DateTimeFormatter;
+
 public class EsLang implements Lang {
 
     public String login() { return "Iniciar sesión"; }
@@ -45,4 +47,5 @@ public class EsLang implements Lang {
     public String nationality() { return "Nacionalidad"; }
     @Override public String save() { return "Guardar"; }
     @Override public String delete() { return "Eliminar"; }
+    public DateTimeFormatter formatter(){return DateTimeFormatter.ofPattern("dd/MM/yyyy");}
 }

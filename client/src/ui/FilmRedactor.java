@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import static BaseFiles.MpaaRating.G;
 
 public class FilmRedactor extends JPanel implements Localizable {
-    private final static DateTimeFormatter Dformatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
     private final ClientService service;
     private final LocalizationManager lm;
 
@@ -48,7 +48,7 @@ public class FilmRedactor extends JPanel implements Localizable {
     private JTextField swHeightField;
     private JTextField swPassportField;
     private JComboBox<Country> swNationalityField;
-
+    private DateTimeFormatter Dformatter;
     private JButton save;
     private JButton delete;
 
@@ -171,7 +171,7 @@ public class FilmRedactor extends JPanel implements Localizable {
 
     @Override
     public void updateLanguage() {
-
+        Dformatter = lm.getLang().formatter();
         idLabel.setText(lm.getLang().id());
         nameLabel.setText(lm.getLang().name());
 

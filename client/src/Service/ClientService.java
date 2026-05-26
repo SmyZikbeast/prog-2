@@ -24,7 +24,7 @@ public class ClientService {
     private volatile boolean running = true;
     private volatile boolean userState = false;
     private MovieTableModel model;
-    private SocketChannel channel;
+    private volatile SocketChannel channel;
     private User user;
     private MainFrame mainFrame;
     Gson gson = new GsonBuilder()
@@ -59,7 +59,7 @@ public class ClientService {
         Request req = new Request(null,null,user);
         req.setPacketType(PacketType.PING);
         new Thread(() -> {
-            while (running && this.channel !=null){
+            while (running){
                 try {
                     req.setUser(user);
                     Response r = req.send(channel);
@@ -78,7 +78,6 @@ public class ClientService {
         }).start();
     }
     public void connect() throws InterruptedException {
-        while (this.channel == null) {
             try {
                 SocketChannel channel = SocketChannel.open();
                 channel.connect(new InetSocketAddress("localhost", 13377));
@@ -90,7 +89,6 @@ public class ClientService {
                 Thread.sleep(100);
             }
         }
-    }
     public void authorize(User u) throws IOException {
         Response r = new Request("login", null, u).send(channel);
         this.userState = (boolean) r.getData();

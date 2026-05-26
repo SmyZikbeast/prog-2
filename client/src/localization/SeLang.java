@@ -1,5 +1,7 @@
 package localization;
 
+import java.time.format.DateTimeFormatter;
+
 public class SeLang implements Lang {
 
     public String login() { return "Logga in"; }
@@ -45,4 +47,5 @@ public class SeLang implements Lang {
     public String nationality() { return "Nationalitet"; }
     @Override public String save() { return "Spara"; }
     @Override public String delete() { return "Ta bort"; }
+    public DateTimeFormatter formatter(){return DateTimeFormatter.ofPattern("yyyy-MM-dd");}
 }

@@ -19,6 +19,9 @@ public class FilmView extends JPanel {
     public FilmView(ClientService cs){
         this.service = cs;
         movieList = service.getTableModel().getMovies();
+        service.getTableModel().addTableModelListener(e -> {
+            repaint();
+        });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -51,10 +54,11 @@ public class FilmView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        circleList.clear();
         movieList = service.getTableModel().getMovies();
         if (!movieList.isEmpty()){
-            Double maxX = Math.abs(movieList.stream().map(Movie::getCoordinates).map(Coordinates::getX).max(Double::compareTo).orElse(null));
-            Double maxY = Math.abs((double)movieList.stream().map(Movie::getCoordinates).map(Coordinates::getY).max(Float::compareTo).orElse(1.0F));
+            Double maxX = Math.abs(movieList.stream().map(Movie::getCoordinates).map(Coordinates::getX).map(Math::abs).max(Double::compareTo).orElse(null));
+            Double maxY = Math.abs((double)movieList.stream().map(Movie::getCoordinates).map(Coordinates::getY).map(Math::abs).max(Float::compareTo).orElse(1.0F));
             Integer maxOscar = movieList.stream()
                     .map(Movie::getOscarsCount)
                     .max(Integer::compareTo)
@@ -70,8 +74,10 @@ public class FilmView extends JPanel {
                 Integer oscar = m.getOscarsCount();
                 Integer mappedX = (int)FilmView.map(x, 0, maxX, 0, this.getWidth()/2 - 50);
                 Integer mappedY = (int)FilmView.map(y, 0, maxY, 0, this.getHeight()/2 - 50);
-                Integer mappedOscar = (int)FilmView.map(oscar, minOscar, maxOscar, 100, 5000);
-                g.drawOval(this.getWidth()/2+mappedX-(int)Math.sqrt(mappedOscar)/2,this.getHeight()/2+mappedY-(int)Math.sqrt(mappedOscar)/2, (int)Math.sqrt(mappedOscar), (int)Math.sqrt(mappedOscar));
+                Integer mappedOscar = (int)FilmView.map(oscar, minOscar, maxOscar, 400, 5000);
+                Color color = Color.getHSBColor((Math.abs(m.getUser().getUsername().hashCode())%360)/360f, 0.7f, 0.9f);
+                g.setColor(color);
+                g.fillOval(this.getWidth()/2+mappedX-(int)Math.sqrt(mappedOscar)/2,this.getHeight()/2+mappedY-(int)Math.sqrt(mappedOscar)/2, (int)Math.sqrt(mappedOscar), (int)Math.sqrt(mappedOscar));
                 circleList.add(new FilmCircle(m,this.getWidth()/2+mappedX-(int)Math.sqrt(mappedOscar)/2,this.getHeight()/2+mappedY-(int)Math.sqrt(mappedOscar)/2,(int)Math.sqrt(mappedOscar)));
             }
         }

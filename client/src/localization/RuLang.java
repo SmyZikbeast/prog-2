@@ -1,5 +1,7 @@
 package localization;
 
+import java.time.format.DateTimeFormatter;
+
 public class RuLang implements Lang {
 
     public String login() { return "Вход"; }
@@ -45,4 +47,5 @@ public class RuLang implements Lang {
     public String nationality() { return "Национальность"; }
     @Override public String save() { return "Сохранить"; }
     @Override public String delete() { return "Удалить"; }
+    public DateTimeFormatter formatter(){return DateTimeFormatter.ofPattern("dd.MM.yyyy");}
 }

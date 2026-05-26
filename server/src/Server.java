@@ -132,7 +132,6 @@ public class Server {
                     throw new RuntimeException(e);
                 }
                 serverFrame.updateUserSet(new HashSet<String>(userSet));
-                System.out.println("update");
             }
         }).start();
 }

@@ -1,5 +1,7 @@
 package localization;
 
+import java.time.format.DateTimeFormatter;
+
 public interface Lang {
     String login();
     String register();
@@ -24,4 +26,5 @@ public interface Lang {
     String nationality();
     String save();
     String delete();
+    DateTimeFormatter formatter();
 }
