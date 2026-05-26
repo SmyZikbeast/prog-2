@@ -45,7 +45,21 @@ public class NoLang implements Lang {
     public String passportId() { return "Pass-ID"; }
 
     public String nationality() { return "Nasjonalitet"; }
-    @Override public String save() { return "Lagre"; }
-    @Override public String delete() { return "Slett"; }
+    public String save() { return "Lagre"; }
+    public String delete() { return "Slett"; }
     public DateTimeFormatter formatter(){return DateTimeFormatter.ofPattern("dd.MM.yyyy");}
+    public String help() { return "Hjelp"; }
+    public String info() { return "Info"; }
+    public String show() { return "Vis"; }
+    public String add() { return "Legg til"; }
+    public String update() { return "Oppdater"; }
+    public String removeId() { return "Fjern etter ID"; }
+    public String executeScript() { return "Kjør skript"; }
+    public String history() { return "Historikk"; }
+    public String removeByUSABoxOffice() { return "Fjern etter USA-inntekter"; }
+    public String addIfMax() { return "Legg til hvis maks"; }
+    public String addIfMin() { return "Legg til hvis min"; }
+    public String commands() {return "Kommandoer";}
+    public String execute() {return "Henrette";}
+    public String console() {return "Konsoll";}
 }

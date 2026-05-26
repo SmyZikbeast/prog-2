@@ -15,6 +15,8 @@ public class MainFrame extends JFrame implements Localizable{
     private FilmView filmView;
     private MovieController controller;
     private LocalizationManager lm;
+    private Console console;
+    CommandList commandList;
     public MainFrame(ClientService service, LocalizationManager lm) throws InterruptedException {
         this.lm = lm;
         this.setLayout(new BorderLayout());
@@ -27,6 +29,9 @@ public class MainFrame extends JFrame implements Localizable{
         filmList = new FilmList(service, controller, lm);
         filmRedactor = new FilmRedactor(service, lm);
         filmView = new FilmView(service);
+        commandList = new CommandList(service, lm);
+        console = new Console(service, lm);
+        commandList.setConsole(console);
         JPanel header = new JPanel();
         JComboBox<String> langBox = getStringJComboBox(lm);
         header.add(userLabel);
@@ -34,6 +39,8 @@ public class MainFrame extends JFrame implements Localizable{
         tabs.addTab(lm.getLang().list(), filmList);
         tabs.addTab(lm.getLang().view(), filmView);
         tabs.addTab(lm.getLang().editor(), filmRedactor);
+        tabs.addTab(lm.getLang().commands(), commandList);
+        tabs.addTab(lm.getLang().console(), console);
         this.add(header, BorderLayout.NORTH);
         this.add(tabs, BorderLayout.CENTER);
         while (!service.getUserState()){
@@ -71,6 +78,8 @@ public class MainFrame extends JFrame implements Localizable{
         tabs.setTitleAt(0, lm.getLang().list());
         tabs.setTitleAt(1, lm.getLang().view());
         tabs.setTitleAt(2, lm.getLang().editor());
+        tabs.setTitleAt(3, lm.getLang().commands());
+        tabs.setTitleAt(4, lm.getLang().console());
         repaint();
         revalidate();
     }
@@ -78,5 +87,7 @@ public class MainFrame extends JFrame implements Localizable{
         this.updateLanguage();
         filmList.updateLanguage();
         filmRedactor.updateLanguage();
+        commandList.updateLanguage();
+        console.updateLanguage();
     }
 }

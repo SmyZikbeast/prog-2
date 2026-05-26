@@ -74,7 +74,7 @@ public class FilmView extends JPanel {
                 Integer oscar = m.getOscarsCount();
                 Integer mappedX = (int)FilmView.map(x, 0, maxX, 0, this.getWidth()/2 - 50);
                 Integer mappedY = (int)FilmView.map(y, 0, maxY, 0, this.getHeight()/2 - 50);
-                Integer mappedOscar = (int)FilmView.map(oscar, minOscar, maxOscar, 400, 5000);
+                Integer mappedOscar = (int)FilmView.map(oscar, minOscar, maxOscar, this.getWidth()/2 - 50, 5 * this.getWidth());
                 Color color = Color.getHSBColor((Math.abs(m.getUser().getUsername().hashCode())%360)/360f, 0.7f, 0.9f);
                 g.setColor(color);
                 g.fillOval(this.getWidth()/2+mappedX-(int)Math.sqrt(mappedOscar)/2,this.getHeight()/2+mappedY-(int)Math.sqrt(mappedOscar)/2, (int)Math.sqrt(mappedOscar), (int)Math.sqrt(mappedOscar));

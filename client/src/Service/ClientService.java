@@ -116,7 +116,7 @@ public class ClientService {
     }
     public void refreshMovies() {
         try {
-            Response r = new Request("show", null, user).send(channel);
+            Response r = new Request("AutoShow", null, user).send(channel);
             List<Movie> movies =
                     ((List<?>) r.getData()).stream()
                             .map(obj -> gson.fromJson(
@@ -151,5 +151,8 @@ public class ClientService {
 
     public MainFrame getMainFrame() {
         return this.mainFrame;
+    }
+    public String sendRequest(Request r) throws IOException {
+        return r.send(channel).getData().toString();
     }
 }

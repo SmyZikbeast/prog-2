@@ -45,7 +45,21 @@ public class RuLang implements Lang {
     public String passportId() { return "Паспорт"; }
 
     public String nationality() { return "Национальность"; }
-    @Override public String save() { return "Сохранить"; }
-    @Override public String delete() { return "Удалить"; }
+    public String save() { return "Сохранить"; }
+    public String delete() { return "Удалить"; }
     public DateTimeFormatter formatter(){return DateTimeFormatter.ofPattern("dd.MM.yyyy");}
+    public String help() { return "Помощь"; }
+    public String info() { return "Информация"; }
+    public String show() { return "Показать"; }
+    public String add() { return "Добавить"; }
+    public String update() { return "Обновить"; }
+    public String removeId() { return "Удалить по ID"; }
+    public String executeScript() { return "Выполнить скрипт"; }
+    public String history() { return "История"; }
+    public String removeByUSABoxOffice() { return "Удалить по сборам США"; }
+    public String addIfMax() { return "Добавить если максимум"; }
+    public String addIfMin() { return "Добавить если минимум"; }
+    public String commands() {return "Команды";}
+    public String execute() {return "Выполнить";}
+    public String console() {return "Консоль";}
 }

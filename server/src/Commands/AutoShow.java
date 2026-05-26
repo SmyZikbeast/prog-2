@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
  *
  *
  */
-public class ShowCommand extends Command{
-    public ShowCommand(CollectionManager cm) {
+public class AutoShow extends Command{
+    public AutoShow(CollectionManager cm) {
         super(cm);
     }
     @Override
     public Response execute(){
-        return new Response("ObjectList",cm.getCollection().stream().map(Movie::toString).map(s -> s+"\n").collect(Collectors.joining()));
+        return new Response("ObjectList",cm.getCollection());
     }
 }

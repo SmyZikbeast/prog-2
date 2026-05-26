@@ -82,6 +82,7 @@ public class Server {
         map.put("execute_script", new ExecuteScriptCommand(cm));
         map.put("login", new LoginCommand(cm));
         map.put("register", new RegisterCommand(cm));
+        map.put("AutoShow", new AutoShow(cm));
         return map;
     }
 

@@ -45,7 +45,21 @@ public class SeLang implements Lang {
     public String passportId() { return "Pass-ID"; }
 
     public String nationality() { return "Nationalitet"; }
-    @Override public String save() { return "Spara"; }
-    @Override public String delete() { return "Ta bort"; }
+    public String save() { return "Spara"; }
+    public String delete() { return "Ta bort"; }
     public DateTimeFormatter formatter(){return DateTimeFormatter.ofPattern("yyyy-MM-dd");}
+    public String help() { return "Hjälp"; }
+    public String info() { return "Info"; }
+    public String show() { return "Visa"; }
+    public String add() { return "Lägg till"; }
+    public String update() { return "Uppdatera"; }
+    public String removeId() { return "Ta bort efter ID"; }
+    public String executeScript() { return "Kör skript"; }
+    public String history() { return "Historik"; }
+    public String removeByUSABoxOffice() { return "Ta bort efter USA-intäkter"; }
+    public String addIfMax() { return "Lägg till om max"; }
+    public String addIfMin() { return "Lägg till om min"; }
+    public String commands() {return "Kommandon";}
+    public String execute() {return "Utföra";}
+    public String console() {return "Trösta";}
 }

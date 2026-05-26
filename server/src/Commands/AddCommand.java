@@ -19,7 +19,6 @@ public class AddCommand extends Command{
      */
     @Override
     public Response execute() throws SQLException {
-
         return new Response("String", "Success");
     }
 }

@@ -3,6 +3,7 @@ package localization;
 import java.time.format.DateTimeFormatter;
 
 public interface Lang {
+    DateTimeFormatter formatter();
     String login();
     String register();
     String username();
@@ -26,5 +27,19 @@ public interface Lang {
     String nationality();
     String save();
     String delete();
-    DateTimeFormatter formatter();
+
+    String help();
+    String info();
+    String show();
+    String add();
+    String update();
+    String removeId();
+    String executeScript();
+    String history();
+    String removeByUSABoxOffice();
+    String addIfMax();
+    String addIfMin();
+    String commands();
+    String execute();
+    String console();
 }

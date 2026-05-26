@@ -45,7 +45,21 @@ public class EsLang implements Lang {
     public String passportId() { return "Pasaporte"; }
 
     public String nationality() { return "Nacionalidad"; }
-    @Override public String save() { return "Guardar"; }
-    @Override public String delete() { return "Eliminar"; }
+    public String save() { return "Guardar"; }
+    public String delete() { return "Eliminar"; }
     public DateTimeFormatter formatter(){return DateTimeFormatter.ofPattern("dd/MM/yyyy");}
+    public String help() { return "Ayuda"; }
+    public String info() { return "Información"; }
+    public String show() { return "Mostrar"; }
+    public String add() { return "Añadir"; }
+    public String update() { return "Actualizar"; }
+    public String removeId() { return "Eliminar por ID"; }
+    public String executeScript() { return "Ejecutar script"; }
+    public String history() { return "Historial"; }
+    public String removeByUSABoxOffice() { return "Eliminar por taquilla USA"; }
+    public String addIfMax() { return "Añadir si máximo"; }
+    public String addIfMin() { return "Añadir si mínimo"; }
+    public String commands() {return "Comandos";}
+    public String execute() {return "Ejecutar";}
+    public String console() {return "Consola";}
 }
