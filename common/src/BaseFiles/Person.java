@@ -85,7 +85,7 @@ public class Person implements Comparable<Person>{
 
     @Override
     public String toString() {
-        return  "  name:" + name +
+        return  "  nick:" + name +
                 "  birthday:" + birthday.format(Dformatter)+
                 "  height:" + height+
                 "  passportID:" + passportID +

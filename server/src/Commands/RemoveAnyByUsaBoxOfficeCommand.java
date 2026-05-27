@@ -22,7 +22,11 @@ public class RemoveAnyByUsaBoxOfficeCommand extends Command{
     }
     @Override
     public Response execute() throws SQLException, IOException {
-
-        return new Response("String", "Nothing to remove");
+        Movie mv = cm.getCollection().stream().filter(s -> Integer.parseInt(arg.toString().substring(0,arg.toString().length()-2)) == s.getUsaBoxOffice()).findAny().orElse(null);
+        if (mv != null){
+            cm.removeId(mv.getId(), mv.getUser().getUsername());
+            return new Response("String", "Successfully removed");
+        }
+        return new Response("String", "Nothing removed");
     }
 }

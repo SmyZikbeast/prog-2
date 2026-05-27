@@ -142,7 +142,7 @@ public class Movie implements Comparable<Movie> {
     @Override
     public String toString(){
          return "id:" + id +
-        "  name:" + name +
+        "  mname:" + name +
         "  coordinates:" + coordinates +
         "  creation Date:" + creationDate +
         "  oscars Count:" + oscarsCount +

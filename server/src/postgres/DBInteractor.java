@@ -95,22 +95,7 @@ public class DBInteractor {
         );""");
     }
     public void addMovie(Movie m, Person p, Coordinates c, User u) throws SQLException {
-        PreparedStatement st2 = con.prepareStatement("DELETE FROM movies m USING person p, coordinates c WHERE m.person_id = p.id AND m.coordinates_id = c.id AND p.name = ? AND p.passport_id = ? AND c.x = ? AND c.y = ?;");
-        st2.setString(1,p.getName());
-        st2.setString(2,p.getPassportID());
-        st2.setDouble(3,c.getX());
-        st2.setFloat(4,c.getY());
-        st2.executeUpdate();
-
-        st2 = con.prepareStatement("DELETE FROM PERSON WHERE NAME = ? AND PASSPORT_ID = ?");
-        st2.setString(1,p.getName());
-        st2.setString(2,p.getPassportID());
-        st2.executeUpdate();
-
-        st2 = con.prepareStatement("DELETE FROM COORDINATES WHERE X = ? AND Y = ?");
-        st2.setDouble(1,c.getX());
-        st2.setFloat(2,c.getY());
-        st2.executeUpdate();
+        PreparedStatement st2;
 
         st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
         st2.setString(1,p.getName());
@@ -156,23 +141,7 @@ public class DBInteractor {
         st2.executeUpdate();
     }
     public void addMovie(Movie m, Person p, Coordinates c, int id, User u) throws SQLException {
-        PreparedStatement st2 = con.prepareStatement("DELETE FROM movies m USING person p, coordinates c WHERE m.person_id = p.id AND m.coordinates_id = c.id AND m.name = ? AND p.passport_id = ? AND c.x = ? AND c.y = ?;");
-        st2.setString(1,p.getName());
-        st2.setString(2,p.getPassportID());
-        st2.setDouble(3,c.getX());
-        st2.setFloat(4,c.getY());
-        st2.executeUpdate();
-
-        st2 = con.prepareStatement("DELETE FROM PERSON WHERE NAME = ? AND PASSPORT_ID = ?");
-        st2.setString(1,p.getName());
-        st2.setString(2,p.getPassportID());
-        st2.executeUpdate();
-
-        st2 = con.prepareStatement("DELETE FROM COORDINATES WHERE X = ? AND Y = ?");
-        st2.setDouble(1,c.getX());
-        st2.setFloat(2,c.getY());
-        st2.executeUpdate();
-
+        PreparedStatement st2 ;
         m.setId(id);
 
         st2 = con.prepareStatement(DBQuery.CreateQuery("add_person", p));
@@ -206,6 +175,13 @@ public class DBInteractor {
         m.setPersonId(PersonId);
         m.setCoordsId(CoordsId);
         m.setUserId(UserId);
+        st2 = con.prepareStatement("DELETE FROM COORDINATES WHERE ID = ?");
+        st2.setInt(1, CoordsId);
+        st2 = con.prepareStatement("DELETE FROM PERSON WHERE ID = ?");
+        st2.setInt(1, PersonId);
+        st2 = con.prepareStatement("DELETE FROM MOVIES WHERE ID = ?");
+        st2.setInt(1, id);
+
         st2 = con.prepareStatement(DBQuery.CreateQuery("add_movie_id",m));
         st2.setInt(1,m.getId());
         st2.setString(2,m.getName());

@@ -19,6 +19,7 @@ public class AddCommand extends Command{
      */
     @Override
     public Response execute() throws SQLException {
+        cm.addMovie((Movie) this.arg);
         return new Response("String", "Success");
     }
 }

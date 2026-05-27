@@ -64,7 +64,7 @@ public class ClientService {
                     req.setUser(user);
                     Response r = req.send(channel);
                     Thread.sleep(1000);
-                } catch (IOException e) {
+                } catch (IOException | NullPointerException e) {
                     try {
                         Thread.sleep(500);
                         this.connect();

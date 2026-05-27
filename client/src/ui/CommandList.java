@@ -1,5 +1,6 @@
 package ui;
 
+import BaseFiles.*;
 import Response.Request;
 import Service.ClientService;
 import localization.Localizable;
@@ -8,10 +9,15 @@ import localization.LocalizationManager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 public class CommandList extends JPanel implements Localizable {
-    ClientService service;
+    static ClientService service;
     LocalizationManager lm;
     Console console;
     String res;
@@ -51,14 +57,30 @@ public class CommandList extends JPanel implements Localizable {
     JButton removeByUSABoxOfficeButton;
     JButton addIfMaxButton;
     JButton addIfMinButton;
-
+    public static Movie parseMovie(String m){
+        int id = Integer.parseInt(m.substring(m.indexOf("id:") + 3, m.indexOf("mname:")).trim());
+        String name = m.substring(m.indexOf("mname:") + 6, m.indexOf("coordinates:")).trim();
+        Double x = Double.parseDouble(m.substring(m.indexOf("X:") + 2, m.indexOf("Y:")).trim());
+        float y = Float.parseFloat(m.substring(m.indexOf("Y:") + 2, m.indexOf("creation Date:")).trim());
+        LocalDateTime creationDate = LocalDateTime.parse(m.substring(m.indexOf("creation Date:") + 14, m.indexOf("oscars Count:")).trim());
+        Integer oscarsCount = Integer.parseInt(m.substring(m.indexOf("oscars Count:") + 13, m.indexOf("golden Palm Count:")).trim());
+        Long goldenPalmCount = Long.parseLong(m.substring(m.indexOf("golden Palm Count:") + 18, m.indexOf("usa Box Office:")).trim());
+        int usaBoxOffice = Integer.parseInt(m.substring(m.indexOf("usa Box Office:") + 15, m.indexOf("mpaa Rating:")).trim());
+        MpaaRating mpaaRating = MpaaRating.valueOf(m.substring(m.indexOf("mpaa Rating:") + 12, m.indexOf("screen Writer:")).trim());
+        String writerName = m.substring(m.indexOf("nick:") + 5, m.indexOf("birthday:")).trim();
+        LocalDate birthday = LocalDate.parse(m.substring(m.indexOf("birthday:") + 9, m.indexOf("height:")).trim(), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        Double height = Double.parseDouble(m.substring(m.indexOf("height:") + 7, m.indexOf("passportID:")).trim());
+        String passportID = m.substring(m.indexOf("passportID:") + 11, m.indexOf("nationality:")).trim();
+        Country nationality = Country.valueOf(m.substring(m.indexOf("nationality:") + 12, m.indexOf("user:")).trim());
+        System.out.println(new Movie(id, name, new Coordinates(x,y), creationDate, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, new Person(writerName, birthday, height, passportID, nationality), service.getUser()));
+        return new Movie(id, name, new Coordinates(x,y), creationDate, oscarsCount, goldenPalmCount, usaBoxOffice, mpaaRating, new Person(writerName, birthday, height, passportID, nationality), service.getUser());
+    }
     public CommandList(ClientService service, LocalizationManager lm){
-        this.service = service;
+        CommandList.service = service;
         this.lm = lm;
-        setLayout(new GridLayout(15, 3));
+        setLayout(new GridLayout(10, 3));
         build();
     }
-
     public void setConsole(Console console) {
         this.console = console;
     }
@@ -108,7 +130,7 @@ public class CommandList extends JPanel implements Localizable {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        });
+        }); //done
 
         infoButton.addActionListener(e -> {
             try {
@@ -118,7 +140,7 @@ public class CommandList extends JPanel implements Localizable {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        });
+        }); //done
 
         showButton.addActionListener(e -> {
             try {
@@ -128,11 +150,11 @@ public class CommandList extends JPanel implements Localizable {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        });
+        }); //done
 
         addButton.addActionListener(e -> {
             try {
-                res = service.sendRequest(new Request("add", addField.getText(), service.getUser()));
+                res = service.sendRequest(new Request("add", parseMovie(addField.getText()), service.getUser()));
                 console.write(res);
                 historyManager.add("add");
             } catch (IOException ex) {
@@ -142,7 +164,7 @@ public class CommandList extends JPanel implements Localizable {
 
         updateButton.addActionListener(e -> {
             try {
-                res = service.sendRequest(new Request("update", updateField.getText(), service.getUser()));
+                res = service.sendRequest(new Request("update", parseMovie(updateField.getText()), service.getUser()));
                 console.write(res);
                 historyManager.add("update");
             } catch (IOException ex) {
@@ -152,23 +174,13 @@ public class CommandList extends JPanel implements Localizable {
 
         removeIdButton.addActionListener(e -> {
             try {
-                res = service.sendRequest(new Request("remove_by_id", removeIdField.getText(), service.getUser()));
+                res = service.sendRequest(new Request("remove", parseInt(removeIdField.getText()), service.getUser()));
                 console.write(res);
                 historyManager.add("remove_by_id");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        });
-
-        executeScriptButton.addActionListener(e -> {
-            try {
-                res = service.sendRequest(new Request("execute_script", executeScriptField.getText(), service.getUser()));
-                console.write(res);
-                historyManager.add("execute_script");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        }); //done
 
         historyButton.addActionListener(e -> {
             List<String> resList = historyManager.getHistory();
@@ -178,9 +190,9 @@ public class CommandList extends JPanel implements Localizable {
         removeByUSABoxOfficeButton.addActionListener(e -> {
             try {
                 res = service.sendRequest(new Request(
-                        "remove_all_by_usa_box_office", removeByUSABoxOfficeField.getText(), service.getUser()
+                        "remove_any_by_usa_box_office", parseInt(removeByUSABoxOfficeField.getText()), service.getUser()
                 ));
-                historyManager.add("remove_all_by_usa_box_office");
+                historyManager.add("remove_any_by_usa_box_office");
                 console.write(res);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -189,7 +201,7 @@ public class CommandList extends JPanel implements Localizable {
 
         addIfMaxButton.addActionListener(e -> {
             try {
-                res = service.sendRequest(new Request("add_if_max", addIfMaxField.getText(), service.getUser()));
+                res = service.sendRequest(new Request("add_if_max", parseMovie(addIfMaxField.getText()), service.getUser()));
                 console.write(res);
                 historyManager.add("add_if_max");
             } catch (IOException ex) {
@@ -199,7 +211,7 @@ public class CommandList extends JPanel implements Localizable {
 
         addIfMinButton.addActionListener(e -> {
             try {
-                res = service.sendRequest(new Request("add_if_min", addIfMinField.getText(), service.getUser()));
+                res = service.sendRequest(new Request("add_if_min", parseMovie(addIfMinField.getText()), service.getUser()));
                 console.write(res);
                 historyManager.add("add_if_min");
             } catch (IOException ex) {
@@ -217,7 +229,6 @@ public class CommandList extends JPanel implements Localizable {
         add(addLabel); add(addField); add(addButton);
         add(updateLabel); add(updateField); add(updateButton);
         add(removeIdLabel); add(removeIdField); add(removeIdButton);
-        add(executeScriptLabel); add(executeScriptField); add(executeScriptButton);
         add(historyLabel); add(historyField); add(historyButton);
         add(removeByUSABoxOfficeLabel); add(removeByUSABoxOfficeField); add(removeByUSABoxOfficeButton);
         add(addIfMaxLabel); add(addIfMaxField); add(addIfMaxButton);
